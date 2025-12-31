@@ -102,7 +102,7 @@ export default function SettingsPage() {
         ))}
       </Head>
       <WithPreviewSidebar>
-        <form>
+        <form className="divide-y divide-border">
           <section className="flex flex-col gap-8 p-4 md:p-8">
             <header>
               <h2>Profile</h2>
@@ -183,7 +183,6 @@ export default function SettingsPage() {
               </fieldset>
             ) : null}
           </section>
-          <div className="w-full border-b border-[rgb(var(--parent-color)/var(--border-alpha))]" role="separator" />
           <section className="flex flex-col gap-8 p-4 md:p-8">
             <header>
               <h2>Design</h2>
@@ -197,7 +196,7 @@ export default function SettingsPage() {
                     key={font}
                     aria-checked={font === profileSettings.font}
                     onClick={() => updateProfileSettings({ font })}
-                    className="items-start! justify-start! gap-3 text-left aria-checked:-translate-x-1 aria-checked:-translate-y-1 aria-checked:shadow aria-checked:bg-background aria-checked:transform-none!"
+                    className="items-start! justify-start! gap-3! text-left aria-checked:-translate-x-1 aria-checked:-translate-y-1 aria-checked:shadow aria-checked:bg-background aria-checked:transform-none!"
                     style={{ fontFamily: font === "ABC Favorit" ? undefined : font }}
                     disabled={!canUpdate}
                   >
