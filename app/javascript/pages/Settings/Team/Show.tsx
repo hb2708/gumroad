@@ -1,5 +1,4 @@
 import { usePage, router } from "@inertiajs/react";
-import { cx } from "class-variance-authority";
 import * as React from "react";
 import { GroupBase, SelectInstance } from "react-select";
 import { cast } from "ts-safe-cast";
@@ -16,6 +15,7 @@ import {
   updateMember,
 } from "$app/data/settings/team";
 import { SettingPage } from "$app/parsers/settings";
+import { classNames } from "$app/utils/classNames";
 import { isValidEmail } from "$app/utils/email";
 import { asyncVoid } from "$app/utils/promise";
 import { assertResponseError } from "$app/utils/request";
@@ -23,6 +23,7 @@ import { assertResponseError } from "$app/utils/request";
 import { Button } from "$app/components/Button";
 import { useCurrentSeller } from "$app/components/CurrentSeller";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { LoadingSpinner } from "$app/components/LoadingSpinner";
 import { Modal } from "$app/components/Modal";
 import { Option, Select } from "$app/components/Select";
@@ -60,7 +61,7 @@ export default function TeamPage() {
 
   return (
     <SettingsLayout currentPage="team" pages={props.settings_pages}>
-      <form>
+      <form className="divide-y divide-border">
         {props.can_invite_member ? (
           <AddTeamMembersSection refreshMemberInfos={refreshMemberInfos} options={options} />
         ) : null}
@@ -129,69 +130,67 @@ const AddTeamMembersSection = ({
   });
 
   return (
-    <section className="p-4! md:p-8!">
-      <header>
+    <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:pb-16">
+      <header className="space-y-3">
         <h2>Add team members</h2>
         <div>Invite as many team members as you need to help run this account.</div>
         <a href="/help/article/326-teams-and-roles" target="_blank" rel="noreferrer">
           Learn more
         </a>
       </header>
-      <div
-        style={{
-          display: "grid",
-          gap: "var(--spacer-3)",
-          gridTemplateColumns: "repeat(auto-fit, max(var(--dynamic-grid), 50% - var(--spacer-3) / 2))",
-        }}
-      >
-        <fieldset className={cx({ danger: errors.has("email") })}>
-          <legend>
-            <label htmlFor={emailUID}>Email</label>
-          </legend>
-          <input
-            id={emailUID}
-            type="text"
-            ref={emailFieldRef}
-            placeholder="Team member's email"
-            className="required"
-            value={teamInvitation.email}
-            onChange={(evt) => {
-              updateTeamInvitation({ email: evt.target.value });
-              clearError("email");
-            }}
-          />
-        </fieldset>
-        <fieldset className={cx({ danger: errors.has("role") })}>
-          <legend>
-            <label htmlFor={roleUID}>Role</label>
-          </legend>
-          <Select
-            ref={roleFieldRef}
-            inputId={roleUID}
-            instanceId={roleUID}
-            options={options.filter((o) => o.id !== "owner")}
-            isMulti={false}
-            isClearable={false}
-            placeholder="Choose a role"
-            value={options.find((o) => o.id === teamInvitation.role) ?? null}
-            onChange={(evt) => {
-              if (evt !== null) {
-                updateTeamInvitation({ role: evt.id });
-                clearError("role");
-              }
-            }}
-          />
-        </fieldset>
+      <div className="flex flex-col gap-8">
+        <div className="grid gap-3 sm:grid-cols-2">
+          <fieldset className="space-y-2">
+            <legend>
+              <label htmlFor={emailUID}>Email</label>
+            </legend>
+            <Input
+              id={emailUID}
+              type="text"
+              ref={emailFieldRef}
+              placeholder="Team member's email"
+              required
+              value={teamInvitation.email}
+              className={classNames(errors.has("email") && "border-danger")}
+              onChange={(evt) => {
+                updateTeamInvitation({ email: evt.target.value });
+                clearError("email");
+              }}
+            />
+          </fieldset>
+          <fieldset className="space-y-2">
+            <legend>
+              <label htmlFor={roleUID}>Role</label>
+            </legend>
+            <Select
+              ref={roleFieldRef}
+              inputId={roleUID}
+              instanceId={roleUID}
+              options={options.filter((o) => o.id !== "owner")}
+              isMulti={false}
+              isClearable={false}
+              placeholder="Choose a role"
+              isInvalid={errors.has("role")}
+              value={options.find((o) => o.id === teamInvitation.role) ?? null}
+              onChange={(evt) => {
+                if (evt !== null) {
+                  updateTeamInvitation({ role: evt.id });
+                  clearError("role");
+                }
+              }}
+            />
+          </fieldset>
+        </div>
+        <Button color="primary" className="w-fit" disabled={loading} onClick={onSubmit}>
+          {loading ? (
+            <>
+              <LoadingSpinner color="grey" /> Sending invitation
+            </>
+          ) : (
+            "Send invitation"
+          )}
+        </Button>
       </div>
-      <Button color="primary" className="w-fit" disabled={loading} onClick={onSubmit}>
-        {loading ? (
-          <>
-            <LoadingSpinner color="grey" /> Sending invitation
-          </>
-        ) : (
-          "Send invitation"
-        )}
-      </Button>
     </section>
   );
 };
@@ -259,102 +258,105 @@ const TeamMembersSection = ({
   };
 
   return (
-    <section className="p-4! md:p-8!">
+    <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:pb-16">
       <header>
         <h2 ref={ref}>Team members</h2>
       </header>
-      {deletedMember ? (
-        <Alert variant="success">
-          <div className="flex flex-col justify-between sm:flex-row">
-            {deletedMember.name !== "" ? deletedMember.name : deletedMember.email} was removed from team members
-            <button
-              className="underline"
-              type="button"
-              onClick={asyncVoid(async () => {
-                try {
-                  await restoreMember(deletedMember);
-                  refreshMemberInfos();
-                  showAlert(
-                    `${deletedMember.name !== "" ? deletedMember.name : deletedMember.email} was added back to the team`,
-                    "success",
-                  );
-                  setDeletedMember(null);
-                } catch (e) {
-                  assertResponseError(e);
-                  showAlert(e.message, "error");
-                }
-              })}
-            >
-              Undo
-            </button>
-          </div>
-        </Alert>
-      ) : null}
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Member</TableHead>
-            <TableHead>Role</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {memberInfos.map((memberInfo) => (
-            <TableRow key={`${memberInfo.type}-${memberInfo.id}`}>
-              <TableCell>
-                <div style={{ display: "flex", alignItems: "center", gap: "var(--spacer-4)" }}>
-                  <img
-                    className="user-avatar"
-                    style={{ width: "var(--spacer-6)" }}
-                    src={memberInfo.avatar_url}
-                    alt={`Avatar of ${memberInfo.name}`}
-                  />
-                  <div style={{ display: "flex", alignItems: "center", gap: "var(--spacer-2)" }}>
-                    <div>
-                      {memberInfo.name}
-                      <small>{memberInfo.email}</small>
+      <div className="flex flex-col gap-8">
+        {deletedMember ? (
+          <Alert variant="success">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+              <span>
+                {deletedMember.name !== "" ? deletedMember.name : deletedMember.email} was removed from team members.
+              </span>
+              <button
+                className="underline"
+                type="button"
+                onClick={asyncVoid(async () => {
+                  try {
+                    await restoreMember(deletedMember);
+                    refreshMemberInfos();
+                    showAlert(
+                      `${deletedMember.name !== "" ? deletedMember.name : deletedMember.email} was added back to the team`,
+                      "success",
+                    );
+                    setDeletedMember(null);
+                  } catch (e) {
+                    assertResponseError(e);
+                    showAlert(e.message, "error");
+                  }
+                })}
+              >
+                Undo
+              </button>
+            </div>
+          </Alert>
+        ) : null}
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Member</TableHead>
+              <TableHead>Role</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {memberInfos.map((memberInfo) => (
+              <TableRow key={`${memberInfo.type}-${memberInfo.id}`}>
+                <TableCell>
+                  <div className="flex items-center gap-4">
+                    <img
+                      className="size-8 shrink-0 rounded-full border border-border"
+                      src={memberInfo.avatar_url}
+                      alt={`Avatar of ${memberInfo.name}`}
+                    />
+                    <div className="flex items-center gap-2">
+                      <div>
+                        {memberInfo.name}
+                        <small className="text-muted">{memberInfo.email}</small>
+                      </div>
+                      {memberInfo.is_expired ? (
+                        <WithTooltip
+                          tip="Invitation has expired. You can resend the invitation from the member's menu options."
+                          position="top"
+                        >
+                          <Icon
+                            name="solid-shield-exclamation"
+                            className="text-warning"
+                            aria-label="Invitation has expired. You can resend the invitation from the member's menu options."
+                          />
+                        </WithTooltip>
+                      ) : null}
                     </div>
-                    {memberInfo.is_expired ? (
-                      <WithTooltip
-                        tip="Invitation has expired. You can resend the invitation from the member's menu options."
-                        position="top"
-                      >
-                        <Icon
-                          name="solid-shield-exclamation"
-                          style={{ color: "rgb(var(--warning))" }}
-                          aria-label="Invitation has expired. You can resend the invitation from the member's menu options."
-                        />
-                      </WithTooltip>
+                  </div>
+                </TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <Select
+                      instanceId={memberInfo.id}
+                      options={memberInfo.options}
+                      onChange={(newOption) => {
+                        if (newOption !== null) {
+                          void handleOptionChange({ memberInfo, selectedOption: newOption.id });
+                        }
+                      }}
+                      isMulti={false}
+                      isClearable={false}
+                      isDisabled={loading || memberInfo.options.length === 1}
+                      value={memberInfo.options.find((o) => o.id === memberInfo.role) ?? null}
+                      className="flex-1"
+                    />
+                    {memberInfo.leave_team_option ? (
+                      <Button color="danger" disabled={loading} onClick={() => setConfirming(memberInfo)}>
+                        {memberInfo.leave_team_option.label}
+                      </Button>
                     ) : null}
                   </div>
-                </div>
-              </TableCell>
-              <TableCell>
-                <div className="flex items-center gap-2">
-                  <Select
-                    instanceId={memberInfo.id}
-                    options={memberInfo.options}
-                    onChange={(newOption) => {
-                      if (newOption !== null) {
-                        void handleOptionChange({ memberInfo, selectedOption: newOption.id });
-                      }
-                    }}
-                    isMulti={false}
-                    isClearable={false}
-                    isDisabled={loading || memberInfo.options.length === 1}
-                    value={memberInfo.options.find((o) => o.id === memberInfo.role) ?? null}
-                    className="flex-1"
-                  />
-                  {memberInfo.leave_team_option ? (
-                    <Button color="danger" disabled={loading} onClick={() => setConfirming(memberInfo)}>
-                      {memberInfo.leave_team_option.label}
-                    </Button>
-                  ) : null}
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
       {confirming ? (
         <Modal
           open
