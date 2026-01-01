@@ -7,9 +7,9 @@ import { assertResponseError, request } from "$app/utils/request";
 
 import { Button } from "$app/components/Button";
 import { Checkbox } from "$app/components/Checkbox";
-import { Icon } from "$app/components/Icons";
 import { LoadingSpinner } from "$app/components/LoadingSpinner";
 import { Modal } from "$app/components/Modal";
+import { NativeSelect } from "$app/components/NativeSelect";
 
 type Props = {
   country: string | null;
@@ -72,27 +72,18 @@ export const CountrySelectionModal = ({ country: initialCountry, countries }: Pr
             <legend className="mb-2">
               <label htmlFor={`${uid}country`}>Country</label>
             </legend>
-            <div className="relative">
-              <select
-                id={`${uid}country`}
-                className={classNames(
-                  "bg-filled h-12 w-full appearance-none rounded border px-3 pr-8 font-[inherit] text-base focus:border-accent focus:ring-1 focus:ring-accent focus:outline-none disabled:opacity-50",
-                  error ? "border-danger" : "border-border",
-                )}
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
-                disabled={saving}
-              >
-                {Object.entries(countries).map(([code, name]) => (
-                  <option key={code} value={code} disabled={name.includes("(not supported)")}>
-                    {name}
-                  </option>
-                ))}
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center">
-                <Icon name="outline-cheveron-down" className="h-4 w-4 text-muted" />
-              </div>
-            </div>
+            <NativeSelect
+              id={`${uid}country`}
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+              disabled={saving}
+            >
+              {Object.entries(countries).map(([code, name]) => (
+                <option key={code} value={code} disabled={name.includes("(not supported)")}>
+                  {name}
+                </option>
+              ))}
+            </NativeSelect>
             {error ? <small className="text-danger">{error}</small> : null}
           </fieldset>
 
