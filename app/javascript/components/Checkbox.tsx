@@ -17,7 +17,7 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(({ cla
       )}
       {...props}
     />
-    <Icon name="outline-check" className="pointer-events-none absolute !hidden text-black peer-checked:!block" />
+    <Icon name="outline-check" className="pointer-events-none absolute text-accent-foreground peer-[:not(:checked)]:hidden" />
   </div>
 ));
 
