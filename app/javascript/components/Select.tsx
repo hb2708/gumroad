@@ -1,4 +1,3 @@
-import cx from "classnames";
 import * as React from "react";
 import ReactSelect, {
   components,
@@ -14,6 +13,7 @@ import ReactSelect, {
   SelectInstance,
 } from "react-select";
 
+import { classNames } from "$app/utils/classNames";
 import { escapeRegExp } from "$app/utils";
 
 import { Icon } from "$app/components/Icons";
@@ -89,7 +89,7 @@ const SelectInner = <IsMulti extends boolean>(
         ref={ref}
         isOptionDisabled={(option) => option.disabled ?? false}
         instanceId={props.inputId ?? menuListId}
-        className={cx("combobox", props.className)}
+        className={classNames("combobox", props.className)}
         components={{
           ClearIndicator,
           Control,
@@ -191,7 +191,15 @@ const DropdownIndicator = <IsMulti extends boolean>(props: DropdownIndicatorProp
   );
 
 const Control = <IsMulti extends boolean>(props: ControlProps<Option, IsMulti>) => (
-  <components.Control className={cx("input", props.isDisabled ? "disabled" : null)} {...props}>
+  <components.Control
+    className={classNames(
+      "input bg-filled flex h-12 items-center gap-2 rounded border border-border px-4",
+      "focus-within:ring-2 focus-within:ring-accent focus-within:outline-none",
+      props.isDisabled && "opacity-30",
+      props.selectProps.menuIsOpen && "rounded-b-none",
+    )}
+    {...props}
+  >
     {props.children}
   </components.Control>
 );
@@ -200,14 +208,14 @@ const MenuList = <IsMulti extends boolean>(props: MenuListProps<Option, IsMulti>
   const menuListId = React.useContext(CustomPropsContext).menuListId;
 
   return (
-    <datalist
-      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions -- react-select incorrectly types this as div
-      ref={props.innerRef as React.Ref<HTMLDataListElement>}
+    <div
+      ref={props.innerRef}
       style={{ maxHeight: props.maxHeight }}
       id={menuListId ?? undefined}
+      className="absolute z-50 w-full rounded-b border border-border bg-filled py-2 shadow"
     >
       {props.children}
-    </datalist>
+    </div>
   );
 };
 
@@ -248,7 +256,10 @@ const Option = <IsMulti extends boolean>(props: OptionProps<Option, IsMulti>) =>
 
   return (
     <div
-      className={cx({ focused: props.isFocused })}
+      className={classNames(
+        "flex cursor-pointer items-center px-4 py-2",
+        props.isFocused ? "bg-primary text-primary-foreground" : "bg-transparent"
+      )}
       ref={props.innerRef}
       id={innerProps.id}
       key={innerProps.key}
