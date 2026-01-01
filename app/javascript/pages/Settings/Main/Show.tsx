@@ -1,5 +1,5 @@
 import { useForm, usePage } from "@inertiajs/react";
-import cx from "classnames";
+import { classNames } from "$app/utils/classNames";
 import * as React from "react";
 import { cast } from "ts-safe-cast";
 
@@ -8,6 +8,7 @@ import { asyncVoid } from "$app/utils/promise";
 import { request, assertResponseError } from "$app/utils/request";
 
 import { Button } from "$app/components/Button";
+import { Checkbox } from "$app/components/Checkbox";
 import { Input } from "$app/components/Input";
 import { Modal } from "$app/components/Modal";
 import { NativeSelect } from "$app/components/NativeSelect";
@@ -17,6 +18,7 @@ import { ToggleSettingRow } from "$app/components/SettingRow";
 import { ProductLevelSupportEmailsForm } from "$app/components/Settings/AdvancedPage/ProductLevelSupportEmailsForm";
 import { Layout } from "$app/components/Settings/Layout";
 import { TagInput } from "$app/components/TagInput";
+import { Textarea } from "$app/components/Textarea";
 import { Toggle } from "$app/components/Toggle";
 import { Pill } from "$app/components/ui/Pill";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "$app/components/ui/Table";
@@ -116,12 +118,12 @@ export default function MainPage() {
   return (
     <Layout currentPage="main" pages={props.settings_pages} onSave={onSave} canUpdate={!isFormDisabled}>
       <form ref={formRef} className="divide-y divide-border">
-        <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:gap-y-0">
+        <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:pb-16">
           <header>
             <h2>User details</h2>
           </header>
-          <fieldset className="flex flex-col gap-2 lg:mb-8">
-            <legend className="mb-2">
+          <fieldset className="space-y-2">
+            <legend>
               <label htmlFor={`${uid}-email`}>Email</label>
             </legend>
             <Input
@@ -150,7 +152,7 @@ export default function MainPage() {
             ) : null}
           </fieldset>
         </section>
-        <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:gap-y-0">
+        <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:pb-16">
           <header className="flex flex-col gap-3">
             <h2>Notifications</h2>
             <div>
@@ -166,7 +168,7 @@ export default function MainPage() {
               .
             </div>
           </header>
-          <fieldset className="flex flex-col lg:mb-8">
+          <fieldset className="flex flex-col">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -269,12 +271,12 @@ export default function MainPage() {
             </Table>
           </fieldset>
         </section>
-        <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:gap-y-0">
-          <header className="lg:row-[1/10]">
+        <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16">
+          <header className="lg:row-[1/3]">
             <h2>Support</h2>
           </header>
-          <fieldset className="flex flex-col gap-2 lg:mb-8">
-            <legend className="mb-2">
+          <fieldset className="space-y-2">
+            <legend>
               <label htmlFor={`${uid}-support-email`}>Email</label>
             </legend>
             <Input
@@ -299,16 +301,16 @@ export default function MainPage() {
           )}
         </section>
         {props.user.seller_refund_policy.enabled ? (
-          <section className="p-4! md:p-8!">
-            <header>
+          <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:pb-16">
+            <header className="flex flex-col gap-3 lg:row-[1/3]">
               <h2>Refund policy</h2>
               <div>Choose how refunds will be handled for your products.</div>
             </header>
-            <fieldset>
+            <fieldset className="space-y-2">
               <legend>
                 <label htmlFor="max-refund-period-in-days">Refund period</label>
               </legend>
-              <select
+              <NativeSelect
                 id="max-refund-period-in-days"
                 value={form.data.user.seller_refund_policy.max_refund_period_in_days}
                 disabled={isFormDisabled}
@@ -326,9 +328,9 @@ export default function MainPage() {
                     {value}
                   </option>
                 ))}
-              </select>
+              </NativeSelect>
             </fieldset>
-            <fieldset>
+            <fieldset className="flex flex-col gap-2">
               <ToggleSettingRow
                 value={
                   form.data.user.seller_refund_policy.fine_print_enabled
@@ -346,12 +348,13 @@ export default function MainPage() {
                 disabled={isFormDisabled || form.data.user.seller_refund_policy.max_refund_period_in_days === 0}
                 label="Add a fine print to your refund policy"
                 dropdown={
-                  <fieldset>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor="seller-refund-policy-fine-print">Fine print</label>
                     </legend>
-                    <textarea
+                    <Textarea
                       id="seller-refund-policy-fine-print"
+                      className="h-64"
                       maxLength={3000}
                       rows={10}
                       value={form.data.user.seller_refund_policy.fine_print || ""}
@@ -372,15 +375,15 @@ export default function MainPage() {
             </fieldset>
           </section>
         ) : null}
-        <section className="p-4! md:p-8!">
-          <header>
+        <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:pb-16">
+          <header className="lg:row-[1/4]">
             <h2>Local</h2>
           </header>
-          <fieldset>
+          <fieldset className="space-y-2">
             <legend>
               <label htmlFor={`${uid}-timezone`}>Time zone</label>
             </legend>
-            <select
+            <NativeSelect
               id={`${uid}-timezone`}
               disabled={isFormDisabled}
               value={form.data.user.timezone}
@@ -391,13 +394,13 @@ export default function MainPage() {
                   {`${tz.offset} | ${tz.name}`}
                 </option>
               ))}
-            </select>
+            </NativeSelect>
           </fieldset>
-          <fieldset>
+          <fieldset className="space-y-2">
             <legend>
               <label htmlFor={`${uid}-local-currency`}>Sell in...</label>
             </legend>
-            <select
+            <NativeSelect
               id={`${uid}-local-currency`}
               disabled={isFormDisabled}
               value={form.data.user.currency_type}
@@ -408,14 +411,16 @@ export default function MainPage() {
                   {currency.name}
                 </option>
               ))}
-            </select>
-            <small>Applies only to new products.</small>
-            <small>
-              Charges will happen in USD, using an up-to-date exchange rate. Customers may incur an additional foreign
-              transaction fee according to their cardmember agreement.
-            </small>
+            </NativeSelect>
+            <div className="flex flex-col gap-2">
+              <small className="text-muted">Applies only to new products.</small>
+              <small className="text-muted">
+                Charges will happen in USD, using an up-to-date exchange rate. Customers may incur an additional foreign
+                transaction fee according to their cardmember agreement.
+              </small>
+            </div>
           </fieldset>
-          <fieldset>
+          <fieldset className="space-y-2">
             <ToggleSettingRow
               value={form.data.user.purchasing_power_parity_enabled}
               onChange={(value) => updateUserSettings({ purchasing_power_parity_enabled: value })}
@@ -423,11 +428,17 @@ export default function MainPage() {
               label="Enable purchasing power parity"
               dropdown={
                 <div className="flex flex-col gap-4">
-                  <fieldset>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-ppp-discount-percentage`}>Maximum PPP discount</label>
                     </legend>
-                    <div className={cx("input", { disabled: props.is_form_disabled })}>
+                    <div
+                      className={classNames(
+                        "bg-filled flex h-12 w-full items-center gap-2 rounded border border-border px-4",
+                        "focus-within:ring-2 focus-within:ring-accent focus-within:outline-none",
+                        isFormDisabled && "cursor-not-allowed opacity-30",
+                      )}
+                    >
                       <NumberInput
                         value={form.data.user.purchasing_power_parity_limit}
                         onChange={(value) => {
@@ -443,6 +454,7 @@ export default function MainPage() {
                             placeholder="60"
                             disabled={isFormDisabled}
                             aria-label="Percentage"
+                            className="flex-1 bg-transparent font-[inherit] text-base text-foreground outline-none disabled:cursor-not-allowed"
                             {...inputProps}
                           />
                         )}
@@ -459,7 +471,7 @@ export default function MainPage() {
                   >
                     Apply only if the customer is currently located in the country of their payment method
                   </Toggle>
-                  <fieldset>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-ppp-exclude-products`}>Products to exclude</label>
                     </legend>
@@ -474,9 +486,8 @@ export default function MainPage() {
                       }
                     />
 
-                    <label>
-                      <input
-                        type="checkbox"
+                    <label className="flex cursor-pointer select-none items-center gap-2">
+                      <Checkbox
                         disabled={isFormDisabled}
                         checked={
                           form.data.user.purchasing_power_parity_excluded_product_ids.length ===
@@ -496,7 +507,7 @@ export default function MainPage() {
                 </div>
               }
             />
-            <small>
+            <small className="text-muted">
               Charge customers different amounts depending on the cost of living in their country.{" "}
               <a href="/help/article/327-purchasing-power-parity" target="_blank" rel="noreferrer">
                 Learn more
@@ -504,7 +515,7 @@ export default function MainPage() {
             </small>
           </fieldset>
         </section>
-        <section className="p-4! md:p-8!">
+        <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:pb-16">
           <header>
             <h2>Adult content</h2>
           </header>
@@ -517,18 +528,18 @@ export default function MainPage() {
             />
           </fieldset>
         </section>
-        <section className="p-4! md:p-8!">
+        <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:pb-16">
           <header>
             <h2>Affiliates</h2>
           </header>
-          <fieldset>
+          <fieldset className="flex flex-col gap-2">
             <ToggleSettingRow
               value={form.data.user.disable_affiliate_requests}
               onChange={(value) => updateUserSettings({ disable_affiliate_requests: value })}
               disabled={isFormDisabled}
               label="Prevent others from adding me as an affiliate"
             />
-            <small>When enabled, other users cannot add you as an affiliate or request to become your affiliate.</small>
+            <small className="text-muted">When enabled, other users cannot add you as an affiliate or request to become your affiliate.</small>
           </fieldset>
         </section>
         {props.invalidate_active_sessions ? <InvalidateActiveSessionsSection /> : null}
@@ -558,12 +569,12 @@ const InvalidateActiveSessionsSection = () => {
   });
 
   return (
-    <section className="p-4! md:p-8!">
-      <fieldset>
+    <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:pb-16">
+      <fieldset className="flex flex-col gap-2 lg:col-start-2">
         <button className="underline" type="button" onClick={() => setIsConfirmationDialogOpen(true)}>
           Sign out from all active sessions
         </button>
-        <small>You will be signed out from all your active sessions including this session.</small>
+        <small className="text-muted">You will be signed out from all your active sessions including this session.</small>
       </fieldset>
       {isConfirmationDialogOpen ? (
         <Modal
