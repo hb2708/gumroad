@@ -28,6 +28,7 @@ type CustomProps = {
   focusedOptionId: null | string;
   setFocusedOptionId?: (id: null | string) => void;
   maxLength: number | null;
+  isInvalid?: boolean | undefined;
 };
 const CustomPropsContext = React.createContext<CustomProps>({
   customOption: null,
@@ -51,6 +52,7 @@ export type Props<IsMulti extends boolean = boolean> = Omit<
   customOption?: CustomOption;
   allowMenuOpen?: () => boolean;
   maxLength?: number;
+  isInvalid?: boolean | undefined;
 };
 
 // Forward a ref to react-select so parents can call .focus(), .blur(), etc.
@@ -78,8 +80,9 @@ const SelectInner = <IsMulti extends boolean>(
       focusedOptionId,
       setFocusedOptionId,
       maxLength: props.maxLength ?? null,
+      isInvalid: props.isInvalid,
     }),
-    [props.customOption, focusedOptionId],
+    [props.customOption, focusedOptionId, props.isInvalid],
   );
 
   return (
@@ -190,19 +193,24 @@ const DropdownIndicator = <IsMulti extends boolean>(props: DropdownIndicatorProp
     </components.DropdownIndicator>
   );
 
-const Control = <IsMulti extends boolean>(props: ControlProps<Option, IsMulti>) => (
-  <components.Control
-    className={classNames(
-      "input bg-filled flex h-12 items-center gap-2 rounded border border-border px-4",
-      "focus-within:ring-2 focus-within:ring-accent focus-within:outline-none",
-      props.isDisabled && "opacity-30",
-      props.selectProps.menuIsOpen && "rounded-b-none",
-    )}
-    {...props}
-  >
-    {props.children}
-  </components.Control>
-);
+const Control = <IsMulti extends boolean>(props: ControlProps<Option, IsMulti>) => {
+  const { isInvalid } = React.useContext(CustomPropsContext);
+
+  return (
+    <components.Control
+      className={classNames(
+        "input bg-filled flex h-12 items-center gap-2 rounded border border-border px-4",
+        "focus-within:ring-2 focus-within:ring-accent focus-within:outline-none",
+        props.isDisabled && "opacity-30",
+        props.selectProps.menuIsOpen && "rounded-b-none",
+        isInvalid && "border-danger",
+      )}
+      {...props}
+    >
+      {props.children}
+    </components.Control>
+  );
+};
 
 const MenuList = <IsMulti extends boolean>(props: MenuListProps<Option, IsMulti>) => {
   const menuListId = React.useContext(CustomPropsContext).menuListId;
