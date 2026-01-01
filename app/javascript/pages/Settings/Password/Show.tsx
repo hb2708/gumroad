@@ -54,14 +54,16 @@ export default function PasswordPage() {
   return (
     <SettingsLayout currentPage="password" pages={props.settings_pages}>
       <form onSubmit={handleSubmit}>
-        <section className="p-4! md:p-8!">
-          <header>
+        <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:pb-16">
+          <header className="lg:row-span-3">
             <h2>Change password</h2>
           </header>
           {requireOldPassword ? (
-            <fieldset>
+            <fieldset className="space-y-2">
               <legend>
-                <label htmlFor={`${uid}-old-password`}>Old password</label>
+                <label className="cursor-pointer" htmlFor={`${uid}-old-password`}>
+                  Old password
+                </label>
               </legend>
               <PasswordInput
                 id={`${uid}-old-password`}
@@ -72,9 +74,11 @@ export default function PasswordPage() {
               />
             </fieldset>
           ) : null}
-          <fieldset>
+          <fieldset className="space-y-2">
             <legend>
-              <label htmlFor={`${uid}-new-password`}>{requireOldPassword ? "New password" : "Add password"}</label>
+              <label className="cursor-pointer" htmlFor={`${uid}-new-password`}>
+                {requireOldPassword ? "New password" : "Add password"}
+              </label>
             </legend>
             <PasswordInput
               id={`${uid}-new-password`}
@@ -85,11 +89,9 @@ export default function PasswordPage() {
             />
           </fieldset>
           <fieldset>
-            <div>
-              <Button type="submit" color="accent" disabled={form.processing}>
-                {form.processing ? "Changing..." : "Change password"}
-              </Button>
-            </div>
+            <Button type="submit" color="accent" disabled={form.processing}>
+              {form.processing ? "Changing..." : "Change password"}
+            </Button>
           </fieldset>
         </section>
       </form>
