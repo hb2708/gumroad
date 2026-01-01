@@ -8,7 +8,9 @@ import { asyncVoid } from "$app/utils/promise";
 import { request, assertResponseError } from "$app/utils/request";
 
 import { Button } from "$app/components/Button";
+import { Input } from "$app/components/Input";
 import { Modal } from "$app/components/Modal";
+import { NativeSelect } from "$app/components/NativeSelect";
 import { NumberInput } from "$app/components/NumberInput";
 import { showAlert } from "$app/components/server-components/Alert";
 import { ToggleSettingRow } from "$app/components/SettingRow";
@@ -113,16 +115,16 @@ export default function MainPage() {
 
   return (
     <Layout currentPage="main" pages={props.settings_pages} onSave={onSave} canUpdate={!isFormDisabled}>
-      <form ref={formRef}>
-        <section className="p-4! md:p-8!">
+      <form ref={formRef} className="divide-y divide-border">
+        <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:gap-y-0">
           <header>
             <h2>User details</h2>
           </header>
-          <fieldset>
-            <legend>
+          <fieldset className="flex flex-col gap-2 lg:mb-8">
+            <legend className="mb-2">
               <label htmlFor={`${uid}-email`}>Email</label>
             </legend>
-            <input
+            <Input
               type="email"
               id={`${uid}-email`}
               value={form.data.user.email}
@@ -131,7 +133,7 @@ export default function MainPage() {
               onChange={(e) => updateUserSettings({ email: e.target.value })}
             />
             {props.user.has_unconfirmed_email && !props.is_form_disabled ? (
-              <small>
+              <small className="text-muted">
                 This email address has not been confirmed yet.{" "}
                 {resentConfirmationEmail ? null : (
                   <button
@@ -148,8 +150,8 @@ export default function MainPage() {
             ) : null}
           </fieldset>
         </section>
-        <section className="p-4! md:p-8!">
-          <header>
+        <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:gap-y-0">
+          <header className="flex flex-col gap-3">
             <h2>Notifications</h2>
             <div>
               Depending on your preferences, you can choose whether to receive mobile notifications or email
@@ -164,7 +166,7 @@ export default function MainPage() {
               .
             </div>
           </header>
-          <fieldset>
+          <fieldset className="flex flex-col lg:mb-8">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -267,15 +269,15 @@ export default function MainPage() {
             </Table>
           </fieldset>
         </section>
-        <section className="p-4! md:p-8!">
-          <header>
+        <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:gap-y-0">
+          <header className="lg:row-[1/10]">
             <h2>Support</h2>
           </header>
-          <fieldset>
-            <legend>
+          <fieldset className="flex flex-col gap-2 lg:mb-8">
+            <legend className="mb-2">
               <label htmlFor={`${uid}-support-email`}>Email</label>
             </legend>
-            <input
+            <Input
               type="email"
               id={`${uid}-support-email`}
               value={form.data.user.support_email}
@@ -283,15 +285,17 @@ export default function MainPage() {
               disabled={isFormDisabled}
               onChange={(e) => updateUserSettings({ support_email: e.target.value })}
             />
-            <small>This email is listed on the receipt of every sale.</small>
+            <small className="text-muted">This email is listed on the receipt of every sale.</small>
           </fieldset>
           {props.user.product_level_support_emails !== null && (
-            <ProductLevelSupportEmailsForm
-              productLevelSupportEmails={form.data.user.product_level_support_emails}
-              products={props.user.products}
-              isDisabled={isFormDisabled}
-              onChange={handleProductLevelSupportEmailsChange}
-            />
+            <div className="lg:mb-8">
+              <ProductLevelSupportEmailsForm
+                productLevelSupportEmails={form.data.user.product_level_support_emails}
+                products={props.user.products}
+                isDisabled={isFormDisabled}
+                onChange={handleProductLevelSupportEmailsChange}
+              />
+            </div>
           )}
         </section>
         {props.user.seller_refund_policy.enabled ? (
