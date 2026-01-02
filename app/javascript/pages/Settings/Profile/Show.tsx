@@ -121,7 +121,7 @@ export default function SettingsPage() {
                 }
               />
               <small className="text-muted">
-                View your profile at: <a href={`${scheme}://${subdomain}`} className="underline">{subdomain}</a>
+                View your profile at: <a href={`${scheme}://${subdomain}`}>{subdomain}</a>
               </small>
             </fieldset>
             <fieldset>
