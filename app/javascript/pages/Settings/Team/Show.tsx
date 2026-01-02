@@ -266,9 +266,7 @@ const TeamMembersSection = ({
         {deletedMember ? (
           <Alert variant="success">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-              <span>
-                {deletedMember.name !== "" ? deletedMember.name : deletedMember.email} was removed from team members.
-              </span>
+              {deletedMember.name !== "" ? deletedMember.name : deletedMember.email} was removed from team members.
               <button
                 className="underline"
                 type="button"
