@@ -2,7 +2,6 @@ import { router } from "@inertiajs/react";
 import * as React from "react";
 import { cast } from "ts-safe-cast";
 
-import { classNames } from "$app/utils/classNames";
 import { assertResponseError, request } from "$app/utils/request";
 
 import { Button } from "$app/components/Button";
@@ -68,7 +67,7 @@ export const CountrySelectionModal = ({ country: initialCountry, countries }: Pr
         }
       >
         <div className="flex flex-col gap-4">
-          <fieldset className={classNames("flex flex-col gap-2", !!error && "danger")}>
+          <fieldset className="flex flex-col gap-2">
             <legend className="mb-2">
               <label htmlFor={`${uid}country`}>Country</label>
             </legend>
@@ -77,6 +76,7 @@ export const CountrySelectionModal = ({ country: initialCountry, countries }: Pr
               value={country}
               onChange={(e) => setCountry(e.target.value)}
               disabled={saving}
+              className={error ? "border-danger" : ""}
             >
               {Object.entries(countries).map(([code, name]) => (
                 <option key={code} value={code} disabled={name.includes("(not supported)")}>
@@ -90,7 +90,7 @@ export const CountrySelectionModal = ({ country: initialCountry, countries }: Pr
           <fieldset className="flex flex-col gap-2">
             <legend className="mb-2 text-base font-bold">To ensure prompt payouts, please check off each item:</legend>
             {checkboxes.map((item, i) => (
-              <label key={item} className="flex cursor-pointer gap-3">
+              <label key={item} className="flex cursor-pointer gap-2">
                 <Checkbox
                   checked={checked.includes(i)}
                   onChange={(e) =>
