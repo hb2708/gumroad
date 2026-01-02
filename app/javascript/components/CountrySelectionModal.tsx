@@ -8,7 +8,7 @@ import { Button } from "$app/components/Button";
 import { Checkbox } from "$app/components/Checkbox";
 import { LoadingSpinner } from "$app/components/LoadingSpinner";
 import { Modal } from "$app/components/Modal";
-import { NativeSelect } from "$app/components/NativeSelect";
+import { Select } from "$app/components/TypeSafeOptionSelect";
 
 type Props = {
   country: string | null;
@@ -71,7 +71,7 @@ export const CountrySelectionModal = ({ country: initialCountry, countries }: Pr
             <legend className="mb-2">
               <label htmlFor={`${uid}country`}>Country</label>
             </legend>
-            <NativeSelect
+            <Select
               id={`${uid}country`}
               value={country}
               onChange={(e) => setCountry(e.target.value)}
@@ -83,7 +83,7 @@ export const CountrySelectionModal = ({ country: initialCountry, countries }: Pr
                   {name}
                 </option>
               ))}
-            </NativeSelect>
+            </Select>
             {error ? <small className="text-danger">{error}</small> : null}
           </fieldset>
 

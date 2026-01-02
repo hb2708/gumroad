@@ -11,7 +11,7 @@ import { Button } from "$app/components/Button";
 import { Checkbox } from "$app/components/Checkbox";
 import { Input } from "$app/components/Input";
 import { Modal } from "$app/components/Modal";
-import { NativeSelect } from "$app/components/NativeSelect";
+import { Select } from "$app/components/TypeSafeOptionSelect";
 import { NumberInput } from "$app/components/NumberInput";
 import { showAlert } from "$app/components/server-components/Alert";
 import { ToggleSettingRow } from "$app/components/SettingRow";
@@ -310,7 +310,7 @@ export default function MainPage() {
               <legend>
                 <label htmlFor="max-refund-period-in-days">Refund period</label>
               </legend>
-              <NativeSelect
+              <Select
                 id="max-refund-period-in-days"
                 value={form.data.user.seller_refund_policy.max_refund_period_in_days}
                 disabled={isFormDisabled}
@@ -328,7 +328,7 @@ export default function MainPage() {
                     {value}
                   </option>
                 ))}
-              </NativeSelect>
+              </Select>
             </fieldset>
             <fieldset className="flex flex-col gap-2">
               <ToggleSettingRow
@@ -383,7 +383,7 @@ export default function MainPage() {
             <legend>
               <label htmlFor={`${uid}-timezone`}>Time zone</label>
             </legend>
-            <NativeSelect
+            <Select
               id={`${uid}-timezone`}
               disabled={isFormDisabled}
               value={form.data.user.timezone}
@@ -394,13 +394,13 @@ export default function MainPage() {
                   {`${tz.offset} | ${tz.name}`}
                 </option>
               ))}
-            </NativeSelect>
+            </Select>
           </fieldset>
           <fieldset className="space-y-2">
             <legend>
               <label htmlFor={`${uid}-local-currency`}>Sell in...</label>
             </legend>
-            <NativeSelect
+            <Select
               id={`${uid}-local-currency`}
               disabled={isFormDisabled}
               value={form.data.user.currency_type}
@@ -411,7 +411,7 @@ export default function MainPage() {
                   {currency.name}
                 </option>
               ))}
-            </NativeSelect>
+            </Select>
             <div className="flex flex-col gap-2">
               <small className="text-muted">Applies only to new products.</small>
               <small className="text-muted">
