@@ -1,6 +1,6 @@
 import { router } from "@inertiajs/react";
 import { DirectUpload } from "@rails/activestorage";
-import cx from "classnames";
+import { classNames } from "$app/utils/classNames";
 import placeholderAppIcon from "images/gumroad_app.png";
 import * as React from "react";
 import { cast } from "ts-safe-cast";
@@ -13,6 +13,7 @@ import { assertResponseError, request, ResponseError } from "$app/utils/request"
 import { Button } from "$app/components/Button";
 import { showAlert } from "$app/components/server-components/Alert";
 import { WithTooltip } from "$app/components/WithTooltip";
+import { Input } from "$app/components/Input";
 
 export type Application = {
   id: string;
@@ -122,84 +123,85 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
   });
 
   return (
-    <>
+    <div className="flex flex-col gap-8">
       <input
         ref={iconInputRef}
         type="file"
         accept={ALLOWED_ICON_EXTENSIONS.map((ext) => `.${ext}`).join(",")}
         tabIndex={-1}
+        className="hidden"
         onChange={handleIconChange}
       />
-      <fieldset>
+      <fieldset className="space-y-2">
         <legend>
           <label>Application icon</label>
         </legend>
-        <div style={{ display: "flex", gap: "var(--spacer-4)", alignItems: "flex-start" }}>
-          <img className="application-icon" src={icon?.url || placeholderAppIcon} width={80} height={80} />
+        <div className="flex items-start gap-4">
+          <img src={icon?.url || placeholderAppIcon} width={80} height={80} className="rounded-sm border border-border" />
           <Button onClick={() => iconInputRef.current?.click()} disabled={isUploadingIcon || isSubmitting}>
             {isUploadingIcon ? "Uploading..." : "Upload icon"}
           </Button>
         </div>
       </fieldset>
-      <fieldset className={cx({ danger: name.error })}>
+      <fieldset className="space-y-2">
         <legend>
           <label htmlFor={`${uid}-name`}>Application name</label>
         </legend>
-        <input
+        <Input
           id={`${uid}-name`}
           ref={nameRef}
           placeholder="Name"
           type="text"
           value={name.value}
+          className={classNames({ "border-danger": name.error })}
           onChange={(e) => setName({ value: e.target.value })}
         />
       </fieldset>
-      <fieldset className={cx({ danger: redirectUri.error })}>
+      <fieldset className="space-y-2">
         <legend>
           <label htmlFor={`${uid}-redirectUri`}>Redirect URI</label>
         </legend>
-        <input
+        <Input
           id={`${uid}-redirectUri`}
           ref={redirectUriRef}
           placeholder="http://yourapp.com/callback"
           title="Redirect URI must have host and scheme and no fragment."
           type="url"
           value={redirectUri.value}
+          className={classNames({ "border-danger": redirectUri.error })}
           onChange={(e) => setRedirectUri({ value: e.target.value })}
         />
       </fieldset>
 
       {application ? (
-        <>
-          <fieldset>
+        <div className="flex flex-col gap-8">
+          <fieldset className="space-y-2">
             <legend>
               <label htmlFor={`${uid}-uid`}>Application ID</label>
             </legend>
-            <input id={`${uid}-uid`} readOnly type="text" value={application.uid} />
+            <Input id={`${uid}-uid`} readOnly type="text" value={application.uid} />
           </fieldset>
-          <fieldset>
+          <fieldset className="space-y-2">
             <legend>
               <label htmlFor={`${uid}-secret`}>Application Secret</label>
             </legend>
-            <input id={`${uid}-secret`} readOnly type="text" value={application.secret} />
+            <Input id={`${uid}-secret`} readOnly type="text" value={application.secret} />
           </fieldset>
 
           {token ? (
-            <fieldset>
-              <legend>
-                <label htmlFor={`${uid}-accessToken`}>
-                  Access Token
-                  <WithTooltip tip="This is a ready-to-use access token for our API.">
-                    <span>(?)</span>
-                  </WithTooltip>
-                </label>
+            <fieldset className="space-y-2">
+              <legend className="flex items-center gap-2">
+                <label htmlFor={`${uid}-accessToken`}>Access Token</label>
+                <WithTooltip tip="This is a ready-to-use access token for our API.">
+                  <span>(?)</span>
+                </WithTooltip>
               </legend>
-              <input id={`${uid}-accessToken`} readOnly type="text" value={token} />
+              <Input id={`${uid}-accessToken`} readOnly type="text" value={token} />
             </fieldset>
           ) : null}
           <div className="flex gap-2">
             <Button color="accent" onClick={handleSubmit} disabled={isSubmitting || isUploadingIcon}>
-              <span>{isSubmitting ? "Updating..." : "Update application"}</span>
+              {isSubmitting ? "Updating..." : "Update application"}
             </Button>
 
             {!token ? (
@@ -225,19 +227,19 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
                 })}
                 disabled={isGeneratingToken}
               >
-                <span>{isGeneratingToken ? "Generating..." : "Generate access token"}</span>
+                {isGeneratingToken ? "Generating..." : "Generate access token"}
               </Button>
             ) : null}
           </div>
-        </>
+        </div>
       ) : (
         <div>
           <Button color="primary" onClick={handleSubmit} disabled={isSubmitting || isUploadingIcon}>
-            <span>{isSubmitting ? "Creating..." : "Create application"}</span>
+            {isSubmitting ? "Creating..." : "Create application"}
           </Button>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
