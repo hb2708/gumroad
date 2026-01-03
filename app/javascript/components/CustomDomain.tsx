@@ -1,10 +1,11 @@
-import cx from "classnames";
+import { classNames } from "$app/utils/classNames";
 import * as React from "react";
 import { cast } from "ts-safe-cast";
 
 import { asyncVoid } from "$app/utils/promise";
 import { assertResponseError, request, ResponseError } from "$app/utils/request";
 
+import { Input } from "$app/components/Input";
 import { Button } from "$app/components/Button";
 import { Pill } from "$app/components/ui/Pill";
 
@@ -67,12 +68,7 @@ const CustomDomain = ({
   });
 
   return (
-    <fieldset
-      className={cx({
-        success: verificationInfo.state === "success",
-        danger: verificationInfo.state === "failure",
-      })}
-    >
+    <fieldset className="space-y-2">
       <legend>
         <label htmlFor={uid}>{label}</label>
         {includeLearnMoreLink ? (
@@ -81,39 +77,52 @@ const CustomDomain = ({
           </a>
         ) : null}
       </legend>
-      <div className="input input-wrapper">
-        <input
-          id={uid}
-          placeholder="yourdomain.com"
-          type="text"
-          value={customDomain}
-          onChange={(e) => {
-            setCustomDomain(e.target.value);
-            setVerificationInfo({ buttonState: "initial", state: "initial", message: "" });
-          }}
-        />
-        {customDomain.trim() !== "" ? (
-          <Pill asChild>
-            <Button
-              className="rounded-full! px-3! py-2!"
-              onClick={verifyCustomDomain}
-              disabled={verificationInfo.buttonState === "verifying"}
-            >
-              <div>
-                {
+      <Input
+        id={uid}
+        placeholder="yourdomain.com"
+        type="text"
+        value={customDomain}
+        className={classNames({
+          "border-success": verificationInfo.state === "success",
+          "border-danger": verificationInfo.state === "failure",
+        })}
+        onChange={(e) => {
+          setCustomDomain(e.target.value);
+          setVerificationInfo({ buttonState: "initial", state: "initial", message: "" });
+        }}
+        trailing={
+          customDomain.trim() !== "" ? (
+            <Pill asChild>
+              <Button
+                className="rounded-full! px-3! py-2!"
+                onClick={verifyCustomDomain}
+                disabled={verificationInfo.buttonState === "verifying"}
+              >
+                <div>
                   {
-                    initial: "Verify",
-                    verifying: "Verifying...",
-                    success: "Verified!",
-                    failure: "Verify",
-                  }[verificationInfo.buttonState]
-                }
-              </div>
-            </Button>
-          </Pill>
-        ) : null}
-      </div>
-      <small>{verificationInfo.message}</small>
+                    {
+                      initial: "Verify",
+                      verifying: "Verifying...",
+                      success: "Verified!",
+                      failure: "Verify",
+                    }[verificationInfo.buttonState]
+                  }
+                </div>
+              </Button>
+            </Pill>
+          ) : null
+        }
+      />
+      {verificationInfo.message && (
+        <small
+          className={classNames({
+            "text-success": verificationInfo.state === "success",
+            "text-danger": verificationInfo.state === "failure",
+          })}
+        >
+          {verificationInfo.message}
+        </small>
+      )}
     </fieldset>
   );
 };

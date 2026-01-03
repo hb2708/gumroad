@@ -13,18 +13,22 @@ export type Application = {
   icon_url: string | null;
 };
 
-const CreateApplication = () => (
-  <>
-    <header id="application-form">
-      <h2>Applications</h2>
-      <a href="/help/article/280-create-application-api" target="_blank" rel="noreferrer">
-        Learn more
-      </a>
-    </header>
-    <h3>Create application</h3>
-    <ApplicationForm />
-  </>
-);
+const CreateApplication = () => {
+  return (
+    <>
+      <header className="flex flex-col gap-3 lg:row-[1/3]">
+        <h2>Applications</h2>
+        <a href="/help/article/280-create-application-api" target="_blank" rel="noreferrer">
+          Learn more
+        </a>
+      </header>
+      <div className="flex flex-col gap-8">
+        <h3>Create application</h3>
+        <ApplicationForm />
+      </div>
+    </>
+  );
+};
 
 const ApplicationList = (props: { applications: Application[] }) => {
   const [applications, setApplications] = React.useState(props.applications);
@@ -34,14 +38,14 @@ const ApplicationList = (props: { applications: Application[] }) => {
   };
 
   return applications.length > 0 ? (
-    <>
+    <div className="flex flex-col gap-8 lg:mb-8">
       <h3>Your applications</h3>
       <Rows role="list">
         {applications.map((app) => (
           <ApplicationRow key={app.id} application={app} onRemove={removeApplication(app.id)} />
         ))}
       </Rows>
-    </>
+    </div>
   ) : null;
 };
 
@@ -83,7 +87,7 @@ const ApplicationRow = ({ application, onRemove }: { application: Application; o
 };
 
 const ApplicationsSection = (props: { applications: Application[] }) => (
-  <section className="p-4! md:p-8!">
+  <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16">
     <CreateApplication />
     <ApplicationList applications={props.applications} />
   </section>

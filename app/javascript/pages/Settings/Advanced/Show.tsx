@@ -50,7 +50,7 @@ export default function AdvancedPage() {
 
   return (
     <Layout currentPage="advanced" pages={props.settings_pages} onSave={handleSave} canUpdate={!form.processing}>
-      <form>
+      <form className="divide-y divide-border">
         <CustomDomainSection
           verificationStatus={props.custom_domain_verification_status}
           customDomain={form.data.domain}
