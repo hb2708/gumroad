@@ -26,14 +26,12 @@ export default function EditApplicationPage() {
 
   return (
     <Layout currentPage="advanced" pages={props.settings_pages}>
-      <form>
-        <section className="p-4! md:p-8!">
-          <header>
-            <h2>Edit application</h2>
-          </header>
-          <ApplicationForm application={props.application} />
-        </section>
-      </form>
+      <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16">
+        <header className="flex flex-col gap-3">
+          <h2>Edit application</h2>
+        </header>
+        <ApplicationForm application={props.application} />
+      </section>
     </Layout>
   );
 }
