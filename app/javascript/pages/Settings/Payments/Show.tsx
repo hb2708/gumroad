@@ -1,6 +1,7 @@
 import { useForm, usePage } from "@inertiajs/react";
 import cx from "classnames";
 import parsePhoneNumberFromString, { CountryCode } from "libphonenumber-js";
+import { classNames } from "$app/utils/classNames";
 import * as React from "react";
 import { cast } from "ts-safe-cast";
 
@@ -766,7 +767,7 @@ export default function PaymentsPage() {
           onClose={cancelPayoutMethodChange}
         />
       ) : null}
-      <form ref={formRef}>
+      <form ref={formRef} className="divide-y divide-border">
         {props.payouts_paused_by !== null ? (
           <Alert className="m-4 md:m-8" role="status" variant="warning">
             {props.payouts_paused_by === "stripe" ? (
@@ -790,19 +791,19 @@ export default function PaymentsPage() {
           </Alert>
         ) : null}
 
-        <section className="p-4! md:p-8!">
+        <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:pb-16">
           <header>
             <h2>Verification</h2>
           </header>
           {props.show_verification_section ? (
             <StripeConnectEmbeddedNotificationBanner />
           ) : (
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-4">
               <Alert role="status" variant="success">
                 Your account details have been verified!
               </Alert>
-              <div className="mt-4 flex items-center">
-                <img src={logo} alt="Gum Coin" className="mr-2 h-5 w-5" />
+              <div className="flex items-center gap-2">
+                <img src={logo} alt="Gum Coin" className="size-5" />
                 <span className="text-sm text-muted">
                   Creator since{" "}
                   {new Date(props.user.joined_at).toLocaleDateString(userAgentInfo.locale, {
@@ -830,8 +831,8 @@ export default function PaymentsPage() {
         ) : null}
 
         {(errors?.base && errors.base.length > 0) || clientErrorMessage ? (
-          <div className="mb-12 px-8">
-            <Alert role="status" className="danger">
+          <div className="pb-12 p-4 md:p-8">
+            <Alert role="status" variant="danger">
               {errors?.base && errors.base.length > 0 ? (
                 errors.error_code?.[0] === "stripe_error" ? (
                   <div>Your account could not be updated due to an error with Stripe.</div>
@@ -844,16 +845,19 @@ export default function PaymentsPage() {
             </Alert>
           </div>
         ) : null}
-        <section className="p-4! md:p-8!">
+        <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:pb-16">
           <header>
             <h2>Payout schedule</h2>
           </header>
           <section className="flex flex-col gap-4">
-            <fieldset>
+            <fieldset className="space-y-2">
+              <legend>
               <label htmlFor="payout_frequency">Schedule</label>
+              </legend>
               <TypeSafeOptionSelect
                 id="payout_frequency"
                 name="Schedule"
+                disabled={props.is_form_disabled}
                 value={form.data.payout_frequency}
                 onChange={(value) => form.setData("payout_frequency", value)}
                 options={PAYOUT_FREQUENCIES.map((frequency) => ({
@@ -862,22 +866,20 @@ export default function PaymentsPage() {
                   disabled: frequency === "daily" && !props.payout_frequency_daily_supported,
                 }))}
               />
-              <small>
+              <small className="text-muted">
                 Daily payouts are only available for US users with eligible bank accounts and more than 4 previous
                 payouts.
               </small>
             </fieldset>
             {form.data.payout_frequency === "daily" && props.payout_frequency_daily_supported ? (
-              <Alert role="status" className="info">
-                <div>
+              <Alert role="status" variant="info">
                   Every day, your balance from the previous day will be sent to you via instant payouts, subject to a{" "}
                   <b>3% fee</b>.
-                </div>
               </Alert>
             ) : null}
             {form.data.payout_frequency === "daily" && !props.payout_frequency_daily_supported && (
-              <Alert role="status" className="danger">
-                <div>Your account is no longer eligible for daily payouts. Please update your schedule.</div>
+              <Alert role="status" variant="danger">
+                Your account is no longer eligible for daily payouts. Please update your schedule.
               </Alert>
             )}
             <fieldset className={cx({ danger: payoutThresholdError })}>
