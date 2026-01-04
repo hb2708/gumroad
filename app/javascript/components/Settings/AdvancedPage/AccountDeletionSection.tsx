@@ -32,23 +32,23 @@ const AccountDeletionSection = (props: Props) => {
   };
 
   return (
-    <section className="p-4! md:p-8!">
-      <header>
+    <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:pb-16">
+      <header className="lg:row-[1/3]">
         <h2>Danger Zone</h2>
       </header>
-      <p>
-        <a href="/help/article/37-how-to-delete-your-gumroad-account" target="_blank" rel="noreferrer">
-          Deleting your account
-        </a>{" "}
-        will permanently delete all of your products and product files, as well as any credit card and payout
-        information. You will not be able to restore your account once it's deleted and you will be unsubscribed from
-        any memberships. You will also not be able to create a new account with this account's email.
-      </p>
-      <div>
-        <Button color="danger" onClick={() => setShowConfirmationModal(true)}>
-          Delete your Gumroad account
-        </Button>
-      </div>
+        <p>
+          <a href="/help/article/37-how-to-delete-your-gumroad-account" target="_blank" rel="noreferrer">
+            Deleting your account
+          </a>{" "}
+          will permanently delete all of your products and product files, as well as any credit card and payout
+          information. You will not be able to restore your account once it's deleted and you will be unsubscribed from
+          any memberships. You will also not be able to create a new account with this account's email.
+        </p>
+        <div>
+          <Button color="danger" onClick={() => setShowConfirmationModal(true)}>
+            Delete your Gumroad account
+          </Button>
+        </div>
 
       <Modal
         open={showConfirmationModal}
@@ -65,24 +65,24 @@ const AccountDeletionSection = (props: Props) => {
           </>
         }
       >
-        <p>
-          {props.formatted_balance_to_forfeit_on_account_deletion
+                  <p>
+            {props.formatted_balance_to_forfeit_on_account_deletion
             ? `You have a balance of ${props.formatted_balance_to_forfeit_on_account_deletion}. To delete your account, you will need to forfeit your balance. `
-            : null}
-          <span>
-            Deleting your account will permanently delete all of your products and product files, as well as any credit
-            card and payout information. You will not be able to restore your account once it's deleted and you will be
-            unsubscribed from any memberships. You will also not be able to create a new account with this account's
-            email.
-          </span>
-        </p>
-        <p>
-          For more information, see{" "}
-          <a href="/help/article/37-how-to-delete-your-gumroad-account" target="_blank" rel="noreferrer">
-            here
-          </a>
-          .
-        </p>
+: null}
+            <span>
+              Deleting your account will permanently delete all of your products and product files, as well as any credit
+card and payout information. You will not be able to restore your account once it's deleted and you will be
+unsubscribed from any memberships. You will also not be able to create a new account with this account's
+email.
+            </span>
+          </p>
+          <p>
+            For more information, see{" "}
+            <a href="/help/article/37-how-to-delete-your-gumroad-account" target="_blank" rel="noreferrer">
+              here
+            </a>
+            .
+          </p>
       </Modal>
     </section>
   );

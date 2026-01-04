@@ -5,6 +5,7 @@ import { ForgotPasswordForm } from "$app/components/Authentication/ForgotPasswor
 import { Layout } from "$app/components/Authentication/Layout";
 import { SocialAuth } from "$app/components/Authentication/SocialAuth";
 import { Button } from "$app/components/Button";
+import { Input } from "$app/components/Input";
 import { PasswordInput } from "$app/components/PasswordInput";
 import { Separator } from "$app/components/Separator";
 import { useOriginalLocation } from "$app/components/useOriginalLocation";
@@ -65,18 +66,20 @@ function LoginPage() {
       {showForgotPassword ? (
         <ForgotPasswordForm onClose={() => setShowForgotPassword(false)} />
       ) : (
-        <form onSubmit={(e) => void handleSubmit(e)}>
+        <form className="flex flex-col gap-12" onSubmit={(e) => void handleSubmit(e)}>
           <SocialAuth />
           <Separator>
             <span>or</span>
           </Separator>
-          <section>
+          <section className="flex flex-col gap-8">
             <WarningFlash />
             <fieldset>
-              <legend>
-                <label htmlFor={`${uid}-email`}>Email</label>
+              <legend className="mb-2">
+                <label className="cursor-pointer" htmlFor={`${uid}-email`}>
+                  Email
+                </label>
               </legend>
-              <input
+              <Input
                 id={`${uid}-email`}
                 type="email"
                 value={form.data.user.login_identifier}
@@ -87,9 +90,9 @@ function LoginPage() {
               />
             </fieldset>
             <fieldset>
-              <legend>
+              <legend className="mb-2 flex w-full justify-between">
                 <label htmlFor={`${uid}-password`}>Password</label>
-                <button type="button" className="font-normal underline" onClick={() => setShowForgotPassword(true)}>
+                <button type="button" className="underline" onClick={() => setShowForgotPassword(true)}>
                   Forgot your password?
                 </button>
               </legend>

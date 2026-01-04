@@ -1,13 +1,14 @@
 import { router } from "@inertiajs/react";
-import cx from "classnames";
 import * as React from "react";
 import { cast } from "ts-safe-cast";
 
 import { assertResponseError, request } from "$app/utils/request";
 
 import { Button } from "$app/components/Button";
+import { Checkbox } from "$app/components/Checkbox";
 import { LoadingSpinner } from "$app/components/LoadingSpinner";
 import { Modal } from "$app/components/Modal";
+import { Select } from "$app/components/TypeSafeOptionSelect";
 
 type Props = {
   country: string | null;
@@ -66,25 +67,31 @@ export const CountrySelectionModal = ({ country: initialCountry, countries }: Pr
         }
       >
         <div className="flex flex-col gap-4">
-          <fieldset className={cx({ danger: !!error })}>
-            <legend>
+          <fieldset className="flex flex-col gap-2">
+            <legend className="mb-2">
               <label htmlFor={`${uid}country`}>Country</label>
             </legend>
-            <select id={`${uid}country`} value={country} onChange={(e) => setCountry(e.target.value)} disabled={saving}>
+            <Select
+              id={`${uid}country`}
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+              disabled={saving}
+              className={error ? "border-danger" : ""}
+            >
               {Object.entries(countries).map(([code, name]) => (
                 <option key={code} value={code} disabled={name.includes("(not supported)")}>
                   {name}
                 </option>
               ))}
-            </select>
-            {error ? <small>{error}</small> : null}
+            </Select>
+            {error ? <small className="text-danger">{error}</small> : null}
           </fieldset>
-          <fieldset>
-            <legend>To ensure prompt payouts, please check off each item:</legend>
+
+          <fieldset className="flex flex-col gap-2">
+            <legend className="mb-2 text-base font-bold">To ensure prompt payouts, please check off each item:</legend>
             {checkboxes.map((item, i) => (
-              <label key={item}>
-                <input
-                  type="checkbox"
+              <label key={item} className="flex cursor-pointer gap-2">
+                <Checkbox
                   checked={checked.includes(i)}
                   onChange={(e) =>
                     setChecked(e.target.checked ? [...checked, i] : checked.filter((item) => item !== i))

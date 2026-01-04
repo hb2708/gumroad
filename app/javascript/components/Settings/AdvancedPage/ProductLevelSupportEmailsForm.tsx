@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { Button } from "$app/components/Button";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { TagInput } from "$app/components/TagInput";
 import { Placeholder } from "$app/components/ui/Placeholder";
 import { Row, RowActions, RowContent, RowDetails, Rows } from "$app/components/ui/Rows";
@@ -77,8 +78,10 @@ const ProductLevelSupportEmailRow = React.memo(
         {expanded ? (
           <RowDetails className="flex flex-col gap-4">
             <fieldset>
-              <label htmlFor={`${uid}email`}>Email</label>
-              <input
+              <legend className="mb-2">
+                <label htmlFor={`${uid}email`}>Email</label>
+              </legend>
+              <Input
                 id={`${uid}email`}
                 type="email"
                 value={supportEmail.email}
@@ -86,10 +89,10 @@ const ProductLevelSupportEmailRow = React.memo(
                 required={supportEmail.product_ids.length > 0}
                 onChange={handleEmailChange}
               />
-              <small>This reply-to email will appear on receipts for selected products.</small>
+              <small className="mt-2 text-muted">This reply-to email will appear on receipts for selected products.</small>
             </fieldset>
             <fieldset>
-              <legend>
+              <legend className="mb-2">
                 <label htmlFor={`${uid}-products`}>Products</label>
               </legend>
               <TagInput
@@ -158,7 +161,7 @@ export const ProductLevelSupportEmailsForm = React.memo(
     }
 
     return (
-      <>
+      <div className="flex flex-col gap-8">
         <Rows role="list">
           {productLevelSupportEmails.map((supportEmail, index) => (
             <ProductLevelSupportEmailRow
@@ -172,8 +175,8 @@ export const ProductLevelSupportEmailsForm = React.memo(
             />
           ))}
         </Rows>
-        <AddProductLevelSupportEmailButton onClick={handleAddEmail} />
-      </>
+        <AddProductLevelSupportEmailButton onClick={handleAddEmail}/>
+      </div>
     );
   },
 );
