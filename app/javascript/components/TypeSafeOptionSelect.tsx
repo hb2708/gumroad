@@ -8,7 +8,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
   ({ className, children, ...props }, ref) => (
     <div
       className={classNames(
-        "relative flex h-12 items-center rounded border bg-filled px-4 gap-2",
+        "relative flex h-12 items-center rounded border bg-background",
         props["aria-invalid"] ? "border-danger" : "border-border",
         "focus-within:outline-none focus-within:ring-2 focus-within:ring-accent",
         props.disabled && "cursor-not-allowed opacity-50",
@@ -17,14 +17,14 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
     >
       <select
         ref={ref}
-        className="w-full appearance-none bg-transparent font-[inherit] text-base text-foreground outline-none"
+        className="h-full w-full appearance-none bg-transparent pl-4 pr-10 font-[inherit] text-base text-foreground outline-none"
         {...props}
       >
         {children}
       </select>
       <Icon
         name="outline-cheveron-down"
-        className="pointer-events-none text-xl text-muted"
+        className="pointer-events-none absolute right-4 text-xl text-muted"
       />
     </div>
   ),
