@@ -24,7 +24,7 @@ const AusBackTaxesSection = ({
   are_au_backtaxes_paid,
   au_backtaxes_paid_date,
 }: AusBacktaxDetails) => (
-  <section>
+  <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:pb-16">
     <header>
       <h2>Backtaxes collection</h2>
     </header>
