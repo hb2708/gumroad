@@ -8,7 +8,8 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
   ({ className, children, ...props }, ref) => (
     <div
       className={classNames(
-        "relative flex h-12 items-center rounded border border-border bg-filled px-4 gap-2",
+        "relative flex h-12 items-center rounded border bg-filled px-4 gap-2",
+        props["aria-invalid"] ? "border-danger" : "border-border",
         "focus-within:outline-none focus-within:ring-2 focus-within:ring-accent",
         props.disabled && "cursor-not-allowed opacity-50",
         className,

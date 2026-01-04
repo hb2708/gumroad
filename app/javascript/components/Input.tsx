@@ -10,7 +10,8 @@ export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
 export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, leading, trailing, ...props }, ref) => (
     <div
       className={classNames(
-        "flex h-12 items-center gap-2 rounded border border-border px-4 focus-within:ring-2 focus-within:ring-accent focus-within:outline-none",
+        "flex h-12 items-center gap-2 rounded border px-4 focus-within:ring-2 focus-within:ring-accent focus-within:outline-none",
+        props["aria-invalid"] ? "border-danger" : "border-border",
         { "bg-filled": !props.readOnly },
         props.disabled && "cursor-not-allowed opacity-35",
         className,
