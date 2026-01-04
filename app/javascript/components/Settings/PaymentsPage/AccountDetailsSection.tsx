@@ -1,4 +1,3 @@
-import cx from "classnames";
 import parsePhoneNumberFromString, { CountryCode } from "libphonenumber-js";
 import * as React from "react";
 import { cast } from "ts-safe-cast";
@@ -7,6 +6,8 @@ import type { ComplianceInfo, FormFieldName, User } from "$app/types/payments";
 
 import { Button } from "$app/components/Button";
 import { Icon } from "$app/components/Icons";
+import { classNames } from "$app/utils/classNames";
+import { Input } from "$app/components/Input";
 
 const AccountDetailsSection = ({
   user,
@@ -51,24 +52,23 @@ const AccountDetailsSection = ({
   return (
     <section className="grid gap-8">
       {(complianceInfo.is_business ? complianceInfo.business_country !== "AE" : complianceInfo.country !== "AE") ? (
-        <section>
-          <fieldset>
-            <legend>
+        <fieldset className="space-y-2">
+          <legend className="flex w-full justify-between">
               <label>Account type</label>
               <a href="/help/article/260-your-payout-settings-page">What type of account should I choose?</a>
             </legend>
-          </fieldset>
-          <div className="radio-buttons" role="radiogroup">
+          <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(min(15rem,100%),1fr))]" role="radiogroup">
             <Button
               role="radio"
               key="individual"
               aria-checked={!complianceInfo.is_business}
               onClick={() => updateComplianceInfo({ is_business: false })}
               disabled={isFormDisabled}
+              className="items-start! justify-start! gap-3! text-left aria-checked:-translate-x-1 aria-checked:-translate-y-1 aria-checked:shadow aria-checked:bg-background aria-checked:transform-none!"
             >
               <Icon name="person" />
               <div>
-                <h4>Individual</h4>
+              <h4 className="font-bold">Individual</h4>
                 When you are selling as yourself
               </div>
             </Button>
@@ -83,15 +83,16 @@ const AccountDetailsSection = ({
                 })
               }
               disabled={isFormDisabled}
+              className="items-start! justify-start! gap-3! text-left aria-checked:-translate-x-1 aria-checked:-translate-y-1 aria-checked:shadow aria-checked:bg-background aria-checked:transform-none!"
             >
               <Icon name="shop-window" />
               <div>
-                <h4>Business</h4>
+              <h4 className="font-bold">Business</h4>
                 When you are selling as a business
               </div>
             </Button>
           </div>
-        </section>
+        </fieldset>
       ) : null}
       {complianceInfo.is_business ? (
         <section className="grid gap-8">
