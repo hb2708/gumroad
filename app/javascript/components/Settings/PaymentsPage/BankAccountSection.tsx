@@ -7,6 +7,7 @@ import { classNames } from "$app/utils/classNames";
 import { Button } from "$app/components/Button";
 import { Alert } from "$app/components/ui/Alert";
 import { Input } from "$app/components/Input";
+import { Select } from "$app/components/TypeSafeOptionSelect";
 
 export type BankAccount =
   | {
@@ -1479,7 +1480,7 @@ const BankAccountSection = ({
                     <legend>
                       <label htmlFor={`${uid}-bank-account-type`}>Bank account type</label>
                     </legend>
-                    <select
+                    <Select
                       id={`${uid}-bank-account-type`}
                       required
                       disabled={isFormDisabled}
@@ -1494,7 +1495,7 @@ const BankAccountSection = ({
                       <option key="savings" value="savings">
                         Savings
                       </option>
-                    </select>
+                    </Select>
                   </fieldset>
                   <fieldset className="space-y-2">
                     <legend>
@@ -1518,7 +1519,7 @@ const BankAccountSection = ({
                     <legend>
                       <label htmlFor={`${uid}-account-type`}>Account Type</label>
                     </legend>
-                    <select
+                    <Select
                       id={`${uid}-account-type`}
                       required
                       disabled={isFormDisabled}
@@ -1533,7 +1534,7 @@ const BankAccountSection = ({
                       <option key="checking" value="checking">
                         Checking
                       </option>
-                    </select>
+                    </Select>
                   </fieldset>
                   <fieldset className="space-y-2">
                     <legend>
