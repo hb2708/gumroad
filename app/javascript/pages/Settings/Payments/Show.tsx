@@ -1,7 +1,5 @@
 import { useForm, usePage } from "@inertiajs/react";
-import cx from "classnames";
 import parsePhoneNumberFromString, { CountryCode } from "libphonenumber-js";
-import { classNames } from "$app/utils/classNames";
 import * as React from "react";
 import { cast } from "ts-safe-cast";
 
@@ -724,7 +722,7 @@ export default function PaymentsPage() {
   const payoutThresholdError = form.data.payout_threshold_cents < props.minimum_payout_threshold_cents;
 
   const payoutsPausedToggle = (
-    <fieldset>
+    <fieldset className="flex flex-col gap-2">
       <Toggle
         value={form.data.payouts_paused_by_user || props.payouts_paused_internally}
         onChange={(value) => form.setData("payouts_paused_by_user", value)}
@@ -733,7 +731,7 @@ export default function PaymentsPage() {
       >
         Pause payouts
       </Toggle>
-      <small>
+      <small className="text-muted">
         By pausing payouts, they won't be processed until you decide to resume them, and your balance will remain in
         your account until then.
       </small>
@@ -852,7 +850,7 @@ export default function PaymentsPage() {
           <section className="flex flex-col gap-4">
             <fieldset className="space-y-2">
               <legend>
-              <label htmlFor="payout_frequency">Schedule</label>
+                <label htmlFor="payout_frequency">Schedule</label>
               </legend>
               <TypeSafeOptionSelect
                 id="payout_frequency"
@@ -873,8 +871,8 @@ export default function PaymentsPage() {
             </fieldset>
             {form.data.payout_frequency === "daily" && props.payout_frequency_daily_supported ? (
               <Alert role="status" variant="info">
-                  Every day, your balance from the previous day will be sent to you via instant payouts, subject to a{" "}
-                  <b>3% fee</b>.
+                Every day, your balance from the previous day will be sent to you via instant payouts, subject to a{" "}
+                <b>3% fee</b>.
               </Alert>
             ) : null}
             {form.data.payout_frequency === "daily" && !props.payout_frequency_daily_supported && (
@@ -882,8 +880,10 @@ export default function PaymentsPage() {
                 Your account is no longer eligible for daily payouts. Please update your schedule.
               </Alert>
             )}
-            <fieldset className={cx({ danger: payoutThresholdError })}>
-              <label htmlFor="payout_threshold_cents">Minimum payout threshold</label>
+            <fieldset className="space-y-2">
+              <legend>
+                <label htmlFor="payout_threshold_cents">Minimum payout threshold</label>
+              </legend>
               <PriceInput
                 id="payout_threshold_cents"
                 currencyCode="usd"
@@ -897,7 +897,7 @@ export default function PaymentsPage() {
                 hasError={!!payoutThresholdError}
               />
               {payoutThresholdError ? (
-                <small>
+                <small className="text-danger">
                   Your payout threshold must be at least{" "}
                   {formatPriceCentsWithCurrencySymbol("usd", props.minimum_payout_threshold_cents, {
                     symbolFormat: "long",
@@ -905,7 +905,7 @@ export default function PaymentsPage() {
                   .
                 </small>
               ) : (
-                <small>Payouts will only be issued once your balance reaches this amount.</small>
+                <small className="text-muted">Payouts will only be issued once your balance reaches this amount.</small>
               )}
             </fieldset>
             {props.payouts_paused_internally ? (
@@ -928,17 +928,21 @@ export default function PaymentsPage() {
           </section>
         </section>
 
-        <section className="p-4! md:p-8!">
-          <header>
+        <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:pb-16">
+          <header className="flex flex-col gap-3">
             <h2>Payout method</h2>
             <div>
-              <a href="/help/article/260-your-payout-settings-page" target="_blank" rel="noreferrer">
+              <a
+                href="/help/article/260-your-payout-settings-page"
+                target="_blank"
+                rel="noreferrer"
+              >
                 Any questions about these payout settings?
               </a>
             </div>
           </header>
-          <section className="grid gap-8">
-            <div className="radio-buttons" role="radiogroup">
+          <section className="flex flex-col gap-8">
+            <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(min(15rem,100%),1fr))]" role="radiogroup">
               {props.bank_account_details.show_bank_account ? (
                 <>
                   <Button
@@ -947,11 +951,10 @@ export default function PaymentsPage() {
                     aria-checked={selectedPayoutMethod === "bank"}
                     onClick={() => updatePayoutMethod("bank")}
                     disabled={props.is_form_disabled}
+                    className="items-start! justify-start! gap-3! text-left aria-checked:-translate-x-1 aria-checked:-translate-y-1 aria-checked:shadow aria-checked:bg-background aria-checked:transform-none!"
                   >
                     <Icon name="bank" />
-                    <div>
-                      <h4>Bank Account</h4>
-                    </div>
+                    <h4 className="font-bold">Bank Account</h4>
                   </Button>
                   {props.user.country_code === "US" ? (
                     <Button
@@ -960,11 +963,10 @@ export default function PaymentsPage() {
                       aria-checked={selectedPayoutMethod === "card"}
                       onClick={() => updatePayoutMethod("card")}
                       disabled={props.is_form_disabled}
+                      className="items-start! justify-start! gap-3! text-left aria-checked:-translate-x-1 aria-checked:-translate-y-1 aria-checked:shadow aria-checked:bg-background aria-checked:transform-none!"
                     >
                       <Icon name="card" />
-                      <div>
-                        <h4>Debit Card</h4>
-                      </div>
+                      <h4 className="font-bold">Debit Card</h4>
                     </Button>
                   ) : null}
                 </>
@@ -976,11 +978,10 @@ export default function PaymentsPage() {
                   aria-checked={selectedPayoutMethod === "paypal"}
                   onClick={() => updatePayoutMethod("paypal")}
                   disabled={props.is_form_disabled}
+                  className="items-start! justify-start! gap-3! text-left aria-checked:-translate-x-1 aria-checked:-translate-y-1 aria-checked:shadow aria-checked:bg-background aria-checked:transform-none!"
                 >
                   <Icon name="shop-window" />
-                  <div>
-                    <h4>PayPal</h4>
-                  </div>
+                  <h4 className="font-bold">PayPal</h4>
                 </Button>
               ) : null}
               {props.user.country_code === "BR" ||
@@ -992,11 +993,10 @@ export default function PaymentsPage() {
                   aria-checked={selectedPayoutMethod === "stripe"}
                   onClick={() => updatePayoutMethod("stripe")}
                   disabled={props.is_form_disabled}
+                  className="items-start! justify-start! gap-3! text-left aria-checked:-translate-x-1 aria-checked:-translate-y-1 aria-checked:shadow aria-checked:bg-background aria-checked:transform-none!"
                 >
                   <Icon name="stripe" />
-                  <div>
-                    <h4>Connect to Stripe</h4>
-                  </div>
+                  <h4 className="font-bold">Connect to Stripe</h4>
                 </Button>
               ) : null}
             </div>
