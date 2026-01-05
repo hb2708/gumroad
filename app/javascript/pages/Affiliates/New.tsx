@@ -1,5 +1,4 @@
 import { useForm, usePage } from "@inertiajs/react";
-import cx from "classnames";
 import * as React from "react";
 import { cast } from "ts-safe-cast";
 
@@ -14,6 +13,7 @@ import { showAlert } from "$app/components/server-components/Alert";
 import { PageHeader } from "$app/components/ui/PageHeader";
 
 import { AffiliateForm, AffiliateProduct } from "./Form";
+import { Input } from "$app/components/Input";
 
 type Props = {
   products: AffiliateProduct[];
@@ -153,11 +153,11 @@ export default function AffiliatesNew() {
           uid={uid}
           headerText="Add a new affiliate below and we'll send them a unique link to share with their audience. Your affiliate will then earn a commission on each sale they refer."
           emailField={
-            <fieldset className={cx({ danger: errors["affiliate.email"] })}>
+            <fieldset className="space-y-2">
               <legend>
                 <label htmlFor={`${uid}email`}>Email</label>
               </legend>
-              <input
+              <Input
                 ref={emailInputRef}
                 type="email"
                 id={`${uid}email`}
