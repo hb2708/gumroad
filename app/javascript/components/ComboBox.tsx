@@ -1,4 +1,4 @@
-import cx from "classnames";
+import { classNames } from "$app/utils/classNames";
 import * as React from "react";
 
 import { useGlobalEventListener } from "$app/components/useGlobalEventListener";
@@ -93,7 +93,7 @@ export const ComboBox = <Option extends unknown>({
   });
 
   return (
-    <div ref={selfRef} className={cx("combobox", className)} {...rest}>
+    <div ref={selfRef} className={classNames("relative", className)} {...rest}>
       {input({
         role: "combobox",
         "aria-expanded": open,
@@ -112,8 +112,17 @@ export const ComboBox = <Option extends unknown>({
               tabIndex: 0,
             }),
       })}
-      <div hidden={!open} onMouseDown={(e) => e.preventDefault()}>
-        <datalist id={uid} onMouseOut={() => setFocusedOptionIndex(null)} aria-multiselectable={multiple}>
+      <div
+        hidden={!open}
+        className="absolute top-full left-0 z-50 w-full"
+        onMouseDown={(e) => e.preventDefault()}
+      >
+        <datalist
+          id={uid}
+          className="block overflow-auto rounded-b border border-border bg-background py-2 shadow"
+          onMouseOut={() => setFocusedOptionIndex(null)}
+          aria-multiselectable={multiple}
+        >
           {options.map((item, index) => (
             <React.Fragment key={index}>
               {option(
@@ -122,7 +131,7 @@ export const ComboBox = <Option extends unknown>({
                   ref: (node) => (itemRefs[index] = node),
                   role: "option",
                   id: `${uid}-${index}`,
-                  className: cx({ focused: focusedOptionIndex === index }),
+                  className: classNames({ "bg-primary text-primary-foreground": focusedOptionIndex === index }),
                   onMouseOver: () => setFocusedOptionIndex(index),
                   onClick: () => {
                     setFocusedOptionIndex(null);
