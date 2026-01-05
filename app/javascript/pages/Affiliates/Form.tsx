@@ -1,8 +1,9 @@
-import cx from "classnames";
 import * as React from "react";
 
 import { NumberInput } from "$app/components/NumberInput";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "$app/components/ui/Table";
+import { Input } from "$app/components/Input";
+import { Toggle } from "$app/components/Toggle";
 
 export type AffiliateProduct = {
   id: number;
@@ -48,9 +49,8 @@ export const AffiliateForm = ({
   onUpdateDestinationUrl,
   onUpdateProduct,
 }: Props) => (
-  <section className="p-4! md:p-8!">
-    <header
-      dangerouslySetInnerHTML={{
+  <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:pb-16">
+    <header className="flex flex-col gap-3 lg:row-[1/3]" dangerouslySetInnerHTML={{
         __html: `${headerText} <a href='/help/article/333-affiliates-on-gumroad' target='_blank' rel='noreferrer'>Learn more</a>`,
       }}
     />
@@ -71,92 +71,81 @@ export const AffiliateForm = ({
       <TableBody>
         <TableRow>
           <TableCell>
-            <input
+              <Toggle
               id={`${uid}enableAllProducts`}
-              type="checkbox"
-              role="switch"
-              checked={applyToAllProducts}
-              onChange={(e) => onToggleAllProducts(e.target.checked)}
-              aria-label="Enable all products"
+                value={applyToAllProducts}
+                onChange={onToggleAllProducts}
+                ariaLabel="Enable all products"
             />
           </TableCell>
           <TableCell>
-            <label htmlFor={`${uid}enableAllProducts`}>All products</label>
+              <label htmlFor={`${uid}enableAllProducts`} className="cursor-pointer">
+                All products
+              </label>
           </TableCell>
           <TableCell>
-            <fieldset className={cx({ danger: errors["affiliate.fee_percent"] })}>
               <NumberInput onChange={(value) => onUpdateFeePercent(value)} value={data.fee_percent}>
                 {(inputProps) => (
-                  <div className={cx("input", { disabled: processing || !applyToAllProducts })}>
-                    <input
-                      type="text"
-                      autoComplete="off"
-                      placeholder="Commission"
-                      disabled={processing || !applyToAllProducts}
-                      {...inputProps}
-                    />
-                    <div className="pill">%</div>
-                  </div>
+                  <Input
+                    placeholder="Commission"
+                    disabled={processing || !applyToAllProducts}
+                    trailing={"%"}
+                    aria-invalid={!!errors["affiliate.fee_percent"]}
+                    {...inputProps}
+                  />
                 )}
               </NumberInput>
-            </fieldset>
           </TableCell>
           <TableCell>
-            <fieldset className={cx({ danger: errors["affiliate.destination_url"] })}>
-              <input
+              <Input
                 type="url"
                 value={data.destination_url || ""}
                 placeholder="https://link.com"
                 onChange={(e) => onUpdateDestinationUrl(e.target.value)}
                 disabled={processing || !applyToAllProducts}
+                aria-invalid={!!errors["affiliate.destination_url"]}
               />
-            </fieldset>
           </TableCell>
         </TableRow>
         {data.products.map((product) => (
-          <TableRow key={product.id}>
-            <TableCell>
-              <input
-                type="checkbox"
-                role="switch"
-                checked={product.enabled}
-                onChange={(e) => onUpdateProduct(product.id, { enabled: e.target.checked })}
-                disabled={processing}
-                aria-label="Enable product"
-              />
-            </TableCell>
-            <TableCell>{product.name}</TableCell>
-            <TableCell>
-              <NumberInput
-                onChange={(value) => onUpdateProduct(product.id, { fee_percent: value })}
-                value={product.fee_percent}
-              >
-                {(inputProps) => (
-                  <div className={cx("input", { disabled: processing || !product.enabled })}>
-                    <input
-                      type="text"
-                      autoComplete="off"
+            <TableRow key={product.id}>
+              <TableCell>
+                <Toggle
+                  value={product.enabled}
+                  onChange={(newValue) => onUpdateProduct(product.id, { enabled: newValue })}
+                  disabled={processing}
+                  ariaLabel="Enable product"
+                />
+              </TableCell>
+              <TableCell>{product.name}</TableCell>
+              <TableCell>
+                <NumberInput
+                  onChange={(value) => onUpdateProduct(product.id, { fee_percent: value })}
+                  value={product.fee_percent}
+                >
+                  {(inputProps) => (
+                    <Input
                       placeholder="Commission"
                       disabled={processing || !product.enabled}
+                      trailing={"%"}
                       {...inputProps}
+                      aria-invalid={!!errors[`affiliate.products.${product.id}.fee_percent`]}
                     />
-                    <div className="pill">%</div>
-                  </div>
-                )}
-              </NumberInput>
-            </TableCell>
-            <TableCell>
-              <input
-                type="text"
-                placeholder="https://link.com"
-                value={product.destination_url || ""}
-                onChange={(e) => onUpdateProduct(product.id, { destination_url: e.target.value })}
-                disabled={processing || !product.enabled}
-              />
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+                  )}
+                </NumberInput>
+              </TableCell>
+              <TableCell>
+                <Input
+                  placeholder="https://link.com"
+                  value={product.destination_url || ""}
+                  onChange={(e) => onUpdateProduct(product.id, { destination_url: e.target.value })}
+                  disabled={processing || !product.enabled}
+                  aria-invalid={!!errors[`affiliate.products.${product.id}.destination_url`]}
+                />
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
   </section>
 );

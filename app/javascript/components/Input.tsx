@@ -12,8 +12,8 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className
       className={classNames(
         "flex h-12 items-center gap-2 rounded border px-4 focus-within:ring-2 focus-within:ring-accent focus-within:outline-none",
         props["aria-invalid"] ? "border-danger" : "border-border",
-        { "bg-background": !props.readOnly },
-        props.disabled && "cursor-not-allowed opacity-35",
+        props.readOnly || props.disabled ? "bg-body" : "bg-background",
+        props.disabled && "cursor-not-allowed opacity-30",
         className,
       )}
     >
