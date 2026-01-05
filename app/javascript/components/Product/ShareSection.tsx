@@ -1,3 +1,4 @@
+import { classNames } from "$app/utils/classNames";
 import * as React from "react";
 
 import { Wishlist, addToWishlist, createWishlist } from "$app/data/wishlists";
@@ -5,6 +6,7 @@ import { assertResponseError } from "$app/utils/request";
 
 import { Button } from "$app/components/Button";
 import { ComboBox } from "$app/components/ComboBox";
+import { Input } from "$app/components/Input";
 import { CopyToClipboard } from "$app/components/CopyToClipboard";
 import { useAppDomain } from "$app/components/DomainSettings";
 import { FacebookShareButton } from "$app/components/FacebookShareButton";
@@ -98,17 +100,21 @@ export const ShareSection = ({
           input={(props) => (
             <div
               {...props}
-              className={`input ${dropdownState.state !== "closed" ? "!rounded-b-none" : ""}`}
+              className={classNames(
+                "bg-background flex h-12 cursor-pointer items-center gap-2 rounded border border-border px-4 transition-colors",
+                "focus-within:ring-2 focus-within:ring-accent focus-within:outline-none",
+                dropdownState.state !== "closed" && "rounded-b-none",
+              )}
               aria-label="Add to wishlist"
             >
-              <span className="fake-input text-singleline">
+              <span className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap">
                 {saveState.type === "success"
                   ? saveState.wishlist.name
                   : saveState.type === "saving"
                     ? "Adding to wishlist..."
                     : "Add to wishlist"}
               </span>
-              <Icon name="outline-cheveron-down" />
+              <Icon name="outline-cheveron-down" className="text-muted" />
             </div>
           )}
           disabled={saveState.type === "saving"}
@@ -117,6 +123,7 @@ export const ShareSection = ({
             wishlist.id ? (
               <div
                 {...props}
+                className={classNames("flex items-center px-4 py-2 transition-colors", props.className)}
                 inert={isSelectionInWishlist(wishlist)}
                 onClick={(e) => {
                   props.onClick?.(e);
@@ -130,7 +137,7 @@ export const ShareSection = ({
             ) : dropdownState.state === "creating" ? (
               <form
                 role={props.role}
-                className="flex gap-2 p-2"
+                className="flex gap-2 px-4 py-2 "
                 onSubmit={(e) => {
                   e.preventDefault();
                   if (!dropdownState.newWishlistName.trim()) {
@@ -140,13 +147,12 @@ export const ShareSection = ({
                   void addProduct(newWishlist(dropdownState.newWishlistName));
                 }}
               >
-                <input
+                <Input
                   type="text"
                   autoFocus
                   placeholder="Wishlist name"
                   value={dropdownState.newWishlistName}
                   onChange={(e) => setDropdownState({ state: "creating", newWishlistName: e.target.value })}
-                  className="input"
                   aria-label="Wishlist name"
                 />
                 <Button type="submit" aria-label="Create wishlist" color="primary">
@@ -154,7 +160,11 @@ export const ShareSection = ({
                 </Button>
               </form>
             ) : (
-              <div {...props} onClick={() => setDropdownState({ state: "creating", newWishlistName: "" })}>
+              <div
+                {...props}
+                className={classNames("flex items-center px-4 py-2 transition-colors", props.className)}
+                onClick={() => setDropdownState({ state: "creating", newWishlistName: "" })}
+              >
                 <div>
                   <Icon name="plus" /> New wishlist
                 </div>
