@@ -1,5 +1,4 @@
 import { Link, router, usePage } from "@inertiajs/react";
-import cx from "classnames";
 import { parseISO } from "date-fns";
 import * as React from "react";
 
@@ -9,9 +8,10 @@ import { formatPriceCentsWithCurrencySymbol } from "$app/utils/currency";
 import { asyncVoid } from "$app/utils/promise";
 import { assertResponseError } from "$app/utils/request";
 
-import { Button } from "$app/components/Button";
+import { Button, NavigationButton } from "$app/components/Button";
 import { CopyToClipboard } from "$app/components/CopyToClipboard";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { LoadingSpinner } from "$app/components/LoadingSpinner";
 import { useLoggedInUser } from "$app/components/LoggedInUser";
 import { NavigationButtonInertia } from "$app/components/NavigationButton";
@@ -87,24 +87,22 @@ const SearchBoxPopover = ({ initialQuery, onSearch }: { initialQuery: string; on
       aria-label="Search"
       trigger={
         <WithTooltip tip="Search" position="bottom">
-          <div className="button">
+          <Button>
             <Icon name="solid-search" />
-          </div>
+          </Button>
         </WithTooltip>
       }
     >
-      <div className="input input-wrapper">
-        <Icon name="solid-search" />
-        <input
-          ref={searchInputRef}
-          value={inputValue}
-          autoFocus
-          type="text"
-          placeholder="Search"
-          aria-label="Search"
-          onChange={handleChange}
-        />
-      </div>
+      <Input
+        ref={searchInputRef}
+        value={inputValue}
+        autoFocus
+        type="text"
+        placeholder="Search"
+        aria-label="Search"
+        onChange={handleChange}
+        leading={<Icon name="solid-search" />}
+      />
     </Popover>
   );
 };
@@ -188,7 +186,7 @@ const AffiliateRequestsTable = ({
       {visibleItems.length > 0 ? (
         <Table>
           <TableCaption>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div className="flex justify-between">
               Requests
               {allowApproveAll ? <ApproveAllButton onSuccess={handleApproveAllSuccess} /> : null}
             </div>
@@ -395,9 +393,9 @@ export default function AffiliatesIndex() {
       >
         <AffiliatesNavigation />
       </PageHeader>
-      <div className="p-4 lg:p-8" style={{ display: "grid", gap: "var(--spacer-7)" }}>
+      <div className="grid gap-7 p-4 lg:p-8">
         {isNavigating && affiliates.length === 0 ? (
-          <div style={{ justifySelf: "center" }}>
+          <div className="justify-self-center">
             <LoadingSpinner className="size-20" />
           </div>
         ) : (
@@ -411,17 +409,19 @@ export default function AffiliatesIndex() {
             {affiliates.length > 0 ? (
               <>
                 <section className="flex flex-col gap-4">
-                  <Table aria-live="polite" className={cx(isNavigating && "pointer-events-none opacity-50")}>
+                  <Table aria-live="polite" className={isNavigating ? "pointer-events-none opacity-50" : undefined}>
                     <TableCaption>
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <div className="flex items-center justify-between">
                         Affiliates
-                        <div className="text-base">
                           <WithTooltip tip="Export" position="top">
-                            <a href={Routes.export_affiliates_path()} className="button primary" aria-label="Export">
+                            <NavigationButton
+                              color="primary"
+                              href={Routes.export_affiliates_path()}
+                              aria-label="Export"
+                            >
                               <Icon name="download" />
-                            </a>
+                            </NavigationButton>
                           </WithTooltip>
-                        </div>
                       </div>
                     </TableCaption>
                     <TableHeader>
@@ -544,7 +544,7 @@ const AffiliateDetails = ({
         const productStatistics = statistics?.products[product.id];
 
         return (
-          <section key={product.id} className="stack">
+          <section key={product.id} className="flex flex-col gap-4">
             <h3>{product.name}</h3>
             {statistics ? (
               <>
@@ -570,7 +570,7 @@ const AffiliateDetails = ({
           </section>
         );
       })}
-      <section style={{ display: "grid", gap: "var(--spacer-4)", gridAutoFlow: "column", gridAutoColumns: "1fr" }}>
+      <section className="grid auto-cols-fr grid-flow-col gap-4">
         <NavigationButtonInertia
           href={Routes.edit_affiliate_path(selectedAffiliate.id)}
           aria-label="Edit"
