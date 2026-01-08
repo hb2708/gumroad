@@ -4,6 +4,7 @@ import { Membership, Product } from "$app/data/products";
 
 import { Icon } from "$app/components/Icons";
 import { NavigationButtonInertia } from "$app/components/NavigationButton";
+import { Input } from "$app/components/Input";
 import { PaginationProps } from "$app/components/Pagination";
 import { Popover } from "$app/components/Popover";
 import { ProductsLayout } from "$app/components/ProductsLayout";
@@ -52,16 +53,14 @@ export const ArchivedProductsPage = ({
               </WithTooltip>
             }
           >
-            <div className="input">
-              <Icon name="solid-search" />
-              <input
-                ref={searchInputRef}
-                type="text"
-                placeholder="Search products"
-                value={query ?? ""}
-                onChange={(evt) => setQuery(evt.target.value)}
-              />
-            </div>
+            <Input
+              ref={searchInputRef}
+              leading={<Icon name="solid-search" className="text-muted" />}
+              type="text"
+              placeholder="Search products"
+              value={query ?? ""}
+              onChange={(evt) => setQuery(evt.target.value)}
+            />
           </Popover>
           <NavigationButtonInertia href={Routes.new_product_path()} disabled={!canCreateProduct} color="accent">
             New product
