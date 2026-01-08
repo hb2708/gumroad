@@ -22,7 +22,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className
         ref={ref}
         className={classNames(
           "flex-1 bg-transparent font-[inherit] text-base text-foreground outline-none",
-          props.disabled && "cursor-not-allowed",
+          props.disabled && "cursor-not-allowed opacity-30",
         )}
         {...props}
       />
