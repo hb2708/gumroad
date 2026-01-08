@@ -1,5 +1,4 @@
 import { Link, useForm, usePage } from "@inertiajs/react";
-import cx from "classnames";
 import * as React from "react";
 import { cast } from "ts-safe-cast";
 
@@ -11,6 +10,7 @@ import { CopyToClipboard } from "$app/components/CopyToClipboard";
 import { useLoggedInUser } from "$app/components/LoggedInUser";
 import { NavigationButtonInertia } from "$app/components/NavigationButton";
 import { NumberInput } from "$app/components/NumberInput";
+import { Toggle } from "$app/components/Toggle";
 import { showAlert } from "$app/components/server-components/Alert";
 import { ToggleSettingRow } from "$app/components/SettingRow";
 import { PageHeader } from "$app/components/ui/PageHeader";
@@ -20,6 +20,7 @@ import { Tabs, Tab } from "$app/components/ui/Tabs";
 import { WithTooltip } from "$app/components/WithTooltip";
 
 import placeholderImage from "$assets/images/placeholders/affiliate-signup-form.png";
+import { Input } from "$app/components/Input";
 
 type InvalidProductAttrs = Set<"commission" | "destination_url">;
 
@@ -138,9 +139,9 @@ export default function AffiliatesOnboarding() {
           </Placeholder>
         </section>
       ) : (
-        <form onSubmit={handleSaveChanges}>
-          <section className="p-4! md:p-8!">
-            <header>
+        <form onSubmit={handleSaveChanges} className="divide-y divide-border">
+          <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:pb-16">
+            <header className="flex flex-col gap-3">
               <h2>Affiliate link</h2>
               <div>
                 Anyone can request to become your affiliate by using your affiliate link. Affiliates will earn a
@@ -150,36 +151,36 @@ export default function AffiliatesOnboarding() {
                 Learn more
               </a>
             </header>
-            <fieldset>
+            <fieldset className="space-y-2">
               <legend>
                 <label htmlFor="affiliate-link">Your affiliate link</label>
               </legend>
-              <div className="input input-wrapper">
-                <input
+                <Input
                   type="text"
                   id="affiliate-link"
                   readOnly
                   disabled={!enableAffiliateLink}
                   defaultValue={affiliateRequestUrl}
-                  className="text-singleline"
+                  className="bg-background opacity-100"
+                  trailing={
+                    enableAffiliateLink ? (
+                      <CopyToClipboard text={affiliateRequestUrl}>
+                        <button type="button" className="underline">
+                          Copy link
+                        </button>
+                      </CopyToClipboard>
+                    ) : null
+                  }
                 />
-                {enableAffiliateLink ? (
-                  <CopyToClipboard text={affiliateRequestUrl}>
-                    <button type="button" className="underline">
-                      Copy link
-                    </button>
-                  </CopyToClipboard>
-                ) : null}
-              </div>
               {enableAffiliateLink ? null : (
-                <div role="alert" className="warning">
+                <div>
                   You must enable and set up the commission for at least one product before sharing your affiliate link.
                 </div>
               )}
             </fieldset>
           </section>
-          <section className="p-4! md:p-8!">
-            <header>
+          <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:pb-16">
+            <header className="flex flex-col gap-3">
               <h2>Affiliate products</h2>
               <p>Enable specific products you want your affiliates to earn a commission with.</p>
             </header>
@@ -205,8 +206,8 @@ export default function AffiliatesOnboarding() {
               </TableBody>
             </Table>
           </section>
-          <section className="p-4! md:p-8!">
-            <header>
+          <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:pb-16">
+            <header className="flex flex-col gap-3">
               <h2>Gumroad Affiliate Program</h2>
               <div>
                 Being part of Gumroad Affiliate Program enables other creators to share your products in exchange for a{" "}
@@ -243,47 +244,47 @@ const ProductRow = ({ product, disabled, onChange }: ProductRowProps) => {
   return (
     <TableRow>
       <TableCell>
-        <input
+        <Toggle
           id={uid}
-          type="checkbox"
-          role="switch"
-          checked={product.enabled}
-          onChange={(evt) => onChange({ enabled: evt.target.checked })}
-          aria-label="Enable product"
+          value={product.enabled}
+          onChange={(checked) => onChange({ enabled: checked })}
+          ariaLabel="Enable product"
           disabled={disabled}
         />
       </TableCell>
       <TableCell>
-        <label htmlFor={uid}>{product.name}</label>
+        <label htmlFor={uid} className="cursor-pointer">
+          {product.name}
+        </label>
       </TableCell>
       <TableCell>
-        <fieldset className={cx({ danger: invalidAttrs.has("commission") })}>
+        <fieldset>
           <NumberInput onChange={(value) => onChange({ fee_percent: value ?? 0 })} value={product.fee_percent}>
             {(inputProps) => (
-              <div className={cx("input", { disabled: disabled || !product.enabled })}>
-                <input
+                <Input
                   type="text"
                   autoComplete="off"
                   placeholder="Commission"
                   disabled={disabled || !product.enabled}
+                  aria-invalid={invalidAttrs.has("commission")}
+                  trailing={"%"}
                   {...inputProps}
                 />
-                <div className="pill">%</div>
-              </div>
             )}
           </NumberInput>
         </fieldset>
       </TableCell>
       <TableCell>
-        <fieldset className={cx({ danger: invalidAttrs.has("destination_url") })}>
-          <input
-            type="text"
-            aria-label="destination_url"
-            disabled={disabled || !product.enabled}
-            placeholder="https://link.com"
-            value={product.destination_url || ""}
-            onChange={(event) => onChange({ destination_url: event.target.value.trim() })}
-          />
+        <fieldset>
+            <Input
+              type="text"
+              aria-label="destination_url"
+              disabled={disabled || !product.enabled}
+              placeholder="https://link.com"
+              value={product.destination_url || ""}
+              onChange={(event) => onChange({ destination_url: event.target.value.trim() })}
+              aria-invalid={invalidAttrs.has("destination_url")}
+            />
         </fieldset>
       </TableCell>
     </TableRow>
