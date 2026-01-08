@@ -7,6 +7,7 @@ import { assertResponseError, request, ResponseError } from "$app/utils/request"
 
 import { Button } from "$app/components/Button";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { showAlert } from "$app/components/server-components/Alert";
 import { WithTooltip } from "$app/components/WithTooltip";
 
@@ -36,7 +37,7 @@ export const CreditCardForm = ({ card, can_remove, read_only }: Props) => {
   });
 
   return status === "removed" ? null : (
-    <section className="p-4! md:p-8!">
+    <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:pb-16">
       <header>
         <h2>Saved credit card</h2>
         <a href="/help/article/216-delete-credit-card-information" target="_blank" rel="noreferrer">
@@ -44,24 +45,27 @@ export const CreditCardForm = ({ card, can_remove, read_only }: Props) => {
         </a>
       </header>
       <div className="flex flex-col gap-4">
-        <div className="input read-only" aria-label="Saved credit card">
-          <Icon name="outline-credit-card" />
-          <span>{card.number}</span>
-          <span style={{ marginLeft: "auto" }}>{card.expiration_date}</span>
-        </div>
+        <Input
+          readOnly
+          aria-label="Saved credit card"
+          className="bg-body h-12"
+          leading={<Icon name="outline-credit-card" />}
+          trailing={<span className="ml-auto text-sm text-muted">{card.expiration_date}</span>}
+          value={card.number}
+        />
         {read_only ? null : (
-          <WithTooltip
-            tip={
-              can_remove
-                ? null
-                : "Please cancel any active preorder or membership purchases before removing your credit card."
-            }
-            position="top"
-          >
-            <Button outline color="danger" onClick={remove} disabled={!can_remove || status === "removing"}>
-              {status === "removing" ? "Removing..." : "Remove credit card"}
-            </Button>
-          </WithTooltip>
+            <WithTooltip
+              tip={
+                can_remove
+                  ? null
+                  : "Please cancel any active preorder or membership purchases before removing your credit card."
+              }
+              position="top"
+            >
+              <Button outline color="danger" onClick={remove} disabled={!can_remove || status === "removing"}>
+                {status === "removing" ? "Removing..." : "Remove credit card"}
+              </Button>
+            </WithTooltip>
         )}
       </div>
     </section>
