@@ -6,6 +6,7 @@ import { request, assertResponseError } from "$app/utils/request";
 
 import { Button } from "$app/components/Button";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { showAlert } from "$app/components/server-components/Alert";
 import { SocialAuthButton } from "$app/components/SocialAuthButton";
 import { Alert } from "$app/components/ui/Alert";
@@ -65,14 +66,14 @@ const StripeConnectSection = ({
         </div>
         {stripeConnect.has_connected_stripe ? (
           <div className="grid gap-8">
-            <fieldset>
-              <legend>
-                <label>Stripe account</label>
-              </legend>
-              <div className="input input-wrapper">
-                <div className="fake-input">{stripeConnect.stripe_connect_account_id}</div>
-                <Icon name="solid-check-circle" className="text-success" />
-              </div>
+            <fieldset className="space-y-2">
+              <legend>Stripe account</legend>
+              <Input
+                readOnly
+                className="bg-background opacity-100"
+                value={stripeConnect.stripe_connect_account_id ?? ""}
+                trailing={<Icon name="solid-check-circle" className="text-success" />}
+              />
             </fieldset>
             <p>
               <Button
