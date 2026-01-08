@@ -1022,11 +1022,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "GI" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("sort_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-sort-code`}>Sort code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-sort-code`}
                     placeholder="12-34-56"
