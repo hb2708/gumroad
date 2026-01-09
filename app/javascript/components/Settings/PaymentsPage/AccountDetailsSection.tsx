@@ -3,13 +3,13 @@ import * as React from "react";
 import { cast } from "ts-safe-cast";
 
 import type { ComplianceInfo, FormFieldName, User } from "$app/types/payments";
+import { classNames } from "$app/utils/classNames";
 
 import { Button } from "$app/components/Button";
+import { Checkbox } from "$app/components/Checkbox";
 import { Icon } from "$app/components/Icons";
-import { classNames } from "$app/utils/classNames";
 import { Input } from "$app/components/Input";
 import { Select } from "$app/components/TypeSafeOptionSelect";
-import { Checkbox } from "$app/components/Checkbox";
 
 const AccountDetailsSection = ({
   user,
@@ -59,19 +59,19 @@ const AccountDetailsSection = ({
             <label>Account type</label>
             <a href="/help/article/260-your-payout-settings-page">What type of account should I choose?</a>
           </legend>
-          <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(min(15rem,100%),1fr))]" role="radiogroup">
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(min(15rem,100%),1fr))] gap-4" role="radiogroup">
             <Button
               role="radio"
               key="individual"
               aria-checked={!complianceInfo.is_business}
               onClick={() => updateComplianceInfo({ is_business: false })}
               disabled={isFormDisabled}
-              className="items-start! justify-start! gap-3! text-left aria-checked:-translate-x-1 aria-checked:-translate-y-1 aria-checked:shadow aria-checked:bg-background aria-checked:transform-none!"
+              className="items-start! justify-start! gap-3! text-left aria-checked:-translate-x-1 aria-checked:-translate-y-1 aria-checked:transform-none! aria-checked:bg-background aria-checked:shadow"
             >
               <Icon name="person" />
               <div>
-              <h4 className="font-bold">Individual</h4>
-              When you are selling as yourself
+                <h4 className="font-bold">Individual</h4>
+                When you are selling as yourself
               </div>
             </Button>
             <Button
@@ -85,12 +85,12 @@ const AccountDetailsSection = ({
                 })
               }
               disabled={isFormDisabled}
-              className="items-start! justify-start! gap-3! text-left aria-checked:-translate-x-1 aria-checked:-translate-y-1 aria-checked:shadow aria-checked:bg-background aria-checked:transform-none!"
+              className="items-start! justify-start! gap-3! text-left aria-checked:-translate-x-1 aria-checked:-translate-y-1 aria-checked:transform-none! aria-checked:bg-background aria-checked:shadow"
             >
               <Icon name="shop-window" />
               <div>
-              <h4 className="font-bold">Business</h4>
-              When you are selling as a business
+                <h4 className="font-bold">Business</h4>
+                When you are selling as a business
               </div>
             </Button>
           </div>
@@ -185,7 +185,7 @@ const AccountDetailsSection = ({
             </fieldset>
           </div>
           {complianceInfo.business_country === "JP" ? (
-            <div className="grid grid-flow-col auto-cols-fr gap-6">
+            <div className="grid auto-cols-fr grid-flow-col gap-6">
               <fieldset className="space-y-2">
                 <legend>
                   <label htmlFor={`${uid}-business-name-kanji`}>Business Name (Kanji)</label>
@@ -219,7 +219,7 @@ const AccountDetailsSection = ({
             </div>
           ) : null}
           {complianceInfo.business_country === "JP" ? (
-            <div className="grid grid-flow-col auto-cols-fr gap-6">
+            <div className="grid auto-cols-fr grid-flow-col gap-6">
               <fieldset className="space-y-2">
                 <legend>
                   <label htmlFor={`${uid}-business-building-number`}>Business Block / Building Number</label>
@@ -281,7 +281,7 @@ const AccountDetailsSection = ({
               />
             </fieldset>
           )}
-          <div className="grid grid-flow-col auto-cols-fr gap-6">
+          <div className="grid auto-cols-fr grid-flow-col gap-6">
             <fieldset className="space-y-2">
               <legend>
                 <label htmlFor={`${uid}-business-city`}>City</label>
@@ -601,28 +601,31 @@ const AccountDetailsSection = ({
           ) : null}
           <fieldset className="flex items-center gap-2">
             <legend>
-            <label htmlFor={`${uid}-personal-address-is-business-address`} className="flex cursor-pointer items-center gap-2">
-              <Checkbox
-                id={`${uid}-personal-address-is-business-address`}
-                disabled={isFormDisabled}
-                onChange={(e) =>
-                  e.target.checked &&
-                  updateComplianceInfo({
-                    street_address: complianceInfo.business_street_address,
-                    city: complianceInfo.business_city,
-                    state: complianceInfo.business_state,
-                    zip_code: complianceInfo.business_zip_code,
-                  })
-                }
-              />
-              Same as business
-            </label>
+              <label
+                htmlFor={`${uid}-personal-address-is-business-address`}
+                className="flex cursor-pointer items-center gap-2"
+              >
+                <Checkbox
+                  id={`${uid}-personal-address-is-business-address`}
+                  disabled={isFormDisabled}
+                  onChange={(e) =>
+                    e.target.checked &&
+                    updateComplianceInfo({
+                      street_address: complianceInfo.business_street_address,
+                      city: complianceInfo.business_city,
+                      state: complianceInfo.business_state,
+                      zip_code: complianceInfo.business_zip_code,
+                    })
+                  }
+                />
+                Same as business
+              </label>
             </legend>
           </fieldset>
         </section>
       ) : null}
       <section className="grid gap-8">
-        <div className="grid grid-flow-col auto-cols-fr gap-6">
+        <div className="grid auto-cols-fr grid-flow-col gap-6">
           <fieldset className="space-y-2">
             <legend>
               <label htmlFor={`${uid}-creator-first-name`}>First name</label>
@@ -674,7 +677,7 @@ const AccountDetailsSection = ({
         ) : null}
         {complianceInfo.country === "JP" ? (
           <>
-            <div className="grid grid-flow-col auto-cols-fr gap-6">
+            <div className="grid auto-cols-fr grid-flow-col gap-6">
               <fieldset className="space-y-2">
                 <legend>
                   <label htmlFor={`${uid}-creator-first-name-kanji`}>First name (Kanji)</label>
@@ -706,7 +709,7 @@ const AccountDetailsSection = ({
                 />
               </fieldset>
             </div>
-            <div className="grid grid-flow-col auto-cols-fr gap-6">
+            <div className="grid auto-cols-fr grid-flow-col gap-6">
               <fieldset className="space-y-2">
                 <legend>
                   <label htmlFor={`${uid}-creator-first-name-kana`}>First name (Kana)</label>
@@ -741,7 +744,7 @@ const AccountDetailsSection = ({
           </>
         ) : null}
         {complianceInfo.country === "JP" ? (
-          <div className="grid grid-flow-col auto-cols-fr gap-6">
+          <div className="grid auto-cols-fr grid-flow-col gap-6">
             <fieldset className="space-y-2">
               <legend>
                 <label htmlFor={`${uid}-creator-building-number`}>Block / Building Number</label>
@@ -806,7 +809,7 @@ const AccountDetailsSection = ({
           </fieldset>
         )}
       </section>
-      <div className="grid grid-flow-col auto-cols-fr gap-6">
+      <div className="grid auto-cols-fr grid-flow-col gap-6">
         <fieldset className="space-y-2">
           <legend>
             <label htmlFor={`${uid}-creator-city`}>City</label>
@@ -1045,11 +1048,10 @@ const AccountDetailsSection = ({
           <label>Date of Birth</label>
           <a href="/help/article/260-your-payout-settings-page">Why does Gumroad need this information?</a>
         </legend>
-        <div className="grid grid-flow-col auto-cols-fr gap-6">
-          <fieldset className={classNames(
-              "space-y-2",
-              complianceInfo.country !== "US" ? "col-start-2" : "col-start-1"
-            )}>
+        <div className="grid auto-cols-fr grid-flow-col gap-6">
+          <fieldset
+            className={classNames("space-y-2", complianceInfo.country !== "US" ? "col-start-2" : "col-start-1")}
+          >
             <Select
               id={`${uid}-creator-dob-month`}
               disabled={isFormDisabled}
@@ -1068,10 +1070,7 @@ const AccountDetailsSection = ({
             </Select>
           </fieldset>
           <fieldset
-            className={classNames(
-              "space-y-2",
-              complianceInfo.country !== "US" ? "col-start-1" : "col-start-2"
-            )}
+            className={classNames("space-y-2", complianceInfo.country !== "US" ? "col-start-1" : "col-start-2")}
           >
             <Select
               id={`${uid}-creator-dob-day`}
@@ -1143,11 +1142,7 @@ const AccountDetailsSection = ({
             user.need_full_ssn ? (
               <div className="space-y-2">
                 <legend>
-                  <label
-                    htmlFor={`${uid}-social-security-number-full`}
-                  >
-                    Social Security Number
-                  </label>
+                  <label htmlFor={`${uid}-social-security-number-full`}>Social Security Number</label>
                 </legend>
                 <Input
                   id={`${uid}-social-security-number-full`}

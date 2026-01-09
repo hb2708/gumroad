@@ -7,14 +7,12 @@ import { SettingPage } from "$app/parsers/settings";
 
 import { Button } from "$app/components/Button";
 import { Checkbox } from "$app/components/Checkbox";
-
 import { Icon } from "$app/components/Icons";
 import { Input } from "$app/components/Input";
 import { useLoggedInUser } from "$app/components/LoggedInUser";
-import { Layout as SettingsLayout } from "$app/components/Settings/Layout";
 import { ToggleSettingRow } from "$app/components/SettingRow";
+import { Layout as SettingsLayout } from "$app/components/Settings/Layout";
 import { Textarea } from "$app/components/Textarea";
-
 import { TypeSafeOptionSelect } from "$app/components/TypeSafeOptionSelect";
 import { Placeholder } from "$app/components/ui/Placeholder";
 import { Row, RowActions, RowContent, RowDetails, Rows } from "$app/components/ui/Rows";
@@ -106,11 +104,7 @@ export default function ThirdPartyAnalyticsPage() {
                   <fieldset className="space-y-2">
                     <legend className="flex w-full justify-between">
                       <label htmlFor={`${uid}googleAnalyticsId`}>Google Analytics Property ID</label>
-                      <a
-                        href="/help/article/174-third-party-analytics"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
+                      <a href="/help/article/174-third-party-analytics" target="_blank" rel="noreferrer">
                         Learn more
                       </a>
                     </legend>
@@ -125,11 +119,7 @@ export default function ThirdPartyAnalyticsPage() {
                   <fieldset className="space-y-2">
                     <legend className="flex w-full justify-between">
                       <label htmlFor={`${uid}facebookPixel`}>Facebook Pixel</label>
-                      <a
-                        href="/help/article/174-third-party-analytics"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
+                      <a href="/help/article/174-third-party-analytics" target="_blank" rel="noreferrer">
                         Learn more
                       </a>
                     </legend>
@@ -141,7 +131,7 @@ export default function ThirdPartyAnalyticsPage() {
                       onChange={(evt) => updateThirdPartyAnalytics({ facebook_pixel_id: evt.target.value })}
                     />
                   </fieldset>
-                  <label className="flex cursor-pointer select-none items-center gap-2">
+                  <label className="flex cursor-pointer items-center gap-2 select-none">
                     <Checkbox
                       checked={!thirdPartyAnalytics.skip_free_sale_analytics}
                       onChange={(evt) => updateThirdPartyAnalytics({ skip_free_sale_analytics: !evt.target.checked })}
@@ -167,11 +157,7 @@ export default function ThirdPartyAnalyticsPage() {
                   <fieldset className="space-y-2">
                     <legend className="flex w-full justify-between">
                       <label htmlFor={`${uid}facebookMetaTag`}>Facebook Business</label>
-                      <a
-                        href="/help/article/290-facebook-domain-verification"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
+                      <a href="/help/article/290-facebook-domain-verification" target="_blank" rel="noreferrer">
                         Learn more
                       </a>
                     </legend>
@@ -181,7 +167,7 @@ export default function ThirdPartyAnalyticsPage() {
                       value={thirdPartyAnalytics.facebook_meta_tag}
                       onChange={(evt) => updateThirdPartyAnalytics({ facebook_meta_tag: evt.target.value })}
                     />
-                    <small className="text-muted text-sm">
+                    <small className="text-sm text-muted">
                       Enter meta tag containing the Facebook domain verification code.
                     </small>
                   </fieldset>
@@ -200,7 +186,7 @@ export default function ThirdPartyAnalyticsPage() {
               </a>
             </div>
           </header>
-          <div className="flex flex-col gap-4 lg:mb-8 gap-8">
+          <div className="flex flex-col gap-4 gap-8 lg:mb-8">
             {thirdPartyAnalytics.snippets.length > 0 ? (
               <>
                 <Rows role="list">

@@ -829,7 +829,7 @@ export default function PaymentsPage() {
         ) : null}
 
         {(errors?.base && errors.base.length > 0) || clientErrorMessage ? (
-          <div className="pb-12 p-4 md:p-8">
+          <div className="p-4 pb-12 md:p-8">
             <Alert role="status" variant="danger">
               {errors?.base && errors.base.length > 0 ? (
                 errors.error_code?.[0] === "stripe_error" ? (
@@ -932,17 +932,13 @@ export default function PaymentsPage() {
           <header className="flex flex-col gap-3">
             <h2>Payout method</h2>
             <div>
-              <a
-                href="/help/article/260-your-payout-settings-page"
-                target="_blank"
-                rel="noreferrer"
-              >
+              <a href="/help/article/260-your-payout-settings-page" target="_blank" rel="noreferrer">
                 Any questions about these payout settings?
               </a>
             </div>
           </header>
           <section className="flex flex-col gap-8">
-            <div className="grid gap-4 grid-cols-[repeat(auto-fit,minmax(min(15rem,100%),1fr))]" role="radiogroup">
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(min(15rem,100%),1fr))] gap-4" role="radiogroup">
               {props.bank_account_details.show_bank_account ? (
                 <>
                   <Button
@@ -951,7 +947,7 @@ export default function PaymentsPage() {
                     aria-checked={selectedPayoutMethod === "bank"}
                     onClick={() => updatePayoutMethod("bank")}
                     disabled={props.is_form_disabled}
-                    className="items-start! justify-start! gap-3! text-left aria-checked:-translate-x-1 aria-checked:-translate-y-1 aria-checked:shadow aria-checked:bg-background aria-checked:transform-none!"
+                    className="items-start! justify-start! gap-3! text-left aria-checked:-translate-x-1 aria-checked:-translate-y-1 aria-checked:transform-none! aria-checked:bg-background aria-checked:shadow"
                   >
                     <Icon name="bank" />
                     <h4 className="font-bold">Bank Account</h4>
@@ -963,7 +959,7 @@ export default function PaymentsPage() {
                       aria-checked={selectedPayoutMethod === "card"}
                       onClick={() => updatePayoutMethod("card")}
                       disabled={props.is_form_disabled}
-                      className="items-start! justify-start! gap-3! text-left aria-checked:-translate-x-1 aria-checked:-translate-y-1 aria-checked:shadow aria-checked:bg-background aria-checked:transform-none!"
+                      className="items-start! justify-start! gap-3! text-left aria-checked:-translate-x-1 aria-checked:-translate-y-1 aria-checked:transform-none! aria-checked:bg-background aria-checked:shadow"
                     >
                       <Icon name="card" />
                       <h4 className="font-bold">Debit Card</h4>
@@ -978,7 +974,7 @@ export default function PaymentsPage() {
                   aria-checked={selectedPayoutMethod === "paypal"}
                   onClick={() => updatePayoutMethod("paypal")}
                   disabled={props.is_form_disabled}
-                  className="items-start! justify-start! gap-3! text-left aria-checked:-translate-x-1 aria-checked:-translate-y-1 aria-checked:shadow aria-checked:bg-background aria-checked:transform-none!"
+                  className="items-start! justify-start! gap-3! text-left aria-checked:-translate-x-1 aria-checked:-translate-y-1 aria-checked:transform-none! aria-checked:bg-background aria-checked:shadow"
                 >
                   <Icon name="shop-window" />
                   <h4 className="font-bold">PayPal</h4>
@@ -993,7 +989,7 @@ export default function PaymentsPage() {
                   aria-checked={selectedPayoutMethod === "stripe"}
                   onClick={() => updatePayoutMethod("stripe")}
                   disabled={props.is_form_disabled}
-                  className="items-start! justify-start! gap-3! text-left aria-checked:-translate-x-1 aria-checked:-translate-y-1 aria-checked:shadow aria-checked:bg-background aria-checked:transform-none!"
+                  className="items-start! justify-start! gap-3! text-left aria-checked:-translate-x-1 aria-checked:-translate-y-1 aria-checked:transform-none! aria-checked:bg-background aria-checked:shadow"
                 >
                   <Icon name="stripe" />
                   <h4 className="font-bold">Connect to Stripe</h4>

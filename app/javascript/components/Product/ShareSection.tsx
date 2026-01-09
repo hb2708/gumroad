@@ -1,16 +1,16 @@
-import { classNames } from "$app/utils/classNames";
 import * as React from "react";
 
 import { Wishlist, addToWishlist, createWishlist } from "$app/data/wishlists";
+import { classNames } from "$app/utils/classNames";
 import { assertResponseError } from "$app/utils/request";
 
 import { Button } from "$app/components/Button";
 import { ComboBox } from "$app/components/ComboBox";
-import { Input } from "$app/components/Input";
 import { CopyToClipboard } from "$app/components/CopyToClipboard";
 import { useAppDomain } from "$app/components/DomainSettings";
 import { FacebookShareButton } from "$app/components/FacebookShareButton";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { useLoggedInUser } from "$app/components/LoggedInUser";
 import { Popover } from "$app/components/Popover";
 import { Product, WishlistForProduct } from "$app/components/Product";
@@ -101,7 +101,7 @@ export const ShareSection = ({
             <div
               {...props}
               className={classNames(
-                "bg-background flex h-12 cursor-pointer items-center gap-2 rounded border border-border px-4 transition-colors",
+                "flex h-12 cursor-pointer items-center gap-2 rounded border border-border bg-background px-4 transition-colors",
                 "focus-within:ring-2 focus-within:ring-accent focus-within:outline-none",
                 dropdownState.state !== "closed" && "rounded-b-none",
               )}
@@ -137,7 +137,7 @@ export const ShareSection = ({
             ) : dropdownState.state === "creating" ? (
               <form
                 role={props.role}
-                className="flex gap-2 px-4 py-2 "
+                className="flex gap-2 px-4 py-2"
                 onSubmit={(e) => {
                   e.preventDefault();
                   if (!dropdownState.newWishlistName.trim()) {

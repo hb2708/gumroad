@@ -1,5 +1,6 @@
-import { Select } from "$app/components/TypeSafeOptionSelect";
 import * as React from "react";
+
+import { Select } from "$app/components/TypeSafeOptionSelect";
 
 export type Product = {
   name: string;

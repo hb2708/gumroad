@@ -7,13 +7,13 @@ import { isUrlValid } from "$app/utils/url";
 
 import { Button } from "$app/components/Button";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { useLoggedInUser } from "$app/components/LoggedInUser";
 import { NavigationButtonInertia } from "$app/components/NavigationButton";
 import { showAlert } from "$app/components/server-components/Alert";
 import { PageHeader } from "$app/components/ui/PageHeader";
 
 import { AffiliateForm, AffiliateProduct } from "./Form";
-import { Input } from "$app/components/Input";
 
 type Props = {
   products: AffiliateProduct[];

@@ -7,7 +7,8 @@ export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
   trailing?: React.ReactNode;
 };
 
-export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, leading, trailing, ...props }, ref) => (
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(
+  ({ className, leading, trailing, ...props }, ref) => (
     <div
       className={classNames(
         "flex h-12 items-center gap-2 rounded border px-4",
@@ -29,6 +30,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className
       />
       {trailing}
     </div>
-  ));
+  ),
+);
 
 Input.displayName = "Input";

@@ -413,15 +413,11 @@ export default function AffiliatesIndex() {
                     <TableCaption>
                       <div className="flex items-center justify-between">
                         Affiliates
-                          <WithTooltip tip="Export" position="top">
-                            <NavigationButton
-                              color="primary"
-                              href={Routes.export_affiliates_path()}
-                              aria-label="Export"
-                            >
-                              <Icon name="download" />
-                            </NavigationButton>
-                          </WithTooltip>
+                        <WithTooltip tip="Export" position="top">
+                          <NavigationButton color="primary" href={Routes.export_affiliates_path()} aria-label="Export">
+                            <Icon name="download" />
+                          </NavigationButton>
+                        </WithTooltip>
                       </div>
                     </TableCaption>
                     <TableHeader>

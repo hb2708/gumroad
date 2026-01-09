@@ -48,24 +48,24 @@ export const CreditCardForm = ({ card, can_remove, read_only }: Props) => {
         <Input
           readOnly
           aria-label="Saved credit card"
-          className="bg-body h-12"
+          className="h-12 bg-body"
           leading={<Icon name="outline-credit-card" />}
           trailing={<span className="ml-auto text-sm text-muted">{card.expiration_date}</span>}
           value={card.number}
         />
         {read_only ? null : (
-            <WithTooltip
-              tip={
-                can_remove
-                  ? null
-                  : "Please cancel any active preorder or membership purchases before removing your credit card."
-              }
-              position="top"
-            >
-              <Button outline color="danger" onClick={remove} disabled={!can_remove || status === "removing"}>
-                {status === "removing" ? "Removing..." : "Remove credit card"}
-              </Button>
-            </WithTooltip>
+          <WithTooltip
+            tip={
+              can_remove
+                ? null
+                : "Please cancel any active preorder or membership purchases before removing your credit card."
+            }
+            position="top"
+          >
+            <Button outline color="danger" onClick={remove} disabled={!can_remove || status === "removing"}>
+              {status === "removing" ? "Removing..." : "Remove credit card"}
+            </Button>
+          </WithTooltip>
         )}
       </div>
     </section>

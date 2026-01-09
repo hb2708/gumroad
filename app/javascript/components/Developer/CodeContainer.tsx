@@ -24,7 +24,9 @@ export const CodeContainer = ({ codeToCopy }: { codeToCopy: string }) => {
         </CopyToClipboard>
       </legend>
       <Textarea id={uid} ref={textAreaRef} aria-label="Widget code" readOnly value={codeToCopy} />
-      <small className="text-muted">We highly recommend you have an SSL certificate to increase buyer confidence.</small>
+      <small className="text-muted">
+        We highly recommend you have an SSL certificate to increase buyer confidence.
+      </small>
     </fieldset>
   );
 };
