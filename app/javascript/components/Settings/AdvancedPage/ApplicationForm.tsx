@@ -1,19 +1,19 @@
 import { router } from "@inertiajs/react";
 import { DirectUpload } from "@rails/activestorage";
-import { classNames } from "$app/utils/classNames";
 import placeholderAppIcon from "images/gumroad_app.png";
 import * as React from "react";
 import { cast } from "ts-safe-cast";
 
+import { classNames } from "$app/utils/classNames";
 import FileUtils from "$app/utils/file";
 import { getImageDimensionsFromFile } from "$app/utils/image";
 import { asyncVoid } from "$app/utils/promise";
 import { assertResponseError, request, ResponseError } from "$app/utils/request";
 
 import { Button } from "$app/components/Button";
+import { Input } from "$app/components/Input";
 import { showAlert } from "$app/components/server-components/Alert";
 import { WithTooltip } from "$app/components/WithTooltip";
-import { Input } from "$app/components/Input";
 
 export type Application = {
   id: string;
@@ -137,7 +137,12 @@ const ApplicationForm = ({ application }: { application?: Application }) => {
           <label>Application icon</label>
         </legend>
         <div className="flex items-start gap-4">
-          <img src={icon?.url || placeholderAppIcon} width={80} height={80} className="rounded-sm border border-border" />
+          <img
+            src={icon?.url || placeholderAppIcon}
+            width={80}
+            height={80}
+            className="rounded-sm border border-border"
+          />
           <Button onClick={() => iconInputRef.current?.click()} disabled={isUploadingIcon || isSubmitting}>
             {isUploadingIcon ? "Uploading..." : "Upload icon"}
           </Button>

@@ -17,9 +17,9 @@ import { Tab, Tabs } from "$app/components/Developer/Tabs";
 import { useHasChanged } from "$app/components/Developer/useHasChanged";
 import { DomainSettingsProvider, useDomains } from "$app/components/DomainSettings";
 import { Icon } from "$app/components/Icons";
-import { Toggle } from "$app/components/Toggle";
-import { Textarea } from "$app/components/Textarea";
 import { Input } from "$app/components/Input";
+import { Textarea } from "$app/components/Textarea";
+import { Toggle } from "$app/components/Toggle";
 
 type WidgetsPageProps = {
   default_product: Product;

@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { classNames } from "$app/utils/classNames";
 import {
   CurrencyCode,
   formatPriceCentsWithoutCurrencySymbolAndComma,
@@ -7,7 +8,6 @@ import {
   parseCurrencyUnitStringToCents,
 } from "$app/utils/currency";
 
-import { classNames } from "$app/utils/classNames";
 import { Icon } from "$app/components/Icons";
 import { Input } from "$app/components/Input";
 import { TypeSafeOptionSelect } from "$app/components/TypeSafeOptionSelect";
@@ -61,7 +61,7 @@ export const PriceInput = React.forwardRef<
       onChange?.(cents);
     };
     const currencyPill = currencyCodeSelector ? (
-      <Pill className="relative flex shrink-0 cursor-pointer items-center justify-center border border-border px-3 -ml-2">
+      <Pill className="relative -ml-2 flex shrink-0 cursor-pointer items-center justify-center border border-border px-3">
         {getLongCurrencySymbol(currencyCode)}
         <Icon name="outline-cheveron-down" />
         <TypeSafeOptionSelect
@@ -72,11 +72,11 @@ export const PriceInput = React.forwardRef<
             id: currencyCode,
             label: getLongCurrencySymbol(currencyCode),
           }))}
-          className="absolute inset-0 opacity-0 border-none p-0 [&_select]:absolute [&_select]:inset-0 [&_select]:h-full [&_select]:w-full [&_select]:cursor-pointer"
+          className="absolute inset-0 border-none p-0 opacity-0 [&_select]:absolute [&_select]:inset-0 [&_select]:h-full [&_select]:w-full [&_select]:cursor-pointer"
         />
       </Pill>
     ) : (
-      <Pill className="relative flex h-10 shrink-0 items-center justify-center border border-border px-3 -ml-2">
+      <Pill className="relative -ml-2 flex h-10 shrink-0 items-center justify-center border border-border px-3">
         {getLongCurrencySymbol(currencyCode)}
       </Pill>
     );

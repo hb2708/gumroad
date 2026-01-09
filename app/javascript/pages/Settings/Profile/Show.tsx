@@ -13,7 +13,6 @@ import { Button } from "$app/components/Button";
 import { useDomains } from "$app/components/DomainSettings";
 import { Icon } from "$app/components/Icons";
 import { Input } from "$app/components/Input";
-import { Textarea } from "$app/components/Textarea";
 import { useLoggedInUser } from "$app/components/LoggedInUser";
 import { Preview } from "$app/components/Preview";
 import { PreviewSidebar, WithPreviewSidebar } from "$app/components/PreviewSidebar";
@@ -22,6 +21,7 @@ import { showAlert } from "$app/components/server-components/Alert";
 import { Profile, Props as ProfileProps } from "$app/components/server-components/Profile";
 import { Layout as SettingsLayout } from "$app/components/Settings/Layout";
 import { SocialAuthButton } from "$app/components/SocialAuthButton";
+import { Textarea } from "$app/components/Textarea";
 
 type ProfilePageProps = {
   profile_settings: ProfileSettings;
@@ -189,14 +189,14 @@ export default function SettingsPage() {
             </header>
             <fieldset>
               <legend className="mb-2 font-bold">Font</legend>
-              <div className="radio-buttons grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" role="radiogroup">
+              <div className="radio-buttons grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3" role="radiogroup">
                 {FONT_CHOICES.map((font) => (
                   <Button
                     role="radio"
                     key={font}
                     aria-checked={font === profileSettings.font}
                     onClick={() => updateProfileSettings({ font })}
-                    className="items-start! justify-start! gap-3! text-left aria-checked:-translate-x-1 aria-checked:-translate-y-1 aria-checked:shadow aria-checked:bg-background aria-checked:transform-none!"
+                    className="items-start! justify-start! gap-3! text-left aria-checked:-translate-x-1 aria-checked:-translate-y-1 aria-checked:transform-none! aria-checked:bg-background aria-checked:shadow"
                     style={{ fontFamily: font === "ABC Favorit" ? undefined : font }}
                     disabled={!canUpdate}
                   >
@@ -214,12 +214,12 @@ export default function SettingsPage() {
                 <legend>
                   <label htmlFor={`${uid}-backgroundColor`}>Background color</label>
                 </legend>
-                <div className="relative overflow-hidden p-4 mt-2 border rounded-full w-fit">
+                <div className="relative mt-2 w-fit overflow-hidden rounded-full border p-4">
                   <input
                     id={`${uid}-backgroundColor`}
                     value={profileSettings.background_color}
                     type="color"
-                    className="tailwind-override absolute w-[200%] h-[200%] max-w-none -left-1/2 -top-1/2 border-none cursor-pointer"
+                    className="tailwind-override absolute -top-1/2 -left-1/2 h-[200%] w-[200%] max-w-none cursor-pointer border-none"
                     onChange={(evt) => updateProfileSettings({ background_color: evt.target.value })}
                     disabled={!canUpdate}
                   />
@@ -229,12 +229,12 @@ export default function SettingsPage() {
                 <legend>
                   <label htmlFor={`${uid}-highlightColor`}>Highlight color</label>
                 </legend>
-                <div className="relative overflow-hidden p-4 mt-2 border rounded-full w-fit">
+                <div className="relative mt-2 w-fit overflow-hidden rounded-full border p-4">
                   <input
                     id={`${uid}-highlightColor`}
                     value={profileSettings.highlight_color}
                     type="color"
-                    className="tailwind-override absolute w-[200%] h-[200%] max-w-none -left-1/2 -top-1/2 border-none cursor-pointer"
+                    className="tailwind-override absolute -top-1/2 -left-1/2 h-[200%] w-[200%] max-w-none cursor-pointer border-none"
                     onChange={(evt) => updateProfileSettings({ highlight_color: evt.target.value })}
                     disabled={!canUpdate}
                   />

@@ -13,22 +13,20 @@ export type Application = {
   icon_url: string | null;
 };
 
-const CreateApplication = () => {
-  return (
-    <>
-      <header className="flex flex-col gap-3 lg:row-[1/3]">
-        <h2>Applications</h2>
-        <a href="/help/article/280-create-application-api" target="_blank" rel="noreferrer">
-          Learn more
-        </a>
-      </header>
-      <div className="flex flex-col gap-8">
-        <h3>Create application</h3>
-        <ApplicationForm />
-      </div>
-    </>
-  );
-};
+const CreateApplication = () => (
+  <>
+    <header className="flex flex-col gap-3 lg:row-[1/3]">
+      <h2>Applications</h2>
+      <a href="/help/article/280-create-application-api" target="_blank" rel="noreferrer">
+        Learn more
+      </a>
+    </header>
+    <div className="flex flex-col gap-8">
+      <h3>Create application</h3>
+      <ApplicationForm />
+    </div>
+  </>
+);
 
 const ApplicationList = (props: { applications: Application[] }) => {
   const [applications, setApplications] = React.useState(props.applications);

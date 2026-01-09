@@ -1,9 +1,9 @@
 import { useForm, usePage } from "@inertiajs/react";
-import { classNames } from "$app/utils/classNames";
 import * as React from "react";
 import { cast } from "ts-safe-cast";
 
 import { SettingPage } from "$app/parsers/settings";
+import { classNames } from "$app/utils/classNames";
 import { asyncVoid } from "$app/utils/promise";
 import { request, assertResponseError } from "$app/utils/request";
 
@@ -11,7 +11,6 @@ import { Button } from "$app/components/Button";
 import { Checkbox } from "$app/components/Checkbox";
 import { Input } from "$app/components/Input";
 import { Modal } from "$app/components/Modal";
-import { Select } from "$app/components/TypeSafeOptionSelect";
 import { NumberInput } from "$app/components/NumberInput";
 import { showAlert } from "$app/components/server-components/Alert";
 import { ToggleSettingRow } from "$app/components/SettingRow";
@@ -20,6 +19,7 @@ import { Layout } from "$app/components/Settings/Layout";
 import { TagInput } from "$app/components/TagInput";
 import { Textarea } from "$app/components/Textarea";
 import { Toggle } from "$app/components/Toggle";
+import { Select } from "$app/components/TypeSafeOptionSelect";
 import { Pill } from "$app/components/ui/Pill";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "$app/components/ui/Table";
 
@@ -486,7 +486,7 @@ export default function MainPage() {
                       }
                     />
 
-                    <label className="flex cursor-pointer select-none items-center gap-2">
+                    <label className="flex cursor-pointer items-center gap-2 select-none">
                       <Checkbox
                         disabled={isFormDisabled}
                         checked={
@@ -539,7 +539,9 @@ export default function MainPage() {
               disabled={isFormDisabled}
               label="Prevent others from adding me as an affiliate"
             />
-            <small className="text-muted">When enabled, other users cannot add you as an affiliate or request to become your affiliate.</small>
+            <small className="text-muted">
+              When enabled, other users cannot add you as an affiliate or request to become your affiliate.
+            </small>
           </fieldset>
         </section>
         {props.invalidate_active_sessions ? <InvalidateActiveSessionsSection /> : null}
@@ -574,7 +576,9 @@ const InvalidateActiveSessionsSection = () => {
         <button className="underline" type="button" onClick={() => setIsConfirmationDialogOpen(true)}>
           Sign out from all active sessions
         </button>
-        <small className="text-muted">You will be signed out from all your active sessions including this session.</small>
+        <small className="text-muted">
+          You will be signed out from all your active sessions including this session.
+        </small>
       </fieldset>
       {isConfirmationDialogOpen ? (
         <Modal

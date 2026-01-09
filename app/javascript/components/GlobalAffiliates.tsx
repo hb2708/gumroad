@@ -8,11 +8,11 @@ import { Button } from "$app/components/Button";
 import { CopyToClipboard } from "$app/components/CopyToClipboard";
 import { useDomains, useDiscoverUrl } from "$app/components/DomainSettings";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { LoadingSpinner } from "$app/components/LoadingSpinner";
 import { Alert } from "$app/components/ui/Alert";
 import { Card, CardContent } from "$app/components/ui/Card";
 import { Pill } from "$app/components/ui/Pill";
-import { Input } from "$app/components/Input";
 
 const DiscoverLinkSection = ({
   globalAffiliateId,
@@ -36,28 +36,28 @@ const DiscoverLinkSection = ({
           Learn more
         </a>
       </header>
-        <fieldset className="flex flex-col gap-2">
-          <legend className="font-bold mb-2">Your Discover affiliate link</legend>
-          <Input
-            readOnly
-            className="bg-background opacity-100"
-            value={discoverUrl}
-            trailing={
-              <CopyToClipboard text={discoverUrl} tooltipPosition="bottom">
-                <Pill asChild>
-                  <Button className="rounded-full! px-3! py-2!">Copy link</Button>
-                </Pill>
-              </CopyToClipboard>
-            }
-          />
-          <small className="text-muted">
-            You will be attributed any sales you referred within {cookieExpiryDays} days, even if they're for different
-            products you linked to.
-          </small>
-          <small className="text-muted">
-            To date, you have made <strong>{totalSales}</strong> from Gumroad referrals.
-          </small>
-        </fieldset>
+      <fieldset className="flex flex-col gap-2">
+        <legend className="mb-2 font-bold">Your Discover affiliate link</legend>
+        <Input
+          readOnly
+          className="bg-background opacity-100"
+          value={discoverUrl}
+          trailing={
+            <CopyToClipboard text={discoverUrl} tooltipPosition="bottom">
+              <Pill asChild>
+                <Button className="rounded-full! px-3! py-2!">Copy link</Button>
+              </Pill>
+            </CopyToClipboard>
+          }
+        />
+        <small className="text-muted">
+          You will be attributed any sales you referred within {cookieExpiryDays} days, even if they're for different
+          products you linked to.
+        </small>
+        <small className="text-muted">
+          To date, you have made <strong>{totalSales}</strong> from Gumroad referrals.
+        </small>
+      </fieldset>
     </section>
   );
 };
@@ -86,60 +86,60 @@ const LinkGenerationSection = ({
           to the end of any link or use the generator to automatically add it for you.
         </p>
       </header>
-        <fieldset className="flex flex-col gap-2">
-          <legend className="font-bold mb-2">Destination page URL</legend>
-          <Input
-            placeholder="Paste a destination page URL"
-            value={inputLink}
-            onChange={(evt) => setInputLink(evt.target.value)}
-            aria-invalid={hasError}
-            trailing={
-              <Pill asChild>
-                <Button
-                  className="rounded-full! px-3! py-2!"
-                  onClick={() => {
-                    try {
-                      const url = new URL(inputLink);
-                      const isGumroadDomain = [rootDomain, shortDomain].some((domain) => url.host.endsWith(domain));
-                      if (isGumroadDomain) {
-                        url.searchParams.set(affiliateQueryParam, globalAffiliateId.toString());
-                        setGeneratedLink(url.toString());
-                        setHasError(false);
-                      } else {
-                        setHasError(true);
-                      }
-                    } catch {
+      <fieldset className="flex flex-col gap-2">
+        <legend className="mb-2 font-bold">Destination page URL</legend>
+        <Input
+          placeholder="Paste a destination page URL"
+          value={inputLink}
+          onChange={(evt) => setInputLink(evt.target.value)}
+          aria-invalid={hasError}
+          trailing={
+            <Pill asChild>
+              <Button
+                className="rounded-full! px-3! py-2!"
+                onClick={() => {
+                  try {
+                    const url = new URL(inputLink);
+                    const isGumroadDomain = [rootDomain, shortDomain].some((domain) => url.host.endsWith(domain));
+                    if (isGumroadDomain) {
+                      url.searchParams.set(affiliateQueryParam, globalAffiliateId.toString());
+                      setGeneratedLink(url.toString());
+                      setHasError(false);
+                    } else {
                       setHasError(true);
                     }
-                  }}
-                >
-                  Generate link
-                </Button>
+                  } catch {
+                    setHasError(true);
+                  }
+                }}
+              >
+                Generate link
+              </Button>
+            </Pill>
+          }
+        />
+        {hasError ? (
+          <Alert variant="danger">
+            Invalid URL. Make sure your URL is a Gumroad URL and starts with "http" or "https".
+          </Alert>
+        ) : null}
+      </fieldset>
+      <fieldset className="flex flex-col gap-2">
+        <legend className="mb-2 font-bold">Your affiliate link</legend>
+        <Input
+          readOnly
+          className="bg-background opacity-100"
+          value={generatedLink}
+          trailing={
+            <CopyToClipboard text={generatedLink} tooltipPosition="bottom">
+              <Pill asChild>
+                <Button className="rounded-full! px-3! py-2!">Copy link</Button>
               </Pill>
-            }
-          />
-          {hasError ? (
-            <Alert variant="danger">
-              Invalid URL. Make sure your URL is a Gumroad URL and starts with "http" or "https".
-            </Alert>
-          ) : null}
-        </fieldset>
-        <fieldset className="flex flex-col gap-2">
-          <legend className="font-bold mb-2">Your affiliate link</legend>
-          <Input
-            readOnly
-            className="bg-background opacity-100"
-            value={generatedLink}
-            trailing={
-              <CopyToClipboard text={generatedLink} tooltipPosition="bottom">
-                <Pill asChild>
-                  <Button className="rounded-full! px-3! py-2!">Copy link</Button>
-                </Pill>
-              </CopyToClipboard>
-            }
-          />
-          <small className="text-muted">Copy this affiliate link and share it with your audience</small>
-        </fieldset>
+            </CopyToClipboard>
+          }
+        />
+        <small className="text-muted">Copy this affiliate link and share it with your audience</small>
+      </fieldset>
     </section>
   );
 };
@@ -173,88 +173,88 @@ const ProductEligibilitySection = ({
           Discover by entering the product URL here.
         </p>
       </header>
-        <fieldset className="flex flex-col gap-2">
-          <legend className="font-bold mb-2">Product URL</legend>
-          <Input
-            placeholder="Paste a product URL"
-            value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
+      <fieldset className="flex flex-col gap-2">
+        <legend className="mb-2 font-bold">Product URL</legend>
+        <Input
+          placeholder="Paste a product URL"
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setResult({
+              isLoading: false,
+              product: null,
+              error: null,
+            });
+          }}
+          onKeyDown={asyncVoid(async (e) => {
+            if (result.isLoading || e.key !== "Enter") return;
+            setResult({
+              isLoading: true,
+              product: null,
+              error: null,
+            });
+            if (query.length === 0) {
               setResult({
                 isLoading: false,
                 product: null,
-                error: null,
+                error: {
+                  type: "danger",
+                  message: "URL must be provided",
+                },
               });
-            }}
-            onKeyDown={asyncVoid(async (e) => {
-              if (result.isLoading || e.key !== "Enter") return;
-              setResult({
-                isLoading: true,
-                product: null,
-                error: null,
-              });
-              if (query.length === 0) {
+              return;
+            }
+
+            try {
+              const product = await searchGlobalAffiliatesProductEligibility({ query });
+              if (product.recommendable) {
+                const url = new URL(product.short_url);
+                url.searchParams.set(affiliateQueryParam, globalAffiliateId.toString());
+                setResult({
+                  isLoading: false,
+                  product: { ...product, short_url: url.toString() },
+                  error: null,
+                });
+              } else {
                 setResult({
                   isLoading: false,
                   product: null,
                   error: {
-                    type: "danger",
-                    message: "URL must be provided",
+                    type: "warning",
+                    message: "This product is not eligible for the Gumroad Affiliate Program.",
                   },
                 });
-                return;
               }
-
-              try {
-                const product = await searchGlobalAffiliatesProductEligibility({ query });
-                if (product.recommendable) {
-                  const url = new URL(product.short_url);
-                  url.searchParams.set(affiliateQueryParam, globalAffiliateId.toString());
-                  setResult({
-                    isLoading: false,
-                    product: { ...product, short_url: url.toString() },
-                    error: null,
-                  });
-                } else {
-                  setResult({
-                    isLoading: false,
-                    product: null,
-                    error: {
-                      type: "warning",
-                      message: "This product is not eligible for the Gumroad Affiliate Program.",
-                    },
-                  });
-                }
-              } catch (e) {
-                assertResponseError(e);
-                setResult({
-                  isLoading: false,
-                  product: null,
-                  error: { type: "danger", message: e.message },
-                });
-              }
-            })}
-            trailing={<Icon name="solid-search" className="text-muted" />}
-          />
-        </fieldset>
-        {result.isLoading ? <LoadingSpinner /> : null}
-        {result.product ? (
-          <Card>
-            <CardContent>
-              <a href={result.product.short_url} target="_blank" rel="noreferrer" className="grow">
-                {result.product.name}
-              </a>
-              <span>{result.product.formatted_price}</span>
-              <CopyToClipboard text={result.product.short_url} tooltipPosition="bottom">
-                <Button>
-                  <Icon name="link" />
-                  Copy link
-                </Button>
-              </CopyToClipboard>
-            </CardContent>
-          </Card>
-        ) : null}
-        {result.error ? <Alert variant={result.error.type}>{result.error.message}</Alert> : null}
+            } catch (e) {
+              assertResponseError(e);
+              setResult({
+                isLoading: false,
+                product: null,
+                error: { type: "danger", message: e.message },
+              });
+            }
+          })}
+          trailing={<Icon name="solid-search" className="text-muted" />}
+        />
+      </fieldset>
+      {result.isLoading ? <LoadingSpinner /> : null}
+      {result.product ? (
+        <Card>
+          <CardContent>
+            <a href={result.product.short_url} target="_blank" rel="noreferrer" className="grow">
+              {result.product.name}
+            </a>
+            <span>{result.product.formatted_price}</span>
+            <CopyToClipboard text={result.product.short_url} tooltipPosition="bottom">
+              <Button>
+                <Icon name="link" />
+                Copy link
+              </Button>
+            </CopyToClipboard>
+          </CardContent>
+        </Card>
+      ) : null}
+      {result.error ? <Alert variant={result.error.type}>{result.error.message}</Alert> : null}
     </section>
   );
 };

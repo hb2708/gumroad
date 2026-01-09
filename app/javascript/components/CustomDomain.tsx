@@ -1,12 +1,12 @@
-import { classNames } from "$app/utils/classNames";
 import * as React from "react";
 import { cast } from "ts-safe-cast";
 
+import { classNames } from "$app/utils/classNames";
 import { asyncVoid } from "$app/utils/promise";
 import { assertResponseError, request, ResponseError } from "$app/utils/request";
 
-import { Input } from "$app/components/Input";
 import { Button } from "$app/components/Button";
+import { Input } from "$app/components/Input";
 import { Pill } from "$app/components/ui/Pill";
 
 type VerificationState = "initial" | "verifying" | "success" | "failure";
@@ -113,7 +113,7 @@ const CustomDomain = ({
           ) : null
         }
       />
-      {verificationInfo.message && (
+      {verificationInfo.message ? (
         <small
           className={classNames({
             "text-success": verificationInfo.state === "success",
@@ -122,7 +122,7 @@ const CustomDomain = ({
         >
           {verificationInfo.message}
         </small>
-      )}
+      ) : null}
     </fieldset>
   );
 };

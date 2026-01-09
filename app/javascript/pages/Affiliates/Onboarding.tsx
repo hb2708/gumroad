@@ -7,12 +7,13 @@ import { isUrlValid } from "$app/utils/url";
 
 import { Button } from "$app/components/Button";
 import { CopyToClipboard } from "$app/components/CopyToClipboard";
+import { Input } from "$app/components/Input";
 import { useLoggedInUser } from "$app/components/LoggedInUser";
 import { NavigationButtonInertia } from "$app/components/NavigationButton";
 import { NumberInput } from "$app/components/NumberInput";
-import { Toggle } from "$app/components/Toggle";
 import { showAlert } from "$app/components/server-components/Alert";
 import { ToggleSettingRow } from "$app/components/SettingRow";
+import { Toggle } from "$app/components/Toggle";
 import { PageHeader } from "$app/components/ui/PageHeader";
 import { Placeholder, PlaceholderImage } from "$app/components/ui/Placeholder";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "$app/components/ui/Table";
@@ -20,7 +21,6 @@ import { Tabs, Tab } from "$app/components/ui/Tabs";
 import { WithTooltip } from "$app/components/WithTooltip";
 
 import placeholderImage from "$assets/images/placeholders/affiliate-signup-form.png";
-import { Input } from "$app/components/Input";
 
 type InvalidProductAttrs = Set<"commission" | "destination_url">;
 
@@ -155,23 +155,23 @@ export default function AffiliatesOnboarding() {
               <legend>
                 <label htmlFor="affiliate-link">Your affiliate link</label>
               </legend>
-                <Input
-                  type="text"
-                  id="affiliate-link"
-                  readOnly
-                  disabled={!enableAffiliateLink}
-                  defaultValue={affiliateRequestUrl}
-                  className="bg-background opacity-100"
-                  trailing={
-                    enableAffiliateLink ? (
-                      <CopyToClipboard text={affiliateRequestUrl}>
-                        <button type="button" className="underline">
-                          Copy link
-                        </button>
-                      </CopyToClipboard>
-                    ) : null
-                  }
-                />
+              <Input
+                type="text"
+                id="affiliate-link"
+                readOnly
+                disabled={!enableAffiliateLink}
+                defaultValue={affiliateRequestUrl}
+                className="bg-background opacity-100"
+                trailing={
+                  enableAffiliateLink ? (
+                    <CopyToClipboard text={affiliateRequestUrl}>
+                      <button type="button" className="underline">
+                        Copy link
+                      </button>
+                    </CopyToClipboard>
+                  ) : null
+                }
+              />
               {enableAffiliateLink ? null : (
                 <div>
                   You must enable and set up the commission for at least one product before sharing your affiliate link.
@@ -261,30 +261,30 @@ const ProductRow = ({ product, disabled, onChange }: ProductRowProps) => {
         <fieldset>
           <NumberInput onChange={(value) => onChange({ fee_percent: value ?? 0 })} value={product.fee_percent}>
             {(inputProps) => (
-                <Input
-                  type="text"
-                  autoComplete="off"
-                  placeholder="Commission"
-                  disabled={disabled || !product.enabled}
-                  aria-invalid={invalidAttrs.has("commission")}
-                  trailing={"%"}
-                  {...inputProps}
-                />
+              <Input
+                type="text"
+                autoComplete="off"
+                placeholder="Commission"
+                disabled={disabled || !product.enabled}
+                aria-invalid={invalidAttrs.has("commission")}
+                trailing="%"
+                {...inputProps}
+              />
             )}
           </NumberInput>
         </fieldset>
       </TableCell>
       <TableCell>
         <fieldset>
-            <Input
-              type="text"
-              aria-label="destination_url"
-              disabled={disabled || !product.enabled}
-              placeholder="https://link.com"
-              value={product.destination_url || ""}
-              onChange={(event) => onChange({ destination_url: event.target.value.trim() })}
-              aria-invalid={invalidAttrs.has("destination_url")}
-            />
+          <Input
+            type="text"
+            aria-label="destination_url"
+            disabled={disabled || !product.enabled}
+            placeholder="https://link.com"
+            value={product.destination_url || ""}
+            onChange={(event) => onChange({ destination_url: event.target.value.trim() })}
+            aria-invalid={invalidAttrs.has("destination_url")}
+          />
         </fieldset>
       </TableCell>
     </TableRow>

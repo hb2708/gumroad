@@ -5,9 +5,9 @@ import type { FormFieldName, User } from "$app/types/payments";
 import { classNames } from "$app/utils/classNames";
 
 import { Button } from "$app/components/Button";
-import { Alert } from "$app/components/ui/Alert";
 import { Input } from "$app/components/Input";
 import { Select } from "$app/components/TypeSafeOptionSelect";
+import { Alert } from "$app/components/ui/Alert";
 
 export type BankAccount =
   | {
@@ -947,7 +947,9 @@ const BankAccountSection = ({
             aria-invalid={errorFieldNames.has("account_holder_full_name")}
             onChange={(evt) => updateBankAccount({ account_holder_full_name: evt.target.value })}
           />
-          <small className={classNames("text-muted", errorFieldNames.has("account_holder_full_name") && "text-danger")}>Must exactly match the name on your bank account</small>
+          <small className={classNames("text-muted", errorFieldNames.has("account_holder_full_name") && "text-danger")}>
+            Must exactly match the name on your bank account
+          </small>
         </fieldset>
         <div className="grid gap-2">
           {showNewBankAccount ? (
@@ -971,11 +973,7 @@ const BankAccountSection = ({
                   </fieldset>
                   <fieldset className="space-y-2">
                     <legend>
-                      <label
-                        htmlFor={`${uid}-institution-number`}
-                      >
-                        Institution #
-                      </label>
+                      <label htmlFor={`${uid}-institution-number`}>Institution #</label>
                     </legend>
                     <Input
                       type="text"
