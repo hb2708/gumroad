@@ -11,9 +11,11 @@ import { asyncVoid } from "$app/utils/promise";
 import { assertResponseError } from "$app/utils/request";
 import { writeQueryParams } from "$app/utils/url";
 
-import { Button } from "$app/components/Button";
+import { Button, NavigationButton } from "$app/components/Button";
+import { Checkbox } from "$app/components/Checkbox";
 import { useDiscoverUrl } from "$app/components/DomainSettings";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { Layout } from "$app/components/Library/Layout";
 import { Modal } from "$app/components/Modal";
 import { Popover } from "$app/components/Popover";
@@ -21,6 +23,7 @@ import { AuthorByline } from "$app/components/Product/AuthorByline";
 import { Thumbnail } from "$app/components/Product/Thumbnail";
 import { Select } from "$app/components/Select";
 import { showAlert } from "$app/components/server-components/Alert";
+import { TypeSafeOptionSelect } from "$app/components/TypeSafeOptionSelect";
 import { Alert } from "$app/components/ui/Alert";
 import { Placeholder, PlaceholderImage } from "$app/components/ui/Placeholder";
 import { ProductCard, ProductCardFigure, ProductCardHeader, ProductCardFooter } from "$app/components/ui/ProductCard";
@@ -112,16 +115,15 @@ export const Card = ({
             trigger={<Icon name="three-dots" />}
             open={isPopoverOpen}
             onToggle={setIsPopoverOpen}
+            dropdownClassName="!px-0 !py-2"
           >
-            <div role="menu">
-              <div role="menuitem" onClick={toggleArchived}>
-                <Icon name="archive" />
-                &ensp;{purchase.is_archived ? "Unarchive" : "Archive"}
-              </div>
-              <div className="danger" role="menuitem" onClick={() => onDelete()}>
-                <Icon name="trash2" />
-                &ensp;Delete permanently
-              </div>
+            <div onClick={toggleArchived} className="cursor-pointer px-4 py-2 hover:bg-body">
+              <Icon name="archive" />
+              &ensp;{purchase.is_archived ? "Unarchive" : "Archive"}
+            </div>
+            <div onClick={() => onDelete()} className="cursor-pointer px-4 py-2 text-danger hover:bg-body">
+              <Icon name="trash2" />
+              &ensp;Delete permanently
             </div>
           </Popover>
         </div>
@@ -355,15 +357,15 @@ export default function LibraryPage() {
             {state.results.length === 0 ? (
               <>
                 <PlaceholderImage src={placeholder} />
-                <h2 className="library-header">You haven't bought anything... yet!</h2>
+                <h2>You haven't bought anything... yet!</h2>
                 Once you do, it'll show up here so you can download, watch, read, or listen to all your purchases.
-                <a href={discoverUrl} className="button accent">
+                <NavigationButton color="accent" href={discoverUrl}>
                   Discover products
-                </a>
+                </NavigationButton>
               </>
             ) : (
               <>
-                <h2 className="library-header">You've archived all your products.</h2>
+                <h2>You've archived all your products.</h2>
                 <Button
                   color="accent"
                   onClick={(e) => {
@@ -415,45 +417,45 @@ export default function LibraryPage() {
               {isDesktop || mobileFiltersExpanded ? (
                 <>
                   <div>
-                    <div className="input input-wrapper product-search__wrapper">
-                      <Icon name="solid-search" />
-                      <input
-                        className="search-products"
-                        placeholder="Search products"
-                        value={enteredQuery}
-                        onChange={handleSearchChange}
-                        onBlur={handleSearchBlur}
-                        onKeyDown={handleSearchKeyDown}
-                      />
-                    </div>
+                    <Input
+                      leading={<Icon name="solid-search" className="text-muted" />}
+                      placeholder="Search products"
+                      value={enteredQuery}
+                      onChange={handleSearchChange}
+                      onBlur={handleSearchBlur}
+                      onKeyDown={handleSearchKeyDown}
+                    />
                   </div>
-                  <div className="sort">
-                    <fieldset>
+                  <div>
+                    <fieldset className="space-y-2">
                       <legend>
-                        <label className="filter-header" htmlFor={sortUid}>
+                        <label className="cursor-pointer" htmlFor={sortUid}>
                           Sort by
                         </label>
                       </legend>
-                      <select
+                      <TypeSafeOptionSelect
                         id={sortUid}
                         value={state.search.sort}
-                        onChange={(e) =>
+                        options={[
+                          { id: "recently_updated", label: "Recently Updated" },
+                          { id: "purchase_date", label: "Purchase Date" },
+                        ]}
+                        onChange={(value) =>
                           dispatch({
                             type: "update-search",
-                            search: { sort: e.target.value === "purchase_date" ? "purchase_date" : "recently_updated" },
+                            search: { sort: value },
                           })
                         }
-                      >
-                        <option value="recently_updated">Recently Updated</option>
-                        <option value="purchase_date">Purchase Date</option>
-                      </select>
+                      />
                     </fieldset>
                   </div>
                   {bundles.length > 0 ? (
                     <div>
-                      <fieldset>
+                      <fieldset className="space-y-2">
                         <legend>
-                          <label htmlFor={bundlesUid}>Bundles</label>
+                          <label className="cursor-pointer" htmlFor={bundlesUid}>
+                            Bundles
+                          </label>
                         </legend>
                         <Select
                           inputId={bundlesUid}
@@ -473,38 +475,38 @@ export default function LibraryPage() {
                     </div>
                   ) : null}
                   <div className="creator">
-                    <fieldset role="group">
-                      <legend className="filter-header">Creator</legend>
-                      <label>
-                        All Creators
-                        <input
-                          type="checkbox"
-                          checked={state.search.creators.length === 0}
-                          onClick={() => dispatch({ type: "update-search", search: { creators: [] } })}
-                          readOnly
-                        />
-                      </label>
-                      {(showingAllCreators ? creators : creators.slice(0, 5)).map((creator) => (
-                        <label key={creator.id}>
-                          {creator.name}
-                          <span className="shrink-0 text-muted">{`(${creator.count})`}</span>
-                          <input
-                            type="checkbox"
-                            checked={state.search.creators.includes(creator.id)}
-                            onClick={() =>
-                              dispatch({
-                                type: "update-search",
-                                search: {
-                                  creators: state.search.creators.includes(creator.id)
-                                    ? state.search.creators.filter((id) => id !== creator.id)
-                                    : [...state.search.creators, creator.id],
-                                },
-                              })
-                            }
-                            readOnly
+                    <fieldset className="space-y-2">
+                      <legend>Creator</legend>
+                      <div className="space-y-2">
+                        <label className="flex cursor-pointer justify-between gap-2">
+                          All Creators
+                          <Checkbox
+                            checked={state.search.creators.length === 0}
+                            onChange={() => dispatch({ type: "update-search", search: { creators: [] } })}
                           />
                         </label>
-                      ))}
+                        {(showingAllCreators ? creators : creators.slice(0, 5)).map((creator) => (
+                          <label key={creator.id} className="flex cursor-pointer justify-between gap-2">
+                            <div className="flex-1 truncate">
+                              <span>{creator.name}</span>
+                              <span className="ml-2 text-muted">{`(${creator.count})`}</span>
+                            </div>
+                            <Checkbox
+                              checked={state.search.creators.includes(creator.id)}
+                              onChange={() =>
+                                dispatch({
+                                  type: "update-search",
+                                  search: {
+                                    creators: state.search.creators.includes(creator.id)
+                                      ? state.search.creators.filter((id) => id !== creator.id)
+                                      : [...state.search.creators, creator.id],
+                                  },
+                                })
+                              }
+                            />
+                          </label>
+                        ))}
+                      </div>
                       <div>
                         {creators.length > 5 && !showingAllCreators ? (
                           <button className="underline" onClick={() => setShowingAllCreators(true)}>
@@ -517,13 +519,11 @@ export default function LibraryPage() {
                   {archivedCount > 0 ? (
                     <div className="archived">
                       <fieldset role="group">
-                        <label className="filter-archived">
+                        <label className="flex cursor-pointer justify-between gap-2">
                           Show archived only
-                          <input
-                            type="checkbox"
+                          <Checkbox
                             checked={state.search.showArchivedOnly}
-                            readOnly
-                            onClick={() =>
+                            onChange={() =>
                               dispatch({
                                 type: "update-search",
                                 search: { showArchivedOnly: !state.search.showArchivedOnly },
