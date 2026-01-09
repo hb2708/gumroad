@@ -2,8 +2,8 @@ import * as React from "react";
 
 import type { FormFieldName, PayoutMethod } from "$app/types/payments";
 
-import { Alert } from "$app/components/ui/Alert";
 import { Input } from "$app/components/Input";
+import { Alert } from "$app/components/ui/Alert";
 
 const PayPalEmailSection = ({
   countrySupportsNativePayouts,

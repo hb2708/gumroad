@@ -89,7 +89,9 @@ const ProductLevelSupportEmailRow = React.memo(
                 required={supportEmail.product_ids.length > 0}
                 onChange={handleEmailChange}
               />
-              <small className="mt-2 text-muted">This reply-to email will appear on receipts for selected products.</small>
+              <small className="mt-2 text-muted">
+                This reply-to email will appear on receipts for selected products.
+              </small>
             </fieldset>
             <fieldset>
               <legend className="mb-2">
@@ -175,7 +177,7 @@ export const ProductLevelSupportEmailsForm = React.memo(
             />
           ))}
         </Rows>
-        <AddProductLevelSupportEmailButton onClick={handleAddEmail}/>
+        <AddProductLevelSupportEmailButton onClick={handleAddEmail} />
       </div>
     );
   },

@@ -13,8 +13,8 @@ import ReactSelect, {
   SelectInstance,
 } from "react-select";
 
-import { classNames } from "$app/utils/classNames";
 import { escapeRegExp } from "$app/utils";
+import { classNames } from "$app/utils/classNames";
 
 import { Icon } from "$app/components/Icons";
 import { Pill } from "$app/components/ui/Pill";
@@ -199,7 +199,7 @@ const Control = <IsMulti extends boolean>(props: ControlProps<Option, IsMulti>) 
   return (
     <components.Control
       className={classNames(
-        "bg-background flex h-12 items-center gap-2 rounded border border-border px-4",
+        "flex h-12 items-center gap-2 rounded border border-border bg-background px-4",
         "focus-within:ring-2 focus-within:ring-accent focus-within:outline-none",
         props.isDisabled && "opacity-30",
         props.selectProps.menuIsOpen && "rounded-b-none",
@@ -266,7 +266,7 @@ const Option = <IsMulti extends boolean>(props: OptionProps<Option, IsMulti>) =>
     <div
       className={classNames(
         "flex cursor-pointer items-center px-4 py-2",
-        props.isFocused ? "bg-primary text-primary-foreground" : "bg-transparent"
+        props.isFocused ? "bg-primary text-primary-foreground" : "bg-transparent",
       )}
       ref={props.innerRef}
       id={innerProps.id}

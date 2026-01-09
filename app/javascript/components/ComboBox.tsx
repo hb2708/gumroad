@@ -1,5 +1,6 @@
-import { classNames } from "$app/utils/classNames";
 import * as React from "react";
+
+import { classNames } from "$app/utils/classNames";
 
 import { useGlobalEventListener } from "$app/components/useGlobalEventListener";
 import { useOnOutsideClick } from "$app/components/useOnOutsideClick";
@@ -112,11 +113,7 @@ export const ComboBox = <Option extends unknown>({
               tabIndex: 0,
             }),
       })}
-      <div
-        hidden={!open}
-        className="absolute top-full left-0 z-50 w-full"
-        onMouseDown={(e) => e.preventDefault()}
-      >
+      <div hidden={!open} className="absolute top-full left-0 z-50 w-full" onMouseDown={(e) => e.preventDefault()}>
         <datalist
           id={uid}
           className="block overflow-auto rounded-b border border-border bg-background py-2 shadow"

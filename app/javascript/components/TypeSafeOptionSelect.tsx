@@ -1,34 +1,31 @@
 import * as React from "react";
+
 import { classNames } from "$app/utils/classNames";
+
 import { Icon } from "$app/components/Icons";
 
 export type SelectProps = React.SelectHTMLAttributes<HTMLSelectElement>;
 
-export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
-  ({ className, children, ...props }, ref) => (
-    <div
-      className={classNames(
-        "relative flex h-12 items-center rounded border bg-background",
-        props["aria-invalid"] ? "border-danger" : "border-border",
-        "focus-within:outline-none focus-within:ring-2 focus-within:ring-accent",
-        props.disabled && "cursor-not-allowed opacity-50",
-        className,
-      )}
+export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(({ className, children, ...props }, ref) => (
+  <div
+    className={classNames(
+      "relative flex h-12 items-center rounded border bg-background",
+      props["aria-invalid"] ? "border-danger" : "border-border",
+      "focus-within:ring-2 focus-within:ring-accent focus-within:outline-none",
+      props.disabled && "cursor-not-allowed opacity-50",
+      className,
+    )}
+  >
+    <select
+      ref={ref}
+      className="h-full w-full appearance-none bg-transparent pr-10 pl-4 font-[inherit] text-base text-foreground outline-none"
+      {...props}
     >
-      <select
-        ref={ref}
-        className="h-full w-full appearance-none bg-transparent pl-4 pr-10 font-[inherit] text-base text-foreground outline-none"
-        {...props}
-      >
-        {children}
-      </select>
-      <Icon
-        name="outline-cheveron-down"
-        className="pointer-events-none absolute right-4 text-xl text-muted"
-      />
-    </div>
-  ),
-);
+      {children}
+    </select>
+    <Icon name="outline-cheveron-down" className="pointer-events-none absolute right-4 text-xl text-muted" />
+  </div>
+));
 
 Select.displayName = "Select";
 
@@ -47,7 +44,8 @@ export const TypeSafeOptionSelect = <OptionId extends string>({
   className,
   disabled,
   ...rest
-}: TypeSafeOptionSelectProps<OptionId> & Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "value" | "onChange"> & { name?: string }) => (
+}: TypeSafeOptionSelectProps<OptionId> &
+  Omit<React.SelectHTMLAttributes<HTMLSelectElement>, "value" | "onChange"> & { name?: string }) => (
   <Select
     value={value}
     /* eslint-disable-next-line @typescript-eslint/consistent-type-assertions */

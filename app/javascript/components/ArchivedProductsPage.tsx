@@ -3,8 +3,8 @@ import React from "react";
 import { Membership, Product } from "$app/data/products";
 
 import { Icon } from "$app/components/Icons";
-import { NavigationButtonInertia } from "$app/components/NavigationButton";
 import { Input } from "$app/components/Input";
+import { NavigationButtonInertia } from "$app/components/NavigationButton";
 import { PaginationProps } from "$app/components/Pagination";
 import { Popover } from "$app/components/Popover";
 import { ProductsLayout } from "$app/components/ProductsLayout";
