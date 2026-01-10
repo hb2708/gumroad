@@ -69,7 +69,7 @@ export default function WishlistsPage() {
                   Discoverable&nbsp;
                   <WithTooltip
                     tip={
-                      <span className="font-normal" style={{ textWrap: "initial" }}>
+                      <span className="font-normal text-wrap">
                         May be recommended on Gumroad Discover. You will receive an affiliate commission for any sales.
                       </span>
                     }
@@ -85,10 +85,10 @@ export default function WishlistsPage() {
               {wishlists.map((wishlist) => (
                 <TableRow key={wishlist.id}>
                   <TableCell>
-                    <a href={wishlist.url} target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>
+                    <a href={wishlist.url} target="_blank" rel="noreferrer" className="no-underline">
                       <h4>{wishlist.name}</h4>
                     </a>
-                    <a href={wishlist.url} target="_blank" rel="noreferrer">
+                    <a href={wishlist.url} target="_blank" rel="noreferrer" className="underline">
                       <small>{wishlist.url}</small>
                     </a>
                   </TableCell>
