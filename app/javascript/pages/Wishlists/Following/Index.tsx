@@ -5,6 +5,7 @@ import { cast } from "ts-safe-cast";
 import { unfollowWishlist } from "$app/data/wishlists";
 import { assertResponseError } from "$app/utils/request";
 
+import { Button } from "$app/components/Button";
 import { Icon } from "$app/components/Icons";
 import { Layout } from "$app/components/Library/Layout";
 import { Popover } from "$app/components/Popover";
@@ -64,7 +65,7 @@ export default function WishlistsFollowingPage() {
               {wishlists.map((wishlist) => (
                 <TableRow key={wishlist.id}>
                   <TableCell>
-                    <a href={wishlist.url} target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>
+                    <a href={wishlist.url} target="_blank" rel="noreferrer" className="no-underline">
                       <h4>{wishlist.name}</h4>
                     </a>
                     <a href={wishlist.url} target="_blank" rel="noreferrer">
@@ -73,19 +74,23 @@ export default function WishlistsFollowingPage() {
                   </TableCell>
                   <TableCell>{wishlist.product_count}</TableCell>
                   <TableCell>
-                    <a
-                      href={wishlist.creator.profile_url}
-                      style={{ display: "flex", alignItems: "center", gap: "var(--spacer-2)" }}
-                    >
+                    <a href={wishlist.creator.profile_url} className="flex items-center gap-2">
                       <img className="user-avatar" src={wishlist.creator.avatar_url} />
                       <span>{wishlist.creator.name}</span>
                     </a>
                   </TableCell>
                   <TableCell>
                     <div className="flex flex-wrap gap-3 lg:justify-end">
-                      <Popover aria-label="Actions" trigger={<Icon name="three-dots" />}>
+                      <Popover
+                        aria-label="Actions"
+                        trigger={
+                          <Button aria-label="Actions">
+                            <Icon name="three-dots" />
+                          </Button>
+                        }
+                      >
                         <div role="menu">
-                          <div role="menuitem" className="danger" onClick={() => void destroy(wishlist)}>
+                          <div role="menuitem" className="text-danger" onClick={() => void destroy(wishlist)}>
                             <Icon name="bookmark-x" /> Unfollow
                           </div>
                         </div>
