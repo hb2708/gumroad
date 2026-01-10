@@ -68,10 +68,10 @@ const Row = ({ review, onChange }: { review: Review; onChange: (review: Review) 
       <TableCell className="break-words">
         <div>
           <a href={review.product.url} target="_blank" rel="noreferrer">
-            <h4>{review.product.name}</h4>
+            <h4 className="font-bold">{review.product.name}</h4>
           </a>
           By{" "}
-          <a href={review.product.seller.url} target="_blank" rel="noreferrer">
+          <a href={review.product.seller.url} target="_blank" rel="noreferrer" className="underline">
             {review.product.seller.name}
           </a>
         </div>
@@ -159,7 +159,7 @@ export default function ReviewsIndex({
                           prevPurchases.filter((prevPurchase) => prevPurchase.id !== purchase.id),
                         );
                       }}
-                      style={{ display: "grid", gap: "var(--spacer-4)" }}
+                      className="grid gap-4"
                       ref={(el) => (inputRefs.current[purchase.id] = el)}
                     />
                   }
@@ -202,7 +202,12 @@ export default function ReviewsIndex({
             <NavigationButton href={discoverUrl} color="accent">
               Discover products
             </NavigationButton>
-            <a href="/help/article/344-rate-and-review-your-purchase" target="_blank" rel="noreferrer">
+            <a
+              href="/help/article/344-rate-and-review-your-purchase"
+              target="_blank"
+              rel="noreferrer"
+              className="underline"
+            >
               Learn more about reviews
             </a>
           </Placeholder>
