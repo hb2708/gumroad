@@ -3,6 +3,7 @@ import * as React from "react";
 
 import { setProductRating } from "$app/data/product_reviews";
 import { assertDefined } from "$app/utils/assert";
+import { classNames } from "$app/utils/classNames";
 import FileUtils from "$app/utils/file";
 import { assertResponseError } from "$app/utils/request";
 import { summarizeUploadProgress } from "$app/utils/summarizeUploadProgress";
@@ -15,6 +16,7 @@ import { ReviewVideoRecorder } from "$app/components/ReviewForm/ReviewVideoRecor
 import { VideoState, ReviewVideoRecorderUiState } from "$app/components/ReviewForm/ReviewVideoRecorderCommon";
 import { useReviewVideoUploader } from "$app/components/ReviewForm/useReviewVideoUploader";
 import { showAlert } from "$app/components/server-components/Alert";
+import { Textarea } from "$app/components/Textarea";
 import { Alert } from "$app/components/ui/Alert";
 
 export type Review = {
@@ -103,9 +105,9 @@ export const ReviewForm = React.forwardRef<
     onChange?: (review: Review) => void;
     preview?: boolean;
     disabledStatus?: string | null;
-    style?: React.CSSProperties;
+    className?: string;
   }
->(({ permalink, purchaseId, purchaseEmailDigest, review, onChange, preview, disabledStatus, style }, ref) => {
+>(({ permalink, purchaseId, purchaseEmailDigest, review, onChange, preview, disabledStatus, className }, ref) => {
   const appDomain = useAppDomain();
   const [isLoading, setIsLoading] = React.useState(false);
   const [rating, setRating] = React.useState<number | null>(review?.rating ?? null);
@@ -238,20 +240,20 @@ export const ReviewForm = React.forwardRef<
   };
 
   const reviewModeRadioButtons = (
-    <div role="radiogroup" className="radio-buttons grid-cols-2!">
+    <div className="grid grid-cols-2 gap-4">
       <Button
-        role="radio"
         aria-checked={reviewMode === "text"}
         onClick={() => setReviewMode("text")}
         disabled={disabled || reviewVideoRecorderBusy}
+        className="cursor-pointer items-start! justify-start! gap-3! text-left aria-checked:-translate-x-1 aria-checked:-translate-y-1 aria-checked:bg-active-bg aria-checked:shadow aria-checked:hover:-translate-x-1! aria-checked:hover:-translate-y-1! aria-checked:hover:transform-none!"
       >
         <div className="w-full text-center">Text review</div>
       </Button>
       <Button
-        role="radio"
         aria-checked={reviewMode === "video"}
         onClick={() => setReviewMode("video")}
         disabled={disabled || reviewVideoRecorderBusy}
+        className="cursor-pointer items-start! justify-start! gap-3! text-left aria-checked:-translate-x-1 aria-checked:-translate-y-1 aria-checked:bg-active-bg aria-checked:shadow aria-checked:hover:-translate-x-1! aria-checked:hover:-translate-y-1! aria-checked:hover:transform-none!"
       >
         <div className="w-full text-center">Video review</div>
       </Button>
@@ -261,7 +263,7 @@ export const ReviewForm = React.forwardRef<
   const textReview = viewing ? (
     <div className="w-full">{message ? `"${message}"` : "No written review"}</div>
   ) : (
-    <textarea
+    <Textarea
       id={uid}
       value={message}
       onChange={(evt) => setMessage(evt.target.value)}
@@ -316,16 +318,15 @@ export const ReviewForm = React.forwardRef<
     </Button>
   );
 
-  const disabledStatusWarning = disabledStatus && (
-    <Alert role="status" variant="warning">
-      {disabledStatus}
-    </Alert>
-  );
+  const disabledStatusWarning = disabledStatus && <Alert variant="warning">{disabledStatus}</Alert>;
 
   return (
-    <form onSubmit={(event) => void handleSubmit(event)} style={style} className="flex flex-col items-start!">
-      {error ? <p className="text-red"> {error} </p> : null}
-      <div className="flex flex-wrap justify-between gap-2">
+    <form
+      onSubmit={(event) => void handleSubmit(event)}
+      className={classNames("flex flex-col items-start gap-4", className)}
+    >
+      {error ? <p className="text-danger"> {error} </p> : null}
+      <div className="flex w-full flex-wrap gap-2">
         <label htmlFor={uid}>{viewing ? "Your rating:" : "Liked it? Give it a rating:"}</label>
         <RatingSelector currentRating={rating} onChangeCurrentRating={setRating} disabled={disabled || viewing} />
       </div>
