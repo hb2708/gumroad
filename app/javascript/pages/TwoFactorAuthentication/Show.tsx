@@ -4,6 +4,7 @@ import * as React from "react";
 import { AuthAlert } from "$app/components/AuthAlert";
 import { Layout } from "$app/components/Authentication/Layout";
 import { Button } from "$app/components/Button";
+import { Input } from "$app/components/Input";
 import { useOriginalLocation } from "$app/components/useOriginalLocation";
 
 type PageProps = {
@@ -44,14 +45,16 @@ function TwoFactorAuthentication() {
         </>
       }
     >
-      <form onSubmit={handleSubmit}>
-        <section>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-12">
+        <section className="flex flex-col gap-8 pb-12">
           <AuthAlert />
-          <fieldset>
+          <fieldset className="flex flex-col space-y-2">
             <legend>
-              <label htmlFor={uid}>Authentication Token</label>
+              <label className="cursor-pointer" htmlFor={uid}>
+                Authentication Token
+              </label>
             </legend>
-            <input
+            <Input
               id={uid}
               type="text"
               value={form.data.token}
