@@ -1,16 +1,3 @@
-import { Link, router } from "@inertiajs/react";
-import classNames from "classnames";
-import * as React from "react";
-
-import { exportPayouts } from "$app/data/balance";
-import { formatPriceCentsWithCurrencySymbol, formatPriceCentsWithoutCurrencySymbol } from "$app/utils/currency";
-import { asyncVoid } from "$app/utils/promise";
-import { assertResponseError } from "$app/utils/request";
-
-import { Button, NavigationButton } from "$app/components/Button";
-import { Icon } from "$app/components/Icons";
-import { useLoggedInUser } from "$app/components/LoggedInUser";
-import { Modal } from "$app/components/Modal";
 import { PaginationProps } from "$app/components/Pagination";
 import { ExportPayoutsPopover } from "$app/components/Payouts/ExportPayoutsPopover";
 import { showAlert } from "$app/components/server-components/Alert";
@@ -71,7 +58,6 @@ export type BankAccount =
       bank_account_type: "CARD";
       routing_number: string;
       account_number: string;
-      bank_name?: string;
     }
   | { payout_method_type: "bank"; bank_account_type: "CH"; account_number: string }
   | { payout_method_type: "bank"; bank_account_type: "CZ"; account_number: string }
