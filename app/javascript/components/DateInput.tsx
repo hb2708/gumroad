@@ -3,6 +3,7 @@ import { formatInTimeZone, fromZonedTime } from "date-fns-tz";
 import * as React from "react";
 
 import { useCurrentSeller } from "$app/components/CurrentSeller";
+import { Input } from "$app/components/Input";
 import { Pill } from "$app/components/ui/Pill";
 
 type Props = {
@@ -33,10 +34,15 @@ export const DateInput = ({
     if (!ref.current) return;
     ref.current.value = formatDate(value);
   }, [value]);
-  const input = (
-    <input
+
+  const trailing =
+    withTime && seller ? (
+      <Pill className="-mr-2 shrink-0">{formatInTimeZone(value ?? new Date(), seller.timeZone.name, "z")}</Pill>
+    ) : undefined;
+
+  return (
+    <Input
       ref={ref}
-      className="appearance-none"
       type={withTime ? "datetime-local" : "date"}
       {...rest}
       defaultValue={formatDate(value)}
@@ -48,14 +54,7 @@ export const DateInput = ({
         if (!isNaN(parsed.getTime()) && parsed.getFullYear() >= 1000) onChange?.(parsed);
         else onChange?.(null);
       }}
+      trailing={trailing}
     />
-  );
-  return withTime && seller ? (
-    <div className="input">
-      {input}
-      <Pill className="-mr-2 shrink-0">{formatInTimeZone(value ?? new Date(), seller.timeZone.name, "z")}</Pill>
-    </div>
-  ) : (
-    <div className="input">{input}</div>
   );
 };

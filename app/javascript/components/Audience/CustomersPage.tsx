@@ -1,5 +1,4 @@
 import { DirectUpload, Blob } from "@rails/activestorage";
-import cx from "classnames";
 import { lightFormat, subMonths } from "date-fns";
 import { format } from "date-fns-tz";
 import * as React from "react";
@@ -46,6 +45,7 @@ import {
   rejectReviewVideo,
 } from "$app/data/customers";
 import { classNames } from "$app/utils/classNames";
+import { classNames } from "$app/utils/classNames";
 import {
   CurrencyCode,
   formatPriceCentsWithCurrencySymbol,
@@ -59,11 +59,13 @@ import { RecurrenceId, recurrenceLabels } from "$app/utils/recurringPricing";
 import { AbortError, assertResponseError } from "$app/utils/request";
 
 import { Button, NavigationButton } from "$app/components/Button";
+import { Checkbox } from "$app/components/Checkbox";
 import { useCurrentSeller } from "$app/components/CurrentSeller";
 import { DateInput } from "$app/components/DateInput";
 import { DateRangePicker } from "$app/components/DateRangePicker";
 import { FileKindIcon } from "$app/components/FileRowContent";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { LoadingSpinner } from "$app/components/LoadingSpinner";
 import { Modal } from "$app/components/Modal";
 import { NavigationButtonInertia } from "$app/components/NavigationButton";
@@ -74,9 +76,10 @@ import { PriceInput } from "$app/components/PriceInput";
 import { RatingStars } from "$app/components/RatingStars";
 import { ReviewResponseForm } from "$app/components/ReviewResponseForm";
 import { ReviewVideoPlayer } from "$app/components/ReviewVideoPlayer";
-import { Select } from "$app/components/Select";
+import { Select as ReactSelect } from "$app/components/Select";
 import { showAlert } from "$app/components/server-components/Alert";
 import { Toggle } from "$app/components/Toggle";
+import { Select } from "$app/components/TypeSafeOptionSelect";
 import { Alert } from "$app/components/ui/Alert";
 import { Card, CardContent } from "$app/components/ui/Card";
 import { PageHeader } from "$app/components/ui/PageHeader";
@@ -271,17 +274,14 @@ const CustomersPage = ({
                 </WithTooltip>
               }
             >
-              <div className="input">
-                <Icon name="solid-search" />
-                <input
-                  ref={searchInputRef}
-                  type="text"
-                  placeholder="Search sales"
-                  value={searchQuery ?? ""}
-                  onChange={(evt) => updateQuery({ query: evt.target.value })}
-                  autoFocus
-                />
-              </div>
+              <Input
+                ref={searchInputRef}
+                placeholder="Search sales"
+                value={searchQuery ?? ""}
+                onChange={(evt) => updateQuery({ query: evt.target.value })}
+                autoFocus
+                leading={<Icon name="solid-search" />}
+              />
             </Popover>
             <Popover
               aria-label="Filter"
@@ -326,7 +326,7 @@ const CustomersPage = ({
                     }}
                     className="grow"
                   >
-                    <fieldset>
+                    <fieldset className="flex flex-col gap-2">
                       <label htmlFor={`${uid}-minimum-amount`}>Paid more than</label>
                       <PriceInput
                         id={`${uid}-minimum-amount`}
@@ -336,7 +336,7 @@ const CustomersPage = ({
                         placeholder="0"
                       />
                     </fieldset>
-                    <fieldset>
+                    <fieldset className="flex flex-col gap-2">
                       <label htmlFor={`${uid}-maximum-amount`}>Paid less than</label>
                       <PriceInput
                         id={`${uid}-maximum-amount`}
@@ -357,7 +357,7 @@ const CustomersPage = ({
                     }}
                     className="grow"
                   >
-                    <fieldset>
+                    <fieldset className="flex flex-col gap-2">
                       <label htmlFor={`${uid}-after-date`}>After</label>
                       <DateInput
                         id={`${uid}-after-date`}
@@ -367,7 +367,7 @@ const CustomersPage = ({
                       />
                       <small suppressHydrationWarning>{`00:00  ${timeZoneAbbreviation}`}</small>
                     </fieldset>
-                    <fieldset>
+                    <fieldset className="flex flex-col gap-2">
                       <label htmlFor={`${uid}-before-date`}>Before</label>
                       <DateInput
                         id={`${uid}-before-date`}
@@ -380,9 +380,9 @@ const CustomersPage = ({
                   </div>
                 </CardContent>
                 <CardContent>
-                  <fieldset className="grow basis-0">
+                  <fieldset className="grow basis-0" className="flex flex-col gap-2">
                     <label htmlFor={`${uid}-country`}>From</label>
-                    <select
+                    <Select
                       id={`${uid}-country`}
                       value={country ?? "Anywhere"}
                       onChange={(evt) =>
@@ -395,7 +395,7 @@ const CustomersPage = ({
                           {country}
                         </option>
                       ))}
-                    </select>
+                    </Select>
                   </fieldset>
                 </CardContent>
                 <CardContent>
@@ -458,7 +458,7 @@ const CustomersPage = ({
       <section className="p-4 md:p-8">
         {customers.length > 0 ? (
           <section className="flex flex-col gap-4">
-            <Table aria-live="polite" className={cx(isLoading && "pointer-events-none opacity-50")}>
+            <Table aria-live="polite" className={classNames(isLoading && "pointer-events-none opacity-50")}>
               <TableCaption>{`All sales (${count})`}</TableCaption>
               <TableHeader>
                 <TableRow>
@@ -624,11 +624,11 @@ const ProductSelect = ({
 }) => {
   const uid = React.useId();
   return (
-    <fieldset className={className}>
+    <fieldset className={className} className="space-y-2">
       <legend>
         <label htmlFor={uid}>{label}</label>
       </legend>
-      <Select
+      <ReactSelect
         inputId={uid}
         options={products.flatMap((product) => [
           { id: product.id, label: product.name, type: "product" },
@@ -1435,7 +1435,7 @@ const AddressSection = ({
                 <legend>
                   <label htmlFor={`${uid}-full-name`}>Full name</label>
                 </legend>
-                <input
+                <Input
                   id={`${uid}-full-name`}
                   type="text"
                   placeholder="Full name"
@@ -1447,7 +1447,7 @@ const AddressSection = ({
                 <legend>
                   <label htmlFor={`${uid}-street-address`}>Street address</label>
                 </legend>
-                <input
+                <Input
                   id={`${uid}-street-address`}
                   type="text"
                   placeholder="Street address"
@@ -1455,12 +1455,12 @@ const AddressSection = ({
                   onChange={(evt) => updateShipping({ street_address: evt.target.value })}
                 />
               </fieldset>
-              <div style={{ display: "grid", gridAutoFlow: "column", gridAutoColumns: "1fr", gap: "var(--spacer-2)" }}>
+              <div className="grid grid-cols-3 gap-2">
                 <fieldset>
                   <legend>
                     <label htmlFor={`${uid}-city`}>City</label>
                   </legend>
-                  <input
+                  <Input
                     id={`${uid}-city`}
                     type="text"
                     placeholder="City"
@@ -1472,7 +1472,7 @@ const AddressSection = ({
                   <legend>
                     <label htmlFor={`${uid}-state`}>State</label>
                   </legend>
-                  <input
+                  <Input
                     id={`${uid}-state`}
                     type="text"
                     placeholder="State"
@@ -1484,7 +1484,7 @@ const AddressSection = ({
                   <legend>
                     <label htmlFor={`${uid}-zip-code`}>ZIP code</label>
                   </legend>
-                  <input
+                  <Input
                     id={`${uid}-zip-code`}
                     type="text"
                     placeholder="ZIP code"
@@ -1495,7 +1495,7 @@ const AddressSection = ({
               </div>
               <fieldset>
                 <label htmlFor={`${uid}-country`}>Country</label>
-                <select
+                <Select
                   id={`${uid}-country`}
                   value={address.country}
                   onChange={(evt) => updateShipping({ country: evt.target.value })}
@@ -1505,7 +1505,7 @@ const AddressSection = ({
                       {country}
                     </option>
                   ))}
-                </select>
+                </Select>
               </fieldset>
               <div
                 style={{
@@ -1588,7 +1588,7 @@ const TrackingSection = ({
         ) : (
           <CardContent>
             <fieldset className="grow basis-0">
-              <input
+              <Input
                 type="text"
                 placeholder="Tracking URL (optional)"
                 value={url}
@@ -2112,7 +2112,7 @@ const SeatSection = ({ seats: currentSeats, onSave }: { seats: number; onSave: (
           <CardContent asChild>
             <fieldset>
               <NumberInput value={seats} onChange={(seats) => setSeats(seats ?? 0)}>
-                {(props) => <input type="number" {...props} min={1} aria-label="Seats" className="grow" />}
+                {(props) => <Input type="number" {...props} min={1} aria-label="Seats" className="grow" />}
               </NumberInput>
               <div
                 style={{
@@ -2579,8 +2579,8 @@ const CallSection = ({ call, onChange }: { call: Call; onChange: (call: Call) =>
               }}
               className="grow"
             >
-              <fieldset>
-                <input
+              <fieldset className="flex flex-col gap-2">
+                <Input
                   type="text"
                   value={callUrl}
                   onChange={(evt) => setCallUrl(evt.target.value)}
@@ -2744,11 +2744,11 @@ const CommissionSection = ({
               ) : null}
               <label className="button">
                 <input
-                  type="file"
+
                   onChange={handleFileChange}
                   disabled={isLoading}
                   multiple
-                  style={{ display: "none" }}
+                  className="hidden"
                 />
                 <Icon name="paperclip" /> Upload files
               </label>
