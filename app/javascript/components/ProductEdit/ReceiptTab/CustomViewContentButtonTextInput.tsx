@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { Input } from "$app/components/Input";
+
 export const CustomViewContentButtonTextInput = ({
   value,
   onChange,
@@ -11,17 +13,18 @@ export const CustomViewContentButtonTextInput = ({
 }) => {
   const uid = React.useId();
   return (
-    <fieldset>
+    <fieldset className="flex flex-col gap-2">
       <label htmlFor={uid}>Button text</label>
-      <input
+      <Input
         id={uid}
-        type="text"
         placeholder="View content"
         value={value ?? ""}
         onChange={(evt) => onChange(evt.target.value)}
         maxLength={maxLength}
       />
-      <small>Customize the download button text on receipts and product pages (max {maxLength} characters).</small>
+      <small className="text-muted">
+        Customize the download button text on receipts and product pages (max {maxLength} characters).
+      </small>
     </fieldset>
   );
 };

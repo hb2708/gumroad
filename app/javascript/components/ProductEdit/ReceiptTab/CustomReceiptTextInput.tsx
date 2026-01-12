@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { Textarea } from "$app/components/Textarea";
+
 export const CustomReceiptTextInput = ({
   value,
   onChange,
@@ -11,9 +13,9 @@ export const CustomReceiptTextInput = ({
 }) => {
   const uid = React.useId();
   return (
-    <fieldset>
+    <fieldset className="flex flex-col gap-2">
       <label htmlFor={uid}>Custom message</label>
-      <textarea
+      <Textarea
         id={uid}
         maxLength={maxLength}
         placeholder="Add any additional information you'd like to include on the receipt."
