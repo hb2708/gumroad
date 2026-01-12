@@ -390,7 +390,7 @@ const SearchBoxPopover = ({ initialQuery, onSearch }: { initialQuery: string; on
           setQuery(newQuery);
           onSearch(newQuery);
         }}
-        leading={<Icon name="solid-search" />}
+        leading={<Icon className="text-muted" name="solid-search" />}
       />
     </Popover>
   );
