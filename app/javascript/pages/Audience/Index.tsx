@@ -71,7 +71,7 @@ function Audience() {
           <Deferred
             data={["audience_data"]}
             fallback={
-              <div className="input">
+              <div className="bg-filled inline-flex h-12 w-full items-center gap-2 rounded border border-border px-4 py-0">
                 <LoadingSpinner />
                 Loading charts...
               </div>
