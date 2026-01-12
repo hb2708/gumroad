@@ -45,7 +45,6 @@ import {
   rejectReviewVideo,
 } from "$app/data/customers";
 import { classNames } from "$app/utils/classNames";
-import { classNames } from "$app/utils/classNames";
 import {
   CurrencyCode,
   formatPriceCentsWithCurrencySymbol,
@@ -380,7 +379,7 @@ const CustomersPage = ({
                   </div>
                 </CardContent>
                 <CardContent>
-                  <fieldset className="grow basis-0" className="flex flex-col gap-2">
+                  <fieldset className="flex grow basis-0 flex-col gap-2">
                     <label htmlFor={`${uid}-country`}>From</label>
                     <Select
                       id={`${uid}-country`}
@@ -624,7 +623,7 @@ const ProductSelect = ({
 }) => {
   const uid = React.useId();
   return (
-    <fieldset className={className} className="space-y-2">
+    <fieldset className={classNames("space-y-2", className)}>
       <legend>
         <label htmlFor={uid}>{label}</label>
       </legend>
@@ -1696,10 +1695,9 @@ const EmailSection = ({
           <CardContent asChild>
             <section>
               <fieldset role="group" className="grow basis-0">
-                <label>
+                <label className="flex items-center gap-2">
                   Receives emails
-                  <input
-                    type="checkbox"
+                  <Checkbox
                     checked={canContact}
                     onChange={(evt) => {
                       setIsLoading(true);
@@ -2743,13 +2741,7 @@ const CommissionSection = ({
                 </Rows>
               ) : null}
               <label className="button">
-                <input
-
-                  onChange={handleFileChange}
-                  disabled={isLoading}
-                  multiple
-                  className="hidden"
-                />
+                <input onChange={handleFileChange} disabled={isLoading} multiple className="hidden" />
                 <Icon name="paperclip" /> Upload files
               </label>
               {commission.status === "in_progress" ? (

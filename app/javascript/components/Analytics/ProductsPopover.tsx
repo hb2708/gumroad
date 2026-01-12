@@ -27,7 +27,7 @@ export const ProductsPopover = ({
   >
     <Card className="border-none shadow-none">
       <CardContent>
-        <fieldset className="grow basis-0" className="flex flex-col gap-2">
+        <fieldset className="flex grow basis-0 flex-col gap-2">
           <label className="flex cursor-pointer gap-2">
             <Checkbox
               checked={products.filter((product) => product.selected).length === products.length}

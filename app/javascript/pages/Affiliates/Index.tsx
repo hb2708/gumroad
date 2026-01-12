@@ -525,7 +525,12 @@ const AffiliateDetails = ({
                 {((product.fee_percent ?? 0) / 100).toLocaleString([], { style: "percent" })}
               </CardContent>
               <CardContent>
-                <CopyToClipboard tooltipPosition="bottom" copyTooltip="Copy link" text={product.referral_url}>
+                <CopyToClipboard
+                  tooltipPosition="bottom"
+                  copyTooltip="Copy link"
+                  text={product.referral_url}
+                  className="w-full"
+                >
                   <Button>Copy link</Button>
                 </CopyToClipboard>
               </CardContent>

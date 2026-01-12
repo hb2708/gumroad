@@ -417,20 +417,18 @@ export default function LibraryPage() {
               {isDesktop || mobileFiltersExpanded ? (
                 <>
                   <CardContent>
-                    <div className="input input-wrapper product-search__wrapper grow">
-                      <Icon name="solid-search" />
-                      <input
-                        className="search-products"
-                        placeholder="Search products"
-                        value={enteredQuery}
-                        onChange={handleSearchChange}
-                        onBlur={handleSearchBlur}
-                        onKeyDown={handleSearchKeyDown}
-                      />
-                    </div>
+                    <Input
+                      className="product-search__wrapper grow"
+                      leading={<Icon name="solid-search" className="text-muted" />}
+                      placeholder="Search products"
+                      value={enteredQuery}
+                      onChange={handleSearchChange}
+                      onBlur={handleSearchBlur}
+                      onKeyDown={handleSearchKeyDown}
+                    />
                   </CardContent>
                   <CardContent className="sort">
-                    <fieldset className="grow basis-0">
+                    <fieldset className="grow basis-0 space-y-2">
                       <legend>
                         <label className="cursor-pointer" htmlFor={sortUid}>
                           Sort by
@@ -454,7 +452,7 @@ export default function LibraryPage() {
                   </CardContent>
                   {bundles.length > 0 ? (
                     <CardContent>
-                      <fieldset className="grow basis-0" className="space-y-2">
+                      <fieldset className="grow basis-0 space-y-2">
                         <legend>
                           <label className="cursor-pointer" htmlFor={bundlesUid}>
                             Bundles
@@ -478,7 +476,7 @@ export default function LibraryPage() {
                     </CardContent>
                   ) : null}
                   <CardContent className="creator">
-                    <fieldset className="space-y-2" className="grow basis-0">
+                    <fieldset className="grow basis-0 space-y-2">
                       <legend>Creator</legend>
                       <div className="space-y-2">
                         <label className="flex cursor-pointer justify-between gap-2">

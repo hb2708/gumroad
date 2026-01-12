@@ -127,7 +127,7 @@ const Period = ({ payoutPeriodData }: { payoutPeriodData: PayoutPeriodData }) =>
             {payoutPeriodData.discover_fees_cents !== 0 ? (
               <CardContent className="flex flex-wrap items-center justify-between gap-4 p-4">
                 <div className="grow">
-                  <h4 className="font-bold" className="font-bold">
+                  <h4 className="font-bold">
                     Discover sales{" "}
                     <a href="/help/article/66-gumroads-fees" target="_blank" rel="noreferrer">
                       fees
@@ -146,7 +146,7 @@ const Period = ({ payoutPeriodData }: { payoutPeriodData: PayoutPeriodData }) =>
             {payoutPeriodData.direct_fees_cents !== 0 ? (
               <CardContent className="flex flex-wrap items-center justify-between gap-4 p-4">
                 <div className="grow">
-                  <h4 className="font-bold" className="font-bold">
+                  <h4 className="font-bold">
                     Direct sales{" "}
                     <a href="/help/article/66-gumroads-fees" target="_blank" rel="noreferrer">
                       fees
@@ -165,7 +165,7 @@ const Period = ({ payoutPeriodData }: { payoutPeriodData: PayoutPeriodData }) =>
           </>
         ) : (
           <CardContent className="flex flex-wrap items-center justify-between gap-4 p-4">
-            <h4 className="grow font-bold" className="font-bold">
+            <h4 className="grow font-bold">
               <a href="/help/article/66-gumroads-fees" target="_blank" rel="noreferrer">
                 Fees
               </a>
@@ -175,13 +175,13 @@ const Period = ({ payoutPeriodData }: { payoutPeriodData: PayoutPeriodData }) =>
         )}
         {payoutPeriodData.refunds_cents !== 0 ? (
           <CardContent className="flex flex-wrap items-center justify-between gap-4 p-4">
-            <h4 className="grow font-bold" className="font-bold">Refunds</h4>
+            <h4 className="grow font-bold">Refunds</h4>
             <div>{formatNegativeDollarAmount(payoutPeriodData.refunds_cents)}</div>
           </CardContent>
         ) : null}
         {payoutPeriodData.chargebacks_cents !== 0 ? (
           <CardContent className="flex flex-wrap items-center justify-between gap-4 p-4">
-            <h4 className="font-bold" className="grow font-bold">
+            <h4 className="grow font-bold">
               <a href="/help/article/134-how-does-gumroad-handle-chargebacks" target="_blank" rel="noreferrer">
                 Chargebacks
               </a>
@@ -191,7 +191,7 @@ const Period = ({ payoutPeriodData }: { payoutPeriodData: PayoutPeriodData }) =>
         ) : null}
         {payoutPeriodData.credits_cents < 0 ? (
           <CardContent className="flex flex-wrap items-center justify-between gap-4 p-4">
-            <h4 className="grow font-bold" className="font-bold">
+            <h4 className="grow font-bold">
               <a href="/help/article/269-balance-page" target="_blank" rel="noreferrer">
                 Credits
               </a>
@@ -201,19 +201,19 @@ const Period = ({ payoutPeriodData }: { payoutPeriodData: PayoutPeriodData }) =>
         ) : null}
         {payoutPeriodData.loan_repayment_cents !== 0 ? (
           <CardContent className="flex flex-wrap items-center justify-between gap-4 p-4">
-            <h4 className="grow font-bold" className="font-bold">Loan repayments</h4>
+            <h4 className="grow font-bold">Loan repayments</h4>
             <div>{formatNegativeDollarAmount(payoutPeriodData.loan_repayment_cents)}</div>
           </CardContent>
         ) : null}
         {payoutPeriodData.affiliate_fees_cents !== 0 ? (
           <CardContent className="flex flex-wrap items-center justify-between gap-4 p-4">
-            <h4 className="grow font-bold" className="font-bold">Affiliate or collaborator fees paid</h4>
+            <h4 className="grow font-bold">Affiliate or collaborator fees paid</h4>
             <div>{formatNegativeDollarAmount(payoutPeriodData.affiliate_fees_cents)}</div>
           </CardContent>
         ) : null}
         {payoutPeriodData.paypal_payout_cents !== 0 ? (
           <CardContent className="flex flex-wrap items-center justify-between gap-4 p-4">
-            <h4 className="grow font-bold" className="font-bold">
+            <h4 className="grow font-bold">
               <a href="/help/article/275-paypal-connect" target="_blank" rel="noreferrer">
                 PayPal payouts
               </a>
@@ -223,7 +223,7 @@ const Period = ({ payoutPeriodData }: { payoutPeriodData: PayoutPeriodData }) =>
         ) : null}
         {payoutPeriodData.stripe_connect_payout_cents !== 0 ? (
           <CardContent className="flex flex-wrap items-center justify-between gap-4 p-4">
-            <h4 className="grow font-bold" className="font-bold">
+            <h4 className="grow font-bold">
               <a href="/help/article/330-stripe-connect" target="_blank" rel="noreferrer">
                 Stripe Connect payouts
               </a>
@@ -233,7 +233,7 @@ const Period = ({ payoutPeriodData }: { payoutPeriodData: PayoutPeriodData }) =>
         ) : null}
         {payoutPeriodData.taxes_cents !== 0 ? (
           <CardContent className="flex flex-wrap items-center justify-between gap-4 p-4">
-            <h4 className="grow font-bold" className="font-bold">
+            <h4 className="grow font-bold">
               <a href="/help/article/121-sales-tax-on-gumroad" target="_blank" rel="noreferrer">
                 Taxes
               </a>
