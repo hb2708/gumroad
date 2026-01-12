@@ -62,6 +62,11 @@ export const ReferrersTable = ({ data }: { data: AnalyticsReferrerTotals }) => {
               </TableCell>
             </TableRow>
           ))}
+          {items.length ? null : (
+            <TableRow>
+              <TableCell colSpan={5}>Nothing yet</TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
       {items.length > maxRowsShown && (
@@ -69,7 +74,6 @@ export const ReferrersTable = ({ data }: { data: AnalyticsReferrerTotals }) => {
           Show more
         </Button>
       )}
-      {items.length ? null : <div className="input">Nothing yet</div>}
     </section>
   );
 };
