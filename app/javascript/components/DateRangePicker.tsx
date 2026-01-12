@@ -12,8 +12,6 @@ import {
 } from "date-fns";
 import * as React from "react";
 
-import { classNames } from "$app/utils/classNames";
-
 import { DateInput } from "$app/components/DateInput";
 import { Icon } from "$app/components/Icons";
 import { Popover } from "$app/components/Popover";
@@ -48,7 +46,10 @@ export const DateRangePicker = ({
         setOpen(open);
       }}
       trigger={
-        <div className="input" aria-label="Date range selector">
+        <div
+          className="relative inline-flex h-12 cursor-pointer items-center gap-2 rounded border border-border bg-background px-4"
+          aria-label="Date range selector"
+        >
           <span suppressHydrationWarning>{Intl.DateTimeFormat(locale).formatRange(from, to)}</span>
           <Icon name="outline-cheveron-down" className="ml-auto" />
         </div>
@@ -56,9 +57,11 @@ export const DateRangePicker = ({
     >
       {isCustom ? (
         <div className="flex flex-col gap-4">
-          <fieldset>
-            <legend>
-              <label htmlFor={`${uid}-from`}>From (including)</label>
+          <fieldset className="flex flex-col gap-2">
+            <legend className="mb-2 flex w-full items-center text-base font-bold">
+              <label htmlFor={`${uid}-from`} className="inline-flex cursor-pointer gap-2 text-base">
+                From (including)
+              </label>
             </legend>
             <DateInput
               id={`${uid}-from`}
@@ -68,9 +71,11 @@ export const DateRangePicker = ({
               }}
             />
           </fieldset>
-          <fieldset className={classNames({ danger: to < from })}>
-            <legend>
-              <label htmlFor={`${uid}-to`}>To (including)</label>
+          <fieldset className="flex flex-col gap-2">
+            <legend className="mb-2 flex w-full items-center text-base font-bold">
+              <label htmlFor={`${uid}-to`} className="inline-flex cursor-pointer gap-2 text-base">
+                To (including)
+              </label>
             </legend>
             <DateInput
               id={`${uid}-to`}
@@ -80,19 +85,32 @@ export const DateRangePicker = ({
               }}
               aria-invalid={to < from}
             />
-            {to < from ? <small>Must be after from date</small> : null}
+            {to < from ? (
+              <small className="text-sm text-danger-foreground">Must be after from date</small>
+            ) : (
+              <small className="text-sm text-muted" />
+            )}
           </fieldset>
         </div>
       ) : (
-        <div role="menu">
-          <div role="menuitem" onClick={() => quickSet(subDays(today, 30), today)}>
+        <div role="menu" className="py-2">
+          <div
+            role="menuitem"
+            className="cursor-pointer px-4 py-2 transition-all hover:bg-primary hover:text-primary-foreground"
+            onClick={() => quickSet(subDays(today, 30), today)}
+          >
             Last 30 days
           </div>
-          <div role="menuitem" onClick={() => quickSet(startOfMonth(today), today)}>
+          <div
+            role="menuitem"
+            className="cursor-pointer px-4 py-2 transition-all hover:bg-primary hover:text-primary-foreground"
+            onClick={() => quickSet(startOfMonth(today), today)}
+          >
             This month
           </div>
           <div
             role="menuitem"
+            className="cursor-pointer px-4 py-2 transition-all hover:bg-primary hover:text-primary-foreground"
             onClick={() => {
               const lastMonth = subMonths(today, 1);
               quickSet(startOfMonth(lastMonth), endOfMonth(lastMonth));
@@ -102,15 +120,21 @@ export const DateRangePicker = ({
           </div>
           <div
             role="menuitem"
+            className="cursor-pointer px-4 py-2 transition-all hover:bg-primary hover:text-primary-foreground"
             onClick={() => quickSet(startOfMonth(subMonths(today, 3)), endOfMonth(subMonths(today, 1)))}
           >
             Last 3 months
           </div>
-          <div role="menuitem" onClick={() => quickSet(startOfQuarter(today), today)}>
+          <div
+            role="menuitem"
+            className="cursor-pointer px-4 py-2 transition-all hover:bg-primary hover:text-primary-foreground"
+            onClick={() => quickSet(startOfQuarter(today), today)}
+          >
             This quarter
           </div>
           <div
             role="menuitem"
+            className="cursor-pointer px-4 py-2 transition-all hover:bg-primary hover:text-primary-foreground"
             onClick={() => {
               const lastQuarter = subQuarters(today, 1);
               quickSet(startOfQuarter(lastQuarter), endOfQuarter(lastQuarter));
@@ -118,11 +142,16 @@ export const DateRangePicker = ({
           >
             Last quarter
           </div>
-          <div role="menuitem" onClick={() => quickSet(startOfYear(today), today)}>
+          <div
+            role="menuitem"
+            className="cursor-pointer px-4 py-2 transition-all hover:bg-primary hover:text-primary-foreground"
+            onClick={() => quickSet(startOfYear(today), today)}
+          >
             This year
           </div>
           <div
             role="menuitem"
+            className="cursor-pointer px-4 py-2 transition-all hover:bg-primary hover:text-primary-foreground"
             onClick={() => {
               const lastYear = subYears(today, 1);
               quickSet(startOfYear(lastYear), endOfYear(lastYear));
@@ -130,10 +159,18 @@ export const DateRangePicker = ({
           >
             Last year
           </div>
-          <div role="menuitem" onClick={() => quickSet(new Date("2012-10-13"), today)}>
+          <div
+            role="menuitem"
+            className="cursor-pointer px-4 py-2 transition-all hover:bg-primary hover:text-primary-foreground"
+            onClick={() => quickSet(new Date("2012-10-13"), today)}
+          >
             All time
           </div>
-          <div role="menuitem" onClick={() => setIsCustom(true)}>
+          <div
+            role="menuitem"
+            className="mt-1 cursor-pointer border-t border-border px-4 py-2 transition-all hover:bg-primary hover:text-primary-foreground"
+            onClick={() => setIsCustom(true)}
+          >
             Custom range...
           </div>
         </div>
