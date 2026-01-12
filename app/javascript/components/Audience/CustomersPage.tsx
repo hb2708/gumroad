@@ -280,7 +280,7 @@ const CustomersPage = ({
                 value={searchQuery ?? ""}
                 onChange={(evt) => updateQuery({ query: evt.target.value })}
                 autoFocus
-                leading={<Icon name="solid-search" />}
+                leading={<Icon className="text-muted" name="solid-search" />}
               />
             </Popover>
             <Popover
