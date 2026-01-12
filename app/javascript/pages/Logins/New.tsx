@@ -68,11 +68,11 @@ function LoginPage() {
         </Separator>
         <section className="flex flex-col gap-8">
           <AuthAlert />
-          <fieldset>
-            <legend className="mb-2">
+          <fieldset className="space-y-2">
+            <legend>
               <label className="cursor-pointer" htmlFor={`${uid}-email`}>
-                  Email
-                </label>
+                Email
+              </label>
             </legend>
             <Input
               id={`${uid}-email`}
@@ -84,8 +84,8 @@ function LoginPage() {
               autoComplete="email"
             />
           </fieldset>
-          <fieldset>
-            <legend className="mb-2 flex w-full justify-between">
+          <fieldset className="space-y-2">
+            <legend className="flex w-full justify-between">
               <label htmlFor={`${uid}-password`}>Password</label>
               <Link href={Routes.new_user_password_path({ next })} className="underline">
                 Forgot your password?

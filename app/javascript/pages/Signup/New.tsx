@@ -86,8 +86,8 @@ function SignupPage() {
         </Separator>
         <section className="flex flex-col gap-8">
           <AuthAlert />
-          <fieldset>
-            <legend className="mb-2">
+          <fieldset className="space-y-2">
+            <legend>
               <label htmlFor={`${uid}-email`}>Email</label>
             </legend>
             <Input
@@ -98,8 +98,8 @@ function SignupPage() {
               required
             />
           </fieldset>
-          <fieldset>
-            <legend className="mb-2">
+          <fieldset className="space-y-2">
+            <legend>
               <label htmlFor={`${uid}-password`}>Password</label>
             </legend>
             <PasswordInput
