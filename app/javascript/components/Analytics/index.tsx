@@ -21,6 +21,7 @@ import { useAnalyticsDateRange } from "$app/components/Analytics/useAnalyticsDat
 import { DateRangePicker } from "$app/components/DateRangePicker";
 import { LoadingSpinner } from "$app/components/LoadingSpinner";
 import { showAlert } from "$app/components/server-components/Alert";
+import { Select } from "$app/components/TypeSafeOptionSelect";
 import { Placeholder, PlaceholderImage } from "$app/components/ui/Placeholder";
 
 import placeholder from "$assets/images/placeholders/sales.png";
@@ -150,14 +151,13 @@ const Analytics = ({ products: initialProducts, country_codes, state_names }: An
       actions={
         hasContent ? (
           <>
-            <select
+            <Select
               aria-label="Aggregate by"
               onChange={(e) => setAggregateBy(e.target.value === "daily" ? "daily" : "monthly")}
-              className="w-auto"
             >
               <option value="daily">Daily</option>
               <option value="monthly">Monthly</option>
-            </select>
+            </Select>
             <ProductsPopover products={products} setProducts={setProducts} />
             <DateRangePicker {...dateRange} />
           </>
@@ -179,11 +179,11 @@ const Analytics = ({ products: initialProducts, country_codes, state_names }: An
             </>
           ) : (
             <>
-              <div className="input">
+              <div className="bg-filled inline-flex h-12 w-full items-center gap-2 rounded border border-border px-4 py-0">
                 <LoadingSpinner />
                 Loading charts...
               </div>
-              <div className="input">
+              <div className="bg-filled inline-flex h-12 w-full items-center gap-2 rounded border border-border px-4 py-0">
                 <LoadingSpinner />
                 Loading referrers...
               </div>
@@ -197,7 +197,7 @@ const Analytics = ({ products: initialProducts, country_codes, state_names }: An
               stateNames={state_names}
             />
           ) : (
-            <div className="input">
+            <div className="bg-filled inline-flex h-12 w-full items-center gap-2 rounded border border-border px-4 py-0">
               <LoadingSpinner />
               Loading locations...
             </div>
