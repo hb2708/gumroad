@@ -2,12 +2,14 @@ import * as React from "react";
 
 import { Button } from "$app/components/Button";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { Modal } from "$app/components/Modal";
 import { NumberInput } from "$app/components/NumberInput";
 import { PriceInput } from "$app/components/PriceInput";
 import { useProductUrl } from "$app/components/ProductEdit/Layout";
 import { Version, useProductEditContext } from "$app/components/ProductEdit/state";
 import { Drawer, ReorderingHandle, SortableList } from "$app/components/SortableList";
+import { Textarea } from "$app/components/Textarea";
 import { Toggle } from "$app/components/Toggle";
 import { Placeholder } from "$app/components/ui/Placeholder";
 import { Row, RowActions, RowContent, RowDetails, Rows } from "$app/components/ui/Rows";
@@ -150,31 +152,31 @@ const VersionEditor = ({
       {isOpen ? (
         <RowDetails asChild>
           <Drawer className="grid gap-6">
-            <fieldset>
+            <fieldset className="flex flex-col gap-2">
               <label htmlFor={`${uid}-name`}>Name</label>
-              <div className="input">
-                <input
-                  id={`${uid}-name`}
-                  type="text"
-                  value={version.name}
-                  placeholder="Version name"
-                  onChange={(evt) => updateVersion({ name: evt.target.value })}
-                />
-                <a href={url} target="_blank" rel="noreferrer">
-                  Share
-                </a>
-              </div>
+              <Input
+                id={`${uid}-name`}
+                type="text"
+                value={version.name}
+                placeholder="Version name"
+                onChange={(evt) => updateVersion({ name: evt.target.value })}
+                trailing={
+                  <a href={url} target="_blank" rel="noreferrer">
+                    Share
+                  </a>
+                }
+              />
             </fieldset>
-            <fieldset>
+            <fieldset className="flex flex-col gap-2">
               <label htmlFor={`${uid}-description`}>Description</label>
-              <textarea
+              <Textarea
                 id={`${uid}-description`}
                 value={version.description}
                 onChange={(evt) => updateVersion({ description: evt.target.value })}
               />
             </fieldset>
             <section className="grid grid-flow-col items-end gap-6">
-              <fieldset>
+              <fieldset className="flex flex-col gap-2">
                 <label htmlFor={`${uid}-price`}>Additional amount</label>
                 <PriceInput
                   id={`${uid}-price`}
@@ -184,14 +186,14 @@ const VersionEditor = ({
                   placeholder="0"
                 />
               </fieldset>
-              <fieldset>
+              <fieldset className="flex flex-col gap-2">
                 <label htmlFor={`${uid}-max-purchase-count`}>Maximum number of purchases</label>
                 <NumberInput
                   onChange={(value) => updateVersion({ max_purchase_count: value })}
                   value={version.max_purchase_count}
                 >
                   {(inputProps) => (
-                    <input id={`${uid}-max-purchase-count`} type="number" placeholder="∞" {...inputProps} />
+                    <Input id={`${uid}-max-purchase-count`} type="number" placeholder="∞" {...inputProps} />
                   )}
                 </NumberInput>
               </fieldset>

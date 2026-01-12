@@ -1,9 +1,9 @@
 import { Editor } from "@tiptap/core";
-import cx from "classnames";
 import { format } from "date-fns";
 import * as React from "react";
 
 import { sendSamplePriceChangeEmail } from "$app/data/membership_tiers";
+import { classNames } from "$app/utils/classNames";
 import { getIsSingleUnitCurrency } from "$app/utils/currency";
 import { priceCentsToUnit } from "$app/utils/price";
 import {
@@ -18,6 +18,7 @@ import { Button } from "$app/components/Button";
 import { DateInput } from "$app/components/DateInput";
 import { Details } from "$app/components/Details";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { Modal } from "$app/components/Modal";
 import { NumberInput } from "$app/components/NumberInput";
 import { PriceInput } from "$app/components/PriceInput";
@@ -26,6 +27,7 @@ import { RecurrencePriceValue, Tier, useProductEditContext } from "$app/componen
 import { RichTextEditor } from "$app/components/RichTextEditor";
 import { showAlert } from "$app/components/server-components/Alert";
 import { Drawer, ReorderingHandle, SortableList } from "$app/components/SortableList";
+import { Textarea } from "$app/components/Textarea";
 import { Toggle } from "$app/components/Toggle";
 import { Alert } from "$app/components/ui/Alert";
 import { Placeholder } from "$app/components/ui/Placeholder";
@@ -217,63 +219,47 @@ const TierEditor = ({
       {isOpen ? (
         <RowDetails asChild>
           <Drawer className="grid gap-6">
-            <fieldset>
+            <fieldset className="flex flex-col gap-2">
               <label htmlFor={`${uid}-name`}>Name</label>
-              <div className="input">
-                <input
-                  id={`${uid}-name`}
-                  type="text"
-                  value={tier.name}
-                  onChange={(evt) => updateTier({ name: evt.target.value })}
-                />
-                <a href={url} target="_blank" rel="noreferrer">
-                  Share
-                </a>
-              </div>
+              <Input
+                id={`${uid}-name`}
+                type="text"
+                value={tier.name}
+                onChange={(evt) => updateTier({ name: evt.target.value })}
+                trailing={
+                  <a href={url} target="_blank" rel="noreferrer">
+                    Share
+                  </a>
+                }
+              />
             </fieldset>
-            <fieldset>
+            <fieldset className="flex flex-col gap-2">
               <label htmlFor={`${uid}-description`}>Description</label>
-              <textarea
+              <Textarea
                 id={`${uid}-description`}
                 value={tier.description}
                 onChange={(evt) => updateTier({ description: evt.target.value })}
               />
             </fieldset>
-            <fieldset>
+            <fieldset className="flex flex-col gap-2">
               <label htmlFor={`${uid}-max-purchase-count`}>Maximum number of active supporters</label>
               <NumberInput
                 onChange={(value) => updateTier({ max_purchase_count: value })}
                 value={tier.max_purchase_count}
               >
                 {(inputProps) => (
-                  <input id={`${uid}-max-purchase-count`} type="number" placeholder="∞" {...inputProps} />
+                  <Input id={`${uid}-max-purchase-count`} type="number" placeholder="∞" {...inputProps} />
                 )}
               </NumberInput>
             </fieldset>
-            <fieldset
-              style={{
-                display: "grid",
-                gap: "var(--spacer-3)",
-                gridTemplateColumns: "repeat(auto-fit, max(var(--dynamic-grid), 50% - var(--spacer-3) / 2))",
-              }}
-            >
-              <legend>Pricing</legend>
+            <fieldset className="grid grid-cols-[repeat(auto-fit,max(var(--dynamic-grid),50%-var(--spacer-3)/2))] gap-3">
+              <legend className="mb-2 font-bold">Pricing</legend>
               {Object.entries(tier.recurrence_price_values).map(([recurrence, value]) => (
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "max-content 1fr",
-                    alignItems: "center",
-                    gap: "var(--spacer-2)",
-                  }}
-                  key={recurrence}
-                >
-                  <input
-                    type="checkbox"
-                    role="switch"
-                    checked={value.enabled}
-                    aria-label={`Toggle recurrence option: ${recurrenceNames[recurrence]}`}
+                <div className="grid grid-cols-[max-content_1fr] items-center gap-2" key={recurrence}>
+                  <Toggle
+                    value={value.enabled}
                     onChange={() => updateRecurrencePriceValue(recurrence, { enabled: !value.enabled })}
+                    aria-label={`Toggle recurrence option: ${recurrenceNames[recurrence]}`}
                   />
                   <PriceInput
                     id={`${uid}-price`}
@@ -307,17 +293,11 @@ const TierEditor = ({
               open={tier.customizable_price}
             >
               <div className="dropdown">
-                <div
-                  style={{
-                    display: "grid",
-                    gap: "var(--spacer-3)",
-                    gridTemplateColumns: "repeat(auto-fit, max(var(--dynamic-grid), 50% - var(--spacer-3) / 2))",
-                  }}
-                >
+                <div className="grid grid-cols-[repeat(auto-fit,max(var(--dynamic-grid),50%-var(--spacer-3)/2))] gap-3">
                   {Object.entries(tier.recurrence_price_values).flatMap(([recurrence, value]) =>
                     value.enabled ? (
                       <React.Fragment key={recurrence}>
-                        <fieldset>
+                        <fieldset className="flex flex-col gap-2">
                           <label htmlFor={`${uid}-${recurrence}-minimum-price`}>
                             Minimum amount {perRecurrenceLabels[recurrence]}
                           </label>
@@ -328,7 +308,7 @@ const TierEditor = ({
                             disabled
                           />
                         </fieldset>
-                        <fieldset>
+                        <fieldset className="flex flex-col gap-2">
                           <label htmlFor={`${uid}-${recurrence}-suggested-price`}>
                             Suggested amount {perRecurrenceLabels[recurrence]}
                           </label>
@@ -352,8 +332,8 @@ const TierEditor = ({
             </Details>
             <PriceChangeSettings tier={tier} updateTier={updateTier} />
             {integrations.length > 0 ? (
-              <fieldset>
-                <legend>Integrations</legend>
+              <fieldset className="flex flex-col gap-2">
+                <legend className="font-bold">Integrations</legend>
                 {integrations.map((integration) => (
                   <Toggle
                     value={tier.integrations[integration]}
@@ -485,7 +465,7 @@ You can modify or cancel your membership at any time.`;
               Get a sample
             </button>
           </div>
-          <fieldset className={cx({ danger: effectiveDate.error })}>
+          <fieldset className={classNames("flex flex-col gap-2", { danger: effectiveDate.error })}>
             <legend>
               <label htmlFor={`${uid}-date`}>Effective date for existing customers</label>
             </legend>
@@ -496,11 +476,14 @@ You can modify or cancel your membership at any time.`;
                 if (!value) return;
                 setEffectiveDate({ value, error: value < earliestMembershipPriceChangeDate });
               }}
+              aria-invalid={effectiveDate.error}
             />
 
-            {effectiveDate.error ? <small>The effective date must be at least 7 days from today</small> : null}
+            {effectiveDate.error ? (
+              <small className="text-danger">The effective date must be at least 7 days from today</small>
+            ) : null}
           </fieldset>
-          <fieldset>
+          <fieldset className="flex flex-col gap-2">
             <legend>
               <label htmlFor={`${uid}-custom-message`}>Custom message</label>
             </legend>

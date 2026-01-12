@@ -5,6 +5,7 @@ import { Button } from "$app/components/Button";
 import { useCurrentSeller } from "$app/components/CurrentSeller";
 import { DateInput } from "$app/components/DateInput";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { Availability } from "$app/components/ProductEdit/state";
 import { Placeholder } from "$app/components/ui/Placeholder";
 
@@ -125,7 +126,7 @@ export const AvailabilityEditor = ({
                   ) : (
                     <span />
                   )}
-                  <input
+                  <Input
                     type="time"
                     value={formatTime(availability.start_time)}
                     onChange={(evt) =>
@@ -135,7 +136,7 @@ export const AvailabilityEditor = ({
                     }
                     aria-label="From"
                   />
-                  <input
+                  <Input
                     type="time"
                     value={formatTime(availability.end_time)}
                     onChange={(evt) =>

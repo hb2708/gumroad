@@ -12,6 +12,7 @@ import { assertResponseError } from "$app/utils/request";
 
 import { Button } from "$app/components/Button";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { LoadingSpinner } from "$app/components/LoadingSpinner";
 import { Popover } from "$app/components/Popover";
 import { Covers } from "$app/components/Product/Covers";
@@ -51,7 +52,7 @@ export const CoverEditor = ({
   };
 
   return (
-    <section className="p-4! md:p-8!">
+    <section className="flex flex-col gap-8 p-4 md:p-8">
       <header>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
           <h2>Cover</h2>
@@ -160,6 +161,7 @@ const CoverUploader = ({
           <Tab isSelected={false} asChild className="items-center">
             <label>
               <input
+                className="hidden"
                 type="file"
                 multiple
                 accept={ALLOWED_EXTENSIONS.map((ext) => `.${ext}`).join(",")}
@@ -204,13 +206,14 @@ const CoverUploader = ({
         </Tabs>
         <fieldset
           role="tabpanel"
-          className="mt-4 rounded-sm border border-border p-4"
+          className="mt-4 flex flex-col gap-2 rounded-sm border border-border p-4"
           id={`${uid}-url`}
           hidden={uploader?.type !== "url"}
         >
           {uploader?.type === "url" ? (
             <div className="flex gap-2">
-              <input
+              <Input
+                className="flex-1"
                 type="url"
                 placeholder="https://"
                 value={uploader.value}
@@ -230,7 +233,7 @@ const CoverUploader = ({
               </Button>
             </div>
           ) : null}
-          <small>We support media from sites such as YouTube, Vimeo, and Soundcloud.</small>
+          <small className="text-muted">We support media from sites such as YouTube, Vimeo, and Soundcloud.</small>
         </fieldset>
       </div>
     )

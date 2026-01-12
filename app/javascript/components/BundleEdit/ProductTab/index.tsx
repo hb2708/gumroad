@@ -6,6 +6,7 @@ import { Layout, useProductUrl } from "$app/components/BundleEdit/Layout";
 import { ProductPreview } from "$app/components/BundleEdit/ProductPreview";
 import { useBundleEditContext } from "$app/components/BundleEdit/state";
 import { useCurrentSeller } from "$app/components/CurrentSeller";
+import { Input } from "$app/components/Input";
 import { AttributesEditor } from "$app/components/ProductEdit/ProductTab/AttributesEditor";
 import { CoverEditor } from "$app/components/ProductEdit/ProductTab/CoverEditor";
 import { CustomButtonTextOptionInput } from "$app/components/ProductEdit/ProductTab/CustomButtonTextOptionInput";
@@ -47,11 +48,11 @@ export const ProductTab = () => {
 
   return (
     <Layout preview={<ProductPreview showRefundPolicyModal={showRefundPolicyPreview} />} isLoading={isUploading}>
-      <form>
-        <section className="p-4! md:p-8!">
-          <fieldset>
+      <form className="divide-y divide-border">
+        <section className="flex flex-col gap-8 p-4 md:p-8">
+          <fieldset className="flex flex-col gap-2">
             <label htmlFor={`${uid}-name`}>Name</label>
-            <input
+            <Input
               id={`${uid}-name`}
               type="text"
               value={bundle.name}
@@ -74,7 +75,7 @@ export const ProductTab = () => {
             url={url}
           />
         </section>
-        <section className="p-4! md:p-8!">
+        <section className="flex flex-col gap-8 p-4 md:p-8">
           <h2>Pricing</h2>
           <PriceEditor
             priceCents={bundle.price_cents}
@@ -114,7 +115,7 @@ export const ProductTab = () => {
           setCovers={(covers) => updateBundle({ covers })}
           permalink={uniquePermalink}
         />
-        <section className="p-4! md:p-8!">
+        <section className="flex flex-col gap-8 p-4 md:p-8">
           <h2>Product info</h2>
           <CustomButtonTextOptionInput
             value={bundle.custom_button_text_option}
@@ -130,9 +131,9 @@ export const ProductTab = () => {
             setCustomAttributes={(custom_attributes) => updateBundle({ custom_attributes })}
           />
         </section>
-        <section className="p-4! md:p-8!">
+        <section className="flex flex-col gap-8 p-4 md:p-8">
           <h2>Settings</h2>
-          <fieldset>
+          <fieldset className="flex flex-col gap-2">
             <MaxPurchaseCountToggle
               maxPurchaseCount={bundle.max_purchase_count}
               setMaxPurchaseCount={(value) => updateBundle({ max_purchase_count: value })}

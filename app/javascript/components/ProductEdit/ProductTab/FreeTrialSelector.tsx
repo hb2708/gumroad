@@ -25,7 +25,7 @@ export const FreeTrialSelector = () => {
       }
       label="Offer a free trial"
       dropdown={
-        <fieldset>
+        <fieldset className="space-y-2">
           <legend>
             <label htmlFor={uid}>Charge members after</label>
           </legend>

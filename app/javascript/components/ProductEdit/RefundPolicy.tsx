@@ -7,8 +7,10 @@ import { Button } from "$app/components/Button";
 import { Details } from "$app/components/Details";
 import { Modal } from "$app/components/Modal";
 import { Popover } from "$app/components/Popover";
-import { Select } from "$app/components/Select";
+import { Select as SearchableSelect } from "$app/components/Select";
+import { Textarea } from "$app/components/Textarea";
 import { Toggle } from "$app/components/Toggle";
+import { Select } from "$app/components/TypeSafeOptionSelect";
 import { useUserAgentInfo } from "$app/components/UserAgent";
 
 export type RefundPolicy = {
@@ -53,7 +55,7 @@ export const RefundPolicySelector = ({
       }
     >
       <div className="dropdown flex flex-col gap-4">
-        <fieldset>
+        <fieldset className="space-y-2">
           <legend>
             <label htmlFor={`${uid}-max-refund-period-in-days`}>Refund period</label>
             {refundPolicies.length > 0 ? (
@@ -69,7 +71,7 @@ export const RefundPolicySelector = ({
                     maxWidth: "100%",
                   }}
                 >
-                  <Select
+                  <SearchableSelect
                     options={refundPolicies.map(({ id, product_name: label }) => ({ id, label }))}
                     isMulti={false}
                     placeholder="Select a product"
@@ -97,7 +99,7 @@ export const RefundPolicySelector = ({
               </Popover>
             ) : null}
           </legend>
-          <select
+          <Select
             id={`${uid}-max-refund-period-in-days`}
             value={refundPolicy.max_refund_period_in_days}
             onChange={(evt) => {
@@ -117,13 +119,13 @@ export const RefundPolicySelector = ({
                 {value}
               </option>
             ))}
-          </select>
+          </Select>
         </fieldset>
-        <fieldset>
-          <legend>
+        <fieldset className="space-y-2">
+          <legend className="font-bold">
             <label htmlFor={`${uid}-refund-policy-fine-print`}>Fine print (optional)</label>
           </legend>
-          <textarea
+          <Textarea
             id={`${uid}-refund-policy-fine-print`}
             maxLength={3000}
             rows={10}

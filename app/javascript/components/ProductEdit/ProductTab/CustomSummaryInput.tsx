@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { Input } from "$app/components/Input";
+
 export const CustomSummaryInput = ({
   value,
   onChange,
@@ -9,9 +11,9 @@ export const CustomSummaryInput = ({
 }) => {
   const uid = React.useId();
   return (
-    <fieldset>
+    <fieldset className="flex flex-col gap-2">
       <label htmlFor={uid}>Summary</label>
-      <input
+      <Input
         id={uid}
         type="text"
         placeholder="You'll get..."

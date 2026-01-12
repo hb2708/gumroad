@@ -48,8 +48,8 @@ export const SuggestedAmountsEditor = ({
   );
 
   return (
-    <fieldset>
-      <legend>{versions.length > 1 ? "Suggested amounts" : "Suggested amount"}</legend>
+    <fieldset className="flex flex-col items-stretch space-y-2">
+      <legend className="font-bold">{versions.length > 1 ? "Suggested amounts" : "Suggested amount"}</legend>
       {versions.map((version, index) => (
         <SuggestedAmountEditor
           key={version.id}
@@ -84,14 +84,16 @@ const SuggestedAmountEditor = ({
 
   return (
     <section className="flex gap-2">
-      <PriceInput
-        currencyCode={currencyType}
-        cents={version.price_difference_cents}
-        onChange={(price_difference_cents) => updateVersion({ price_difference_cents })}
-        placeholder="0"
-        ariaLabel={label}
-        onBlur={onBlur}
-      />
+      <div className="flex-1">
+        <PriceInput
+          currencyCode={currencyType}
+          cents={version.price_difference_cents}
+          onChange={(price_difference_cents) => updateVersion({ price_difference_cents })}
+          placeholder="0"
+          ariaLabel={label}
+          onBlur={onBlur}
+        />
+      </div>
       <Button aria-label="Delete" onClick={onDelete ?? undefined} disabled={!onDelete}>
         <Icon name="trash2" />
       </Button>

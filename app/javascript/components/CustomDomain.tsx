@@ -69,7 +69,7 @@ const CustomDomain = ({
 
   return (
     <fieldset className="space-y-2">
-      <legend>
+      <legend className="flex w-full items-center justify-between">
         <label htmlFor={uid}>{label}</label>
         {includeLearnMoreLink ? (
           <a href="/help/article/153-setting-up-a-custom-domain" target="_blank" rel="noreferrer">

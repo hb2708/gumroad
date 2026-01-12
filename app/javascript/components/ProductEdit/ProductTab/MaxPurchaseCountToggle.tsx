@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { Details } from "$app/components/Details";
+import { Input } from "$app/components/Input";
 import { NumberInput } from "$app/components/NumberInput";
 import { Toggle } from "$app/components/Toggle";
 import { WithTooltip } from "$app/components/WithTooltip";
@@ -30,11 +31,11 @@ export const MaxPurchaseCountToggle = ({
       }
     >
       <div className="dropdown">
-        <fieldset>
+        <fieldset className="flex flex-col space-y-2">
           <label htmlFor={`${uid}-max-purchase-count`}>Maximum number of purchases</label>
           <WithTooltip tip="Total sales">
             <NumberInput value={count} onChange={setCount}>
-              {(props) => <input id={`${uid}-max-purchase-count`} placeholder="∞" {...props} />}
+              {(props) => <Input id={`${uid}-max-purchase-count`} placeholder="∞" {...props} />}
             </NumberInput>
           </WithTooltip>
         </fieldset>

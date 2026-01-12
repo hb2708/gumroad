@@ -502,7 +502,13 @@ const ContentTabContent = ({ selectedVariantId }: { selectedVariantId: string | 
                         <span>Embed media</span>
                       </div>
                       <label role="menuitem">
-                        <input type="file" name="file" multiple onChange={(e) => uploadFileInput(e.target)} />
+                        <input
+                          className="hidden"
+                          type="file"
+                          name="file"
+                          multiple
+                          onChange={(e) => uploadFileInput(e.target)}
+                        />
                         <Icon name="paperclip" />
                         <span>Computer files</span>
                       </label>

@@ -216,6 +216,7 @@ export const Image = TiptapNode.create({
           ref={inputRef}
           multiple
           type="file"
+          className="hidden"
           accept={imageSettings.allowedExtensions.map((ext) => `.${ext}`).join(",")}
           onChange={(e) => {
             const files = [...(e.target.files || [])];

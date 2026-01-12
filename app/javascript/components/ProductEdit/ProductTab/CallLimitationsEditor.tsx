@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { NumberInput } from "$app/components/NumberInput";
 import { CallLimitationInfo } from "$app/components/ProductEdit/state";
 import { TypeSafeOptionSelect } from "$app/components/TypeSafeOptionSelect";
@@ -57,39 +58,43 @@ export const CallLimitationsEditor = ({
 
   return (
     <>
-      <fieldset>
+      <fieldset className="flex flex-col gap-2">
         <label htmlFor={`${uid}-notice-period`}>Notice period</label>
         <NumberInput value={minimumNotice.value} onChange={(value) => setMinimumNotice({ ...minimumNotice, value })}>
           {(props) => (
-            <div className="input" ref={inputRef}>
-              <input id={`${uid}-notice-period`} placeholder="15" {...props} />
-              <Pill asChild className="relative -mr-2 shrink-0 cursor-pointer">
-                <label>
-                  <span>{minimumNotice.unit}</span>
-                  <TypeSafeOptionSelect
-                    aria-label="Units"
-                    onChange={(unit) => setMinimumNotice({ ...minimumNotice, unit })}
-                    value={minimumNotice.unit}
-                    options={UNITS.map((unit) => ({ id: unit, label: unit }))}
-                    className="absolute inset-0 z-1 m-0! cursor-pointer opacity-0"
-                  />
-                  <Icon name="outline-cheveron-down" className="ml-auto" />
-                </label>
-              </Pill>
-            </div>
+            <Input
+              id={`${uid}-notice-period`}
+              placeholder="15"
+              {...props}
+              trailing={
+                <Pill asChild className="relative -mr-2 shrink-0 cursor-pointer">
+                  <label>
+                    <span>{minimumNotice.unit}</span>
+                    <TypeSafeOptionSelect
+                      aria-label="Units"
+                      onChange={(unit) => setMinimumNotice({ ...minimumNotice, unit })}
+                      value={minimumNotice.unit}
+                      options={UNITS.map((unit) => ({ id: unit, label: unit }))}
+                      className="absolute inset-0 z-1 m-0! cursor-pointer opacity-0"
+                    />
+                    <Icon name="outline-cheveron-down" className="ml-auto" />
+                  </label>
+                </Pill>
+              }
+            />
           )}
         </NumberInput>
-        <small>Minimum notice time required when booking a call</small>
+        <small className="text-muted">Minimum notice time required when booking a call</small>
       </fieldset>
-      <fieldset>
+      <fieldset className="flex flex-col gap-2">
         <label htmlFor={`${uid}-daily-limit`}>Daily limit</label>
         <NumberInput
           onChange={(maximum_calls_per_day) => updateCallLimitations({ maximum_calls_per_day })}
           value={maximum_calls_per_day}
         >
-          {(props) => <input id={`${uid}-daily-limit`} placeholder="2" {...props} />}
+          {(props) => <Input id={`${uid}-daily-limit`} placeholder="2" {...props} />}
         </NumberInput>
-        <small>Maximum calls allowed per day</small>
+        <small className="text-muted">Maximum calls allowed per day</small>
       </fieldset>
     </>
   );

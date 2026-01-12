@@ -19,7 +19,7 @@ export const CustomButtonTextOptionInput = <T extends CustomButtonTextOption>({
   if (!options[0]) return null;
 
   return (
-    <fieldset>
+    <fieldset className="flex flex-col gap-2">
       <label htmlFor={uid}>Call to action</label>
       <TypeSafeOptionSelect
         id={uid}
