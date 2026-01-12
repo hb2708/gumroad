@@ -21,7 +21,6 @@ export const AudienceQuickStats = ({
           <>
             <Icon name="circle-fill" className="text-accent" />
             Lifetime followers
-            <div className="legend" />
           </>
         }
         value={newFollowers != null ? totalFollowers.toLocaleString(userAgentInfo.locale) : ""}
@@ -30,9 +29,8 @@ export const AudienceQuickStats = ({
         className="new-followers"
         title={
           <>
-            <Icon name="circle-fill" className="text-active-bg" />
+            <Icon name="circle-fill" className="text-primary" />
             New followers
-            <div className="legend" />
           </>
         }
         value={newFollowers != null ? newFollowers.toLocaleString(userAgentInfo.locale) : ""}
