@@ -1,5 +1,4 @@
 import { Link } from "@inertiajs/react";
-import cx from "classnames";
 import hands from "images/illustrations/hands.png";
 import * as React from "react";
 import { useState } from "react";
@@ -18,8 +17,10 @@ import { assertResponseError, request } from "$app/utils/request";
 
 import { Button } from "$app/components/Button";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { Popover } from "$app/components/Popover";
 import { showAlert } from "$app/components/server-components/Alert";
+import { Textarea } from "$app/components/Textarea";
 import { TypeSafeOptionSelect } from "$app/components/TypeSafeOptionSelect";
 import { Alert } from "$app/components/ui/Alert";
 import { PageHeader } from "$app/components/ui/PageHeader";
@@ -239,22 +240,21 @@ const NewProductPage = ({
                 }
               >
                 <div className="w-96 max-w-full">
-                  <fieldset>
-                    <legend>
+                  <fieldset className="space-y-2">
+                    <legend className="font-bold">
                       <label htmlFor={`ai-prompt-${formUID}`}>Create a product with AI</label>
                     </legend>
                     <p>
                       Got an idea? Give clear instructions, and let AI create your product—quick and easy! Customize it
                       to make it yours.
                     </p>
-                    <textarea
+                    <Textarea
                       id={`ai-prompt-${formUID}`}
                       placeholder="e.g., a 'Coding with AI using Cursor for Designers' ebook with 5 chapters for $35'."
                       value={aiPrompt}
                       onChange={(e) => setAiPrompt(e.target.value)}
                       rows={4}
                       maxLength={500}
-                      className="w-full resize-y"
                       autoFocus
                     />
                   </fieldset>
@@ -282,8 +282,8 @@ const NewProductPage = ({
       <div>
         <div>
           <form id={`new-product-form-${formUID}`} className="row" onSubmit={(e) => void submit(e)}>
-            <section className="p-4! md:p-8!">
-              <header>
+            <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:pb-16">
+              <header className="flex flex-col gap-3 lg:row-[1/6]">
                 <p>
                   Turn your idea into a live product in minutes. No fuss, just a few quick selections and you're ready
                   to start selling. Whether it's digital downloads, online courses, or memberships — see what sticks.
@@ -314,12 +314,14 @@ const NewProductPage = ({
                 </Alert>
               ) : null}
 
-              <fieldset className={cx({ danger: errors.has("name") })}>
+              <fieldset className="space-y-2">
                 <legend>
-                  <label htmlFor={`name-${formUID}`}>Name</label>
+                  <label htmlFor={`name-${formUID}`} className="cursor-pointer">
+                    Name
+                  </label>
                 </legend>
 
-                <input
+                <Input
                   ref={nameInputRef}
                   id={`name-${formUID}`}
                   type="text"
@@ -333,8 +335,8 @@ const NewProductPage = ({
                 />
               </fieldset>
 
-              <fieldset>
-                <legend>Products</legend>
+              <fieldset className="space-y-2">
+                <legend className="font-bold">Products</legend>
                 <ProductTypeSelector
                   selectedType={productType}
                   types={native_product_types}
@@ -342,8 +344,8 @@ const NewProductPage = ({
                 />
               </fieldset>
               {service_product_types.length > 0 ? (
-                <fieldset>
-                  <legend>Services</legend>
+                <fieldset className="space-y-2">
+                  <legend className="font-bold">Services</legend>
                   <ProductTypeSelector
                     selectedType={productType}
                     types={service_product_types}
@@ -353,74 +355,74 @@ const NewProductPage = ({
                 </fieldset>
               ) : null}
 
-              <fieldset className={cx({ danger: errors.has("price") })}>
+              <fieldset className="space-y-2">
                 <legend>
                   <label htmlFor={`price-${formUID}`}>{productType === "coffee" ? "Suggested amount" : "Price"}</label>
                 </legend>
 
-                <div className="input">
-                  <Pill asChild className="relative -ml-2 shrink-0 cursor-pointer">
-                    <label>
-                      <span>{selectedCurrency.longSymbol}</span>
-                      <TypeSafeOptionSelect
-                        onChange={(newCurrencyCode) => {
-                          setCurrencyCode(newCurrencyCode);
-                        }}
-                        value={currencyCode}
-                        aria-label="Currency"
-                        options={currencyCodeList.map((code) => {
-                          const { displayFormat } = findCurrencyByCode(code);
-                          return {
-                            id: code,
-                            label: displayFormat,
-                          };
-                        })}
-                        className="absolute inset-0 z-1 m-0! cursor-pointer opacity-0"
-                      />
-                      <Icon name="outline-cheveron-down" className="ml-auto" />
-                    </label>
-                  </Pill>
-
-                  <input
-                    ref={priceInputRef}
-                    id={`price-${formUID}`}
-                    type="text"
-                    inputMode="decimal"
-                    maxLength={10}
-                    placeholder="Price your product"
-                    value={price}
-                    onChange={(e) => {
-                      let newValue = e.target.value;
-                      newValue = newValue.replace(/[.,]+/gu, ".");
-                      newValue = newValue.replace(/[^0-9.]/gu, "");
-                      setPrice(newValue);
-                      errors.delete("price");
-                    }}
-                    autoComplete="off"
-                    aria-invalid={errors.has("price")}
-                  />
-
-                  {isRecurringBilling ? (
-                    <Pill asChild className="relative -mr-2 shrink-0 cursor-pointer">
+                <Input
+                  ref={priceInputRef}
+                  id={`price-${formUID}`}
+                  type="text"
+                  inputMode="decimal"
+                  maxLength={10}
+                  placeholder="Price your product"
+                  value={price}
+                  onChange={(e) => {
+                    let newValue = e.target.value;
+                    newValue = newValue.replace(/[.,]+/gu, ".");
+                    newValue = newValue.replace(/[^0-9.]/gu, "");
+                    setPrice(newValue);
+                    errors.delete("price");
+                  }}
+                  autoComplete="off"
+                  aria-invalid={errors.has("price")}
+                  leading={
+                    <Pill asChild className="relative -ml-2 shrink-0 cursor-pointer">
                       <label>
-                        <span>{recurrenceLabels[subscriptionDuration || defaultRecurrence]}</span>
+                        <span>{selectedCurrency.longSymbol}</span>
                         <TypeSafeOptionSelect
-                          onChange={(newSubscriptionDuration) => {
-                            setSubscriptionDuration(newSubscriptionDuration);
+                          onChange={(newCurrencyCode) => {
+                            setCurrencyCode(newCurrencyCode);
                           }}
-                          value={subscriptionDuration || defaultRecurrence}
-                          aria-label="Default subscription duration"
-                          options={recurrenceIds.map((recurrence) => ({
-                            id: recurrence,
-                            label: recurrenceLabels[recurrence],
-                          }))}
+                          value={currencyCode}
+                          aria-label="Currency"
+                          options={currencyCodeList.map((code) => {
+                            const { displayFormat } = findCurrencyByCode(code);
+                            return {
+                              id: code,
+                              label: displayFormat,
+                            };
+                          })}
                           className="absolute inset-0 z-1 m-0! cursor-pointer opacity-0"
                         />
                         <Icon name="outline-cheveron-down" className="ml-auto" />
                       </label>
                     </Pill>
-                  ) : null}
-                </div>
+                  }
+                  trailing={
+                    isRecurringBilling ? (
+                      <Pill asChild className="relative -mr-2 shrink-0 cursor-pointer">
+                        <label>
+                          <span>{recurrenceLabels[subscriptionDuration || defaultRecurrence]}</span>
+                          <TypeSafeOptionSelect
+                            onChange={(newSubscriptionDuration) => {
+                              setSubscriptionDuration(newSubscriptionDuration);
+                            }}
+                            value={subscriptionDuration || defaultRecurrence}
+                            aria-label="Default subscription duration"
+                            options={recurrenceIds.map((recurrence) => ({
+                              id: recurrence,
+                              label: recurrenceLabels[recurrence],
+                            }))}
+                            className="absolute inset-0 z-1 m-0! cursor-pointer opacity-0"
+                          />
+                          <Icon name="outline-cheveron-down" className="ml-auto" />
+                        </label>
+                      </Pill>
+                    ) : null
+                  }
+                />
               </fieldset>
             </section>
           </form>
@@ -494,17 +496,16 @@ const ProductTypeSelector = ({
   onChange: (type: ProductNativeType) => void;
   disabled?: boolean;
 }) => (
-  <div className="radio-buttons grid-cols-1! sm:grid-cols-2! md:grid-cols-3! 2xl:grid-cols-5!" role="radiogroup">
+  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-5">
     {types.map((type) => {
       const typeButton = (
         <Button
           key={type}
-          className="vertical"
-          role="radio"
           aria-checked={type === selectedType}
           data-type={type}
           onClick={() => onChange(type)}
           disabled={disabled}
+          className="flex-col items-start! justify-start! gap-3! text-left aria-checked:-translate-x-1 aria-checked:-translate-y-1 aria-checked:transform-none! aria-checked:bg-background aria-checked:shadow"
         >
           <img
             src={cast<string>(nativeTypeIcons(`./${type}.png`))}
@@ -513,7 +514,7 @@ const ProductTypeSelector = ({
             height="40"
           />
           <div>
-            <h4>{PRODUCT_TYPES[type].title}</h4>
+            <h4 className="font-bold">{PRODUCT_TYPES[type].title}</h4>
             {PRODUCT_TYPES[type].description}
           </div>
         </Button>
