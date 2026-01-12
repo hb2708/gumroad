@@ -25,7 +25,7 @@ export const TaxonomyEditor = ({
   }, [taxonomies]);
 
   return (
-    <fieldset>
+    <fieldset className="space-y-2">
       <legend>
         <label htmlFor={uid}>Category</label>
       </legend>
@@ -38,7 +38,7 @@ export const TaxonomyEditor = ({
         isClearable
         value={options.find(({ id }) => id === taxonomyId) ?? null}
       />
-      <small>Select a category to show your product on Gumroad Discover.</small>
+      <small className="text-muted">Select a category to show your product on Gumroad Discover.</small>
     </fieldset>
   );
 };

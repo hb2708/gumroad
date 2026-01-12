@@ -40,7 +40,7 @@ export const TagSelector = ({ tags, onChange }: { tags: string[]; onChange: (tag
   };
 
   return (
-    <fieldset>
+    <fieldset className="space-y-2">
       <legend>
         <label htmlFor={uid}>Tags</label>
       </legend>

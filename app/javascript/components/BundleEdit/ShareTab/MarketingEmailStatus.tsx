@@ -4,6 +4,7 @@ import { formatPriceCentsWithCurrencySymbol } from "$app/utils/currency";
 
 import { computeStandalonePrice, useBundleEditContext } from "$app/components/BundleEdit/state";
 import { NavigationButton } from "$app/components/Button";
+import { Radio } from "$app/components/Radio";
 import { Alert } from "$app/components/ui/Alert";
 
 export const MarketingEmailStatus = () => {
@@ -32,21 +33,13 @@ export const MarketingEmailStatus = () => {
         <strong>
           Your product bundle is ready. Would you like to send an email about this offer to existing customers?
         </strong>
-        <fieldset>
-          <label>
-            <input
-              type="radio"
-              checked={!sendToAllCustomers}
-              onChange={(evt) => setSendToAllCustomers(!evt.target.checked)}
-            />
+        <fieldset className="flex flex-col gap-2">
+          <label className="flex gap-2 font-normal">
+            <Radio checked={!sendToAllCustomers} onChange={(evt) => setSendToAllCustomers(!evt.target.checked)} />
             Customers who have purchased at least one product in the bundle
           </label>
-          <label>
-            <input
-              type="radio"
-              checked={sendToAllCustomers}
-              onChange={(evt) => setSendToAllCustomers(evt.target.checked)}
-            />
+          <label className="flex gap-2 font-normal">
+            <Radio checked={sendToAllCustomers} onChange={(evt) => setSendToAllCustomers(evt.target.checked)} />
             All customers
           </label>
         </fieldset>
