@@ -9,6 +9,7 @@ import { cast } from "ts-safe-cast";
 
 import { Button } from "$app/components/Button";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { Modal } from "$app/components/Modal";
 import { Popover } from "$app/components/Popover";
 import { MenuItem, validateUrl } from "$app/components/RichTextEditor";
@@ -94,7 +95,7 @@ export const WithDialog = ({
           createPortal(
             <Modal open onClose={() => setAddingLink(null)} title={`Insert ${type === "link" ? "link" : "button"}`}>
               {!editor.isActive("image") ? (
-                <input
+                <Input
                   ref={labelInputRef}
                   type="text"
                   placeholder="Enter text"
@@ -105,7 +106,7 @@ export const WithDialog = ({
                   }}
                 />
               ) : null}
-              <input
+              <Input
                 ref={linkInputRef}
                 type="text"
                 placeholder="Enter URL"
@@ -237,13 +238,13 @@ const LinkNodeView = ({ node, editor, getPos, deleteNode }: NodeViewProps) => {
           style={{ visibility: isButton || isPopoverVisible ? "visible" : "hidden" }}
         >
           <fieldset>
-            <input
+            <Input
               placeholder="Enter text"
               value={link.label}
               onChange={(evt) => setLink({ ...link, label: evt.target.value })}
               onKeyDown={handleKeyPress}
             />
-            <input
+            <Input
               placeholder="Enter URL"
               value={link.url}
               ref={linkInputRef}

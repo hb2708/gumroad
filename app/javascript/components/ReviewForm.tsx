@@ -333,7 +333,7 @@ export const ReviewForm = React.forwardRef<
       <form
         onSubmit={(event) => void handleSubmit(event)}
         style={style}
-        className={`flex flex-col items-start! ${className}`}
+        className={`flex flex-col !items-start! ${className}`}
       >
         {error ? <p className="text-red"> {error} </p> : null}
         <div className="flex grow flex-wrap justify-between gap-2">

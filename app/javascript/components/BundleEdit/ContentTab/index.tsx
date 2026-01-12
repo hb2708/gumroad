@@ -10,7 +10,9 @@ import { Layout } from "$app/components/BundleEdit/Layout";
 import { BundleProduct, useBundleEditContext } from "$app/components/BundleEdit/state";
 import { Button } from "$app/components/Button";
 import { CartItemList } from "$app/components/CartItemList";
+import { Checkbox } from "$app/components/Checkbox";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { LoadingSpinner } from "$app/components/LoadingSpinner";
 import { Card } from "$app/components/Product/Card";
 import { showAlert } from "$app/components/server-components/Alert";
@@ -86,7 +88,7 @@ export const ContentTab = () => {
       }
     >
       <form onSubmit={(evt) => evt.preventDefault()} ref={formRef}>
-        <section className="p-4! md:p-8!">
+        <section className="flex flex-col gap-8 p-4 md:p-8">
           {hasOutdatedPurchases ? <BundleContentUpdatedStatus /> : null}
           {isSelecting ? (
             <>
@@ -98,9 +100,8 @@ export const ContentTab = () => {
                 }}
               >
                 <h2>Products</h2>
-                <label>
-                  <input
-                    type="checkbox"
+                <label className="flex flex-row gap-2">
+                  <Checkbox
                     checked={bundle.products.length === productsCount}
                     disabled={isLoading}
                     onChange={(evt) =>
@@ -141,8 +142,8 @@ export const ContentTab = () => {
                 aria-label="Product selector"
               >
                 <div className="input">
-                  <Icon name="solid-search" />
-                  <input
+                  <Input
+                    leading={<Icon className="text-muted" name="solid-search" />}
                     type="text"
                     value={query}
                     onChange={(evt) => setQuery(evt.target.value)}
