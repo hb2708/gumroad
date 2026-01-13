@@ -13,13 +13,14 @@ export const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(({ cla
       type="checkbox"
       className={classNames(
         "peer size-full cursor-pointer appearance-none rounded-lg border border-border bg-background checked:bg-accent",
+        "disabled:cursor-not-allowed disabled:opacity-35",
         className,
       )}
       {...props}
     />
     <Icon
       name="outline-check"
-      className="pointer-events-none absolute text-accent-foreground peer-[:not(:checked)]:hidden"
+      className="pointer-events-none absolute text-accent-foreground peer-disabled:opacity-35 peer-[:not(:checked)]:hidden"
     />
   </div>
 ));

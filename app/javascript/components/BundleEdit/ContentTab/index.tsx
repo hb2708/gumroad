@@ -141,15 +141,13 @@ export const ContentTab = () => {
                 className="grid gap-4 rounded-sm border border-border bg-background p-4"
                 aria-label="Product selector"
               >
-                <div className="input">
-                  <Input
-                    leading={<Icon className="text-muted" name="solid-search" />}
-                    type="text"
-                    value={query}
-                    onChange={(evt) => setQuery(evt.target.value)}
-                    placeholder="Search products"
-                  />
-                </div>
+                <Input
+                  leading={<Icon className="text-muted" name="solid-search" />}
+                  type="text"
+                  value={query}
+                  onChange={(evt) => setQuery(evt.target.value)}
+                  placeholder="Search products"
+                />
                 {isLoading && results.length === 0 ? (
                   <div style={{ justifySelf: "center" }}>
                     <LoadingSpinner />

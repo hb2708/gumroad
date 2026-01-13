@@ -39,7 +39,7 @@ const IncomingCollaboratorsTableRow = ({
     <TableCell>
       <div className="flex items-center gap-4">
         <img
-          className="user-avatar w-8!"
+          className="aspect-square size-8 shrink-0 rounded-full border border-border"
           src={incomingCollaborator.seller_avatar_url}
           alt={`Avatar of ${incomingCollaborator.seller_name || "Collaborator"}`}
         />
