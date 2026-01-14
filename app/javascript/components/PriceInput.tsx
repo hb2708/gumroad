@@ -27,6 +27,7 @@ export const PriceInput = React.forwardRef<
     onBlur?: () => void;
     disabled?: boolean;
     suffix?: React.ReactNode;
+    className?: string;
   }
 >(
   (
@@ -42,6 +43,7 @@ export const PriceInput = React.forwardRef<
       onBlur,
       disabled,
       suffix,
+      className,
     },
     ref,
   ) => {
@@ -97,7 +99,7 @@ export const PriceInput = React.forwardRef<
         ref={ref}
         leading={currencyPill}
         trailing={suffix}
-        className={classNames(hasError && "border-danger")}
+        className={classNames(hasError && "border-danger", className)}
       />
     );
   },
