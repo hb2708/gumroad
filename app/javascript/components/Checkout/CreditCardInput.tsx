@@ -1,9 +1,9 @@
 import { CardElement, Elements } from "@stripe/react-stripe-js";
 import { StripeCardElement, StripeElementStyleVariant, StripeCardElementChangeEvent } from "@stripe/stripe-js";
-import cx from "classnames";
 import * as React from "react";
 
 import { SavedCreditCard } from "$app/parsers/card";
+import { classNames } from "$app/utils/classNames";
 import { getStripeInstance } from "$app/utils/stripe_loader";
 import { getCssVariable } from "$app/utils/styles";
 
@@ -32,8 +32,8 @@ export const CreditCardInput = ({
   const [baseStripeStyle, setBaseStripeStyle] = React.useState<null | StripeElementStyleVariant>(null);
 
   return (
-    <fieldset className={cx({ danger: invalid })}>
-      <legend>
+    <fieldset className={classNames(invalid && "border-danger")}>
+      <legend className="mb-2 flex w-full items-center justify-between">
         <label>Card information</label>
         {savedCreditCard ? (
           <button className="font-normal underline" disabled={disabled} onClick={() => setUseSavedCard(!useSavedCard)}>
@@ -42,13 +42,26 @@ export const CreditCardInput = ({
         ) : null}
       </legend>
       {savedCreditCard && useSavedCard ? (
-        <div className="input read-only" aria-label="Saved credit card">
+        <div
+          className="bg-filled flex w-full items-center gap-2 rounded border border-border px-4 py-3 opacity-50"
+          aria-label="Saved credit card"
+        >
           <Icon name="outline-credit-card" />
           <span>{savedCreditCard.number}</span>
-          <span style={{ marginLeft: "auto" }}>{savedCreditCard.expiration_date}</span>
+          <span className="ml-auto">{savedCreditCard.expiration_date}</span>
         </div>
       ) : (
-        <div className={cx("input", { disabled })} aria-label="Card information" aria-invalid={invalid}>
+        <div
+          className={classNames(
+            "bg-filled flex w-full items-center rounded border px-4 py-3 text-base",
+            invalid ? "border-danger" : "border-border",
+            disabled
+              ? "cursor-not-allowed opacity-50"
+              : "focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-accent",
+          )}
+          aria-label="Card information"
+          aria-invalid={invalid}
+        >
           {baseStripeStyle == null ? (
             <input
               ref={(el) => {
@@ -67,7 +80,7 @@ export const CreditCardInput = ({
           ) : null}
           <StripeElementsProvider>
             <CardElement
-              className="fake-input"
+              className="flex-1"
               options={{
                 style: { base: baseStripeStyle ?? {} },
                 hidePostalCode: true,

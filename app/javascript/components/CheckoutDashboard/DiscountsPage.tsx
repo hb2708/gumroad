@@ -24,6 +24,7 @@ import { useCurrentSeller } from "$app/components/CurrentSeller";
 import { DateInput } from "$app/components/DateInput";
 import { Details } from "$app/components/Details";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { useLoggedInUser } from "$app/components/LoggedInUser";
 import { NumberInput } from "$app/components/NumberInput";
 import { Pagination, PaginationProps } from "$app/components/Pagination";
@@ -311,19 +312,17 @@ const DiscountsPage = ({
                 </div>
               }
             >
-              <div className="input">
-                <Icon name="solid-search" />
-                <input
-                  ref={searchInputRef}
-                  type="text"
-                  placeholder="Search"
-                  value={searchQuery ?? ""}
-                  onChange={(evt) => {
-                    setSearchQuery(evt.target.value);
-                    debouncedLoadDiscounts();
-                  }}
-                />
-              </div>
+              <Input
+                ref={searchInputRef}
+                type="text"
+                placeholder="Search"
+                value={searchQuery ?? ""}
+                onChange={(evt) => {
+                  setSearchQuery(evt.target.value);
+                  debouncedLoadDiscounts();
+                }}
+                leading={<Icon className="text-muted" name="solid-search" />}
+              />
             </Popover>
           ) : null}
 

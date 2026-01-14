@@ -1,4 +1,3 @@
-import cx from "classnames";
 import * as React from "react";
 
 import { CustomField, updateCheckoutForm } from "$app/data/checkout_form";
@@ -6,16 +5,20 @@ import { RecommendationType } from "$app/data/recommended_products";
 import { CardProduct } from "$app/parsers/product";
 import { assertDefined } from "$app/utils/assert";
 import { PLACEHOLDER_CARD_PRODUCT, PLACEHOLDER_CART_ITEM } from "$app/utils/cart";
+import { classNames } from "$app/utils/classNames";
 import { asyncVoid } from "$app/utils/promise";
 import { assertResponseError } from "$app/utils/request";
 
 import { Button } from "$app/components/Button";
+import { Checkbox } from "$app/components/Checkbox";
 import { CartItem } from "$app/components/Checkout/cartState";
 import { CheckoutPreview } from "$app/components/CheckoutDashboard/CheckoutPreview";
 import { Layout, Page } from "$app/components/CheckoutDashboard/Layout";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { useLoggedInUser } from "$app/components/LoggedInUser";
 import { WithPreviewSidebar } from "$app/components/PreviewSidebar";
+import { Radio } from "$app/components/Radio";
 import { Select } from "$app/components/Select";
 import { showAlert } from "$app/components/server-components/Alert";
 import { Toggle } from "$app/components/Toggle";
@@ -111,8 +114,8 @@ const FormPage = ({
       }
     >
       <WithPreviewSidebar className="flex-1">
-        <div>
-          <section className="space-y-4 border-b border-border p-4 md:p-8">
+        <div className="divide-y divide-border">
+          <section className="flex flex-col gap-4 p-4 md:p-8">
             <header className="flex items-center justify-between">
               <h2>Custom fields</h2>
               <a href="/help/article/101-designing-your-product-page" target="_blank" rel="noreferrer">
@@ -128,12 +131,15 @@ const FormPage = ({
                 {customFields.map((field, i) => (
                   <CardContent key={field.key}>
                     <div className="flex grow flex-col gap-4">
-                      <fieldset>
+                      <fieldset className="space-y-2">
                         <legend>
-                          <label htmlFor={`${uid}-${field.key}-type`}>Type of field</label>
+                          <label className="cursor-pointer" htmlFor={`${uid}-${field.key}-type`}>
+                            Type of field
+                          </label>
                         </legend>
                         <div className="flex gap-2">
                           <TypeSafeOptionSelect
+                            className="grow"
                             id={`${uid}-${field.key}-type`}
                             value={field.type}
                             onChange={(type) => updateCustomField(i, { type })}
@@ -153,33 +159,34 @@ const FormPage = ({
                           </Button>
                         </div>
                         {field.type !== "terms" ? (
-                          <label>
-                            <input
-                              type="checkbox"
-                              role="switch"
-                              checked={field.required}
-                              onChange={(e) => updateCustomField(i, { required: e.target.checked })}
-                            />
+                          <Toggle value={field.required} onChange={(val) => updateCustomField(i, { required: val })}>
                             Required
-                          </label>
+                          </Toggle>
                         ) : null}
                       </fieldset>
-                      <fieldset className={cx({ danger: errors.get(field.key)?.has("name") })}>
+                      <fieldset className="space-y-2">
                         <legend>
-                          <label htmlFor={`${uid}-${field.key}-name`}>
+                          <label className="cursor-pointer" htmlFor={`${uid}-${field.key}-name`}>
                             {field.type === "terms" ? "Terms URL" : "Label"}
                           </label>
                         </legend>
-                        <input
+                        <Input
                           id={`${uid}-${field.key}-name`}
                           value={field.name}
                           aria-invalid={errors.get(field.key)?.has("name") ?? false}
                           onChange={(e) => updateCustomField(i, { name: e.target.value })}
                         />
                       </fieldset>
-                      <fieldset className={cx({ danger: errors.get(field.key)?.has("products") })}>
+                      <fieldset
+                        className={classNames(
+                          { danger: errors.get(field.key)?.has("products") },
+                          "flex flex-col space-y-2",
+                        )}
+                      >
                         <legend>
-                          <label htmlFor={`${uid}-${field.key}-products`}>Products</label>
+                          <label className="cursor-pointer" htmlFor={`${uid}-${field.key}-products`}>
+                            Products
+                          </label>
                         </legend>
                         <Select
                           inputId={`${uid}-${field.key}-products`}
@@ -190,17 +197,17 @@ const FormPage = ({
                           value={products
                             .filter((product) => field.global || field.products.includes(product.id))
                             .map((product) => ({ id: product.id, label: product.name }))}
-                          aria-invalid={errors.get(field.key)?.has("products") ?? false}
+                          isInvalid={errors.get(field.key)?.has("products") ?? false}
                           isMulti
                           isClearable
                           onChange={(items) =>
                             updateCustomField(i, { global: false, products: items.map(({ id }) => id) })
                           }
                         />
-                        <label>
-                          <input
-                            type="checkbox"
+                        <label className="inline-flex cursor-pointer gap-2">
+                          <Checkbox
                             checked={field.global}
+                            isInvalid={errors.get(field.key)?.has("products")}
                             onChange={(e) =>
                               updateCustomField(
                                 i,
@@ -213,9 +220,9 @@ const FormPage = ({
                           All products
                         </label>
                         {field.global || field.products.length > 1 ? (
-                          <label>
-                            <input
-                              type="checkbox"
+                          <label className="inline-flex cursor-pointer gap-2">
+                            <Checkbox
+                              isInvalid={errors.get(field.key)?.has("collect_per_product")}
                               checked={field.collect_per_product}
                               onChange={(e) => updateCustomField(i, { collect_per_product: e.target.checked })}
                             />{" "}
@@ -252,27 +259,25 @@ const FormPage = ({
               </Button>
             </div>
           </section>
-          <section className="space-y-4 border-b border-border p-4 md:p-8">
+          <section className="flex flex-col gap-4 p-4 md:p-8">
             <header className="flex items-center justify-between">
               <h2>Discounts</h2>
               <a href="/help/article/128-discount-codes" target="_blank" rel="noreferrer">
                 Learn more
               </a>
             </header>
-            <fieldset>
-              <legend>Add discount code field to purchase form</legend>
-              <label>
-                <input
-                  type="radio"
+            <fieldset className="flex flex-col space-y-2">
+              <legend className="font-bold">Add discount code field to purchase form</legend>
+              <label className="inline-flex cursor-pointer gap-2">
+                <Radio
                   checked={displayOfferCodeField}
                   onChange={(evt) => setDisplayOfferCodeField(evt.target.checked)}
                   disabled={!loggedInUser?.policies.checkout_form.update}
                 />
                 Only if a discount is available
               </label>
-              <label>
-                <input
-                  type="radio"
+              <label className="inline-flex cursor-pointer gap-2">
+                <Radio
                   checked={!displayOfferCodeField}
                   onChange={(evt) => setDisplayOfferCodeField(!evt.target.checked)}
                   disabled={!loggedInUser?.policies.checkout_form.update}
@@ -281,18 +286,18 @@ const FormPage = ({
               </label>
             </fieldset>
           </section>
-          <section className="space-y-4 border-b border-border p-4 md:p-8">
+          <section className="flex flex-col gap-4 p-4 md:p-8">
             <header className="flex items-center justify-between">
               <h2>More like this recommendations</h2>
               <a href="/help/article/334-more-like-this" target="_blank" rel="noreferrer">
                 Learn more
               </a>
             </header>
-            <fieldset>
-              <legend>Product recommendations during checkout</legend>
-              <label>
-                <input
-                  type="radio"
+            <fieldset className="flex flex-col space-y-2">
+              <legend className="font-bold">Product recommendations during checkout</legend>
+
+              <label className="inline-flex cursor-pointer gap-2">
+                <Radio
                   checked={recommendationType === "no_recommendations"}
                   onChange={(evt) => {
                     if (evt.target.checked) setRecommendationType("no_recommendations");
@@ -300,9 +305,8 @@ const FormPage = ({
                 />
                 Don't recommend any products
               </label>
-              <label>
-                <input
-                  type="radio"
+              <label className="inline-flex cursor-pointer gap-2">
+                <Radio
                   checked={recommendationType === "own_products"}
                   onChange={(evt) => {
                     if (evt.target.checked) setRecommendationType("own_products");
@@ -310,9 +314,8 @@ const FormPage = ({
                 />
                 Recommend my products
               </label>
-              <label>
-                <input
-                  type="radio"
+              <label className="inline-flex cursor-pointer gap-2">
+                <Radio
                   checked={recommendationType === "directly_affiliated_products"}
                   onChange={(evt) => {
                     if (evt.target.checked) setRecommendationType("directly_affiliated_products");
@@ -320,9 +323,8 @@ const FormPage = ({
                 />
                 <span>Recommend my products and products I'm an affiliate of</span>
               </label>
-              <label>
-                <input
-                  type="radio"
+              <label className="inline-flex cursor-pointer gap-2">
+                <Radio
                   checked={recommendationType === "gumroad_affiliates_products"}
                   onChange={(evt) => {
                     if (evt.target.checked) setRecommendationType("gumroad_affiliates_products");
@@ -337,7 +339,7 @@ const FormPage = ({
               </label>
             </fieldset>
           </section>
-          <section className="space-y-4 border-b border-border p-4 md:p-8">
+          <section className="flex flex-col gap-4 p-4 md:p-8">
             <header className="flex items-center justify-between">
               <h2>Tipping</h2>
               <a href="/help/article/345-tipping" target="_blank" rel="noreferrer">

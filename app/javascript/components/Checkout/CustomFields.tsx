@@ -1,11 +1,12 @@
-import cx from "classnames";
 import { uniqBy } from "lodash-es";
 import * as React from "react";
 
 import { CustomFieldDescriptor } from "$app/parsers/product";
 
+import { Checkbox } from "$app/components/Checkbox";
 import { Creator } from "$app/components/Checkout/cartState";
 import { Product, getCustomFieldKey, getErrors, isProcessing, useState } from "$app/components/Checkout/payment";
+import { Input } from "$app/components/Input";
 import { Card, CardContent } from "$app/components/ui/Card";
 
 const CustomField = ({ field, fieldKey }: { field: CustomFieldDescriptor; fieldKey: string }) => {
@@ -17,11 +18,13 @@ const CustomField = ({ field, fieldKey }: { field: CustomFieldDescriptor; fieldK
   switch (field.type) {
     case "text": {
       return (
-        <fieldset className={cx({ danger: hasError })}>
+        <fieldset className="space-y-2">
           <legend>
-            <label htmlFor={uid}>{field.name}</label>
+            <label className="cursor-pointer" htmlFor={uid}>
+              {field.name}
+            </label>
           </legend>
-          <input
+          <Input
             id={uid}
             type="text"
             aria-invalid={hasError}
@@ -35,16 +38,14 @@ const CustomField = ({ field, fieldKey }: { field: CustomFieldDescriptor; fieldK
     }
     case "checkbox": {
       return (
-        <fieldset className={cx({ danger: hasError })}>
-          <label>
-            <input
-              type="checkbox"
+        <fieldset>
+          <label className="inline-flex cursor-pointer gap-2">
+            <Checkbox
               checked={value === "true"}
-              aria-invalid={hasError}
+              isInvalid={hasError}
               onChange={(e) =>
                 dispatch({ type: "set-custom-field", key: fieldKey, value: e.target.checked ? "true" : "" })
               }
-              style={{ margin: 0 }}
               disabled={isProcessing(state)}
             />
             {field.required ? field.name : `${field.name} (optional)`}
@@ -54,16 +55,14 @@ const CustomField = ({ field, fieldKey }: { field: CustomFieldDescriptor; fieldK
     }
     case "terms": {
       return (
-        <fieldset className={cx({ danger: hasError })}>
-          <label>
-            <input
-              type="checkbox"
+        <fieldset>
+          <label className="inline-flex cursor-pointer gap-2">
+            <Checkbox
               checked={value === "true"}
-              aria-invalid={hasError}
+              isInvalid={hasError}
               onChange={(e) =>
                 dispatch({ type: "set-custom-field", key: fieldKey, value: e.target.checked ? "true" : "" })
               }
-              style={{ margin: 0 }}
               disabled={isProcessing(state)}
             />
             I accept
@@ -137,8 +136,12 @@ const SellerCustomFields = ({ seller, className }: { seller: Creator; className?
   return sharedCustomFields.length > 0 ? (
     <div className={className}>
       <section className="flex grow flex-col gap-4">
-        <h4 className="font-bold">
-          <img className="user-avatar" src={seller.avatar_url} />
+        <h4 className="flex items-center font-bold">
+          <img
+            className="size-8 shrink-0 rounded-full border border-border"
+            src={seller.avatar_url}
+            alt={seller.name}
+          />
           &ensp;
           {seller.name}
         </h4>
@@ -146,7 +149,7 @@ const SellerCustomFields = ({ seller, className }: { seller: Creator; className?
           <CustomField key={field.id} field={field} fieldKey={field.id} />
         ))}
         {customFieldGroups.map(({ product, customFields }) => (
-          <fieldset key={`${product.permalink}-${product.bundleProductId}`}>
+          <fieldset key={`${product.permalink}-${product.bundleProductId}`} className="space-y-2">
             <legend>
               <label>{product.name}</label>
             </legend>

@@ -8,8 +8,10 @@ import { assertResponseError } from "$app/utils/request";
 import { register } from "$app/utils/serverComponentUtil";
 
 import { Button } from "$app/components/Button";
+import { Input } from "$app/components/Input";
 import { PoweredByFooter } from "$app/components/PoweredByFooter";
 import { showAlert } from "$app/components/server-components/Alert";
+import { Textarea } from "$app/components/Textarea";
 import { Card, CardContent } from "$app/components/ui/Card";
 
 type FieldState = { value: string; error?: boolean };
@@ -169,7 +171,7 @@ const GenerateInvoicePage = ({
                 </fieldset>
                 <fieldset className={cx({ danger: zipCode.error })}>
                   <label htmlFor="zip_code">ZIP code</label>
-                  <input
+                  <Input
                     id="zip_code"
                     type="text"
                     placeholder="ZIP code"
@@ -193,7 +195,7 @@ const GenerateInvoicePage = ({
                 <legend>
                   <label htmlFor="additional_notes">Additional notes</label>
                 </legend>
-                <textarea
+                <Textarea
                   id="additional_notes"
                   name="additional_notes"
                   placeholder="Enter anything else you'd like to appear on your invoice (Optional)"

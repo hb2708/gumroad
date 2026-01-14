@@ -17,7 +17,7 @@ export const Toggle = ({
   children?: React.ReactNode;
   ariaLabel?: string;
 }) => (
-  <label>
+  <label className="flex flex-row gap-2">
     <input
       type="checkbox"
       role="switch"
@@ -35,6 +35,6 @@ export const Toggle = ({
         "disabled:cursor-not-allowed disabled:opacity-50",
       )}
     />
-    {children ? <span className="ml-2 cursor-pointer">{children}</span> : null}
+    {children ? <span className="cursor-pointer">{children}</span> : null}
   </label>
 );

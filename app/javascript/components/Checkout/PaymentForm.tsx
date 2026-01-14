@@ -27,11 +27,13 @@ import { createBillingAgreement, createBillingAgreementToken } from "$app/data/p
 import { PurchasePaymentMethod } from "$app/data/purchase";
 import { VerificationResult, verifyShippingAddress } from "$app/data/shipping";
 import { assert, assertDefined } from "$app/utils/assert";
+import { classNames } from "$app/utils/classNames";
 import { formatPriceCentsWithoutCurrencySymbol } from "$app/utils/currency";
 import { checkEmailForTypos as checkEmailForTyposUtil } from "$app/utils/email";
 import { asyncVoid } from "$app/utils/promise";
 
 import { Button } from "$app/components/Button";
+import { Checkbox } from "$app/components/Checkbox";
 import { CreditCardInput, StripeElementsProvider } from "$app/components/Checkout/CreditCardInput";
 import { CustomFields } from "$app/components/Checkout/CustomFields";
 import {
@@ -50,10 +52,12 @@ import {
   getTotalPriceFromProducts,
 } from "$app/components/Checkout/payment";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { LoadingSpinner } from "$app/components/LoadingSpinner";
 import { useLoggedInUser } from "$app/components/LoggedInUser";
 import { PriceInput } from "$app/components/PriceInput";
 import { showAlert } from "$app/components/server-components/Alert";
+import { Select } from "$app/components/TypeSafeOptionSelect";
 import { Alert } from "$app/components/ui/Alert";
 import { Card, CardContent } from "$app/components/ui/Card";
 import { Tab, Tabs } from "$app/components/ui/Tabs";
@@ -84,11 +88,11 @@ const CountryInput = () => {
   }, [state.country, shippingCountryCodes]);
 
   return (
-    <fieldset>
+    <fieldset className="space-y-2">
       <legend>
         <label htmlFor={`${uid}country`}>Country</label>
       </legend>
-      <select
+      <Select
         id={`${uid}country`}
         value={state.country}
         onChange={(e) =>
@@ -107,7 +111,7 @@ const CountryInput = () => {
             </option>
           ),
         )}
-      </select>
+      </Select>
     </fieldset>
   );
 };
@@ -142,7 +146,7 @@ const StateInput = () => {
         <label htmlFor={`${uid}state`}>{stateLabel}</label>
       </legend>
       {(state.country === "US" || state.country === "CA") && states !== null ? (
-        <select
+        <Select
           id={`${uid}state`}
           value={state.state}
           onChange={(e) => dispatch({ type: "set-value", state: e.target.value })}
@@ -153,11 +157,10 @@ const StateInput = () => {
               {state}
             </option>
           ))}
-        </select>
+        </Select>
       ) : (
-        <input
+        <Input
           id={`${uid}state`}
-          type="text"
           aria-invalid={errors.has("state")}
           placeholder={stateLabel}
           disabled={isProcessing(state)}
@@ -176,11 +179,11 @@ const ZipCodeInput = () => {
   const label = state.country === "US" || state.country === "PH" ? "ZIP code" : "Postal";
 
   return (
-    <fieldset className={cx({ danger: errors.has("zipCode") })}>
+    <fieldset className={classNames({ danger: errors.has("zipCode") }, "space-y-2")}>
       <legend>
         <label htmlFor={`${uid}zipCode`}>{label}</label>
       </legend>
-      <input
+      <Input
         id={`${uid}zipCode`}
         type="text"
         aria-invalid={errors.has("zipCode")}
@@ -219,14 +222,14 @@ const EmailAddress = ({ card }: { card: boolean }) => {
   return (
     <div className={card ? "flex flex-wrap items-center justify-between gap-4 p-4" : ""}>
       <div className={`flex flex-col gap-4 ${card ? "grow" : ""}`}>
-        <fieldset className={cx({ danger: errors.has("email") })}>
+        <fieldset className={classNames({ danger: errors.has("email") }, "space-y-2")}>
           <legend>
             <label htmlFor={`${uid}email`}>
               <h4>Email address</h4>
             </label>
           </legend>
           <div className={cx("popover", { expanded: !!state.emailTypoSuggestion })} style={{ width: "100%" }}>
-            <input
+            <Input
               id={`${uid}email`}
               type="email"
               aria-invalid={errors.has("email")}
@@ -395,7 +398,7 @@ const SharedInputs = ({
                 <legend>
                   <label htmlFor={`${uid}vatId`}>{vatLabel}</label>
                 </legend>
-                <input
+                <Input
                   id={`${uid}vatId`}
                   type="text"
                   placeholder={vatLabel}
@@ -699,13 +702,12 @@ const CreditCard = ({ card }: { card?: boolean }) => {
     >
       <div className={`flex flex-col gap-4 ${card ? "grow" : ""}`}>
         {!useSavedCard ? (
-          <fieldset>
-            <legend>
+          <fieldset className="space-y-2">
+            <legend className="flex w-full items-center justify-between">
               <label htmlFor={`${uid}nameOnCard`}>Name on card</label>
               {isLoggedIn ? (
-                <label>
-                  <input
-                    type="checkbox"
+                <label className="inline-flex gap-2">
+                  <Checkbox
                     disabled={isProcessing(state)}
                     checked={keepOnFile}
                     onChange={(evt) => setKeepOnFile(evt.target.checked)}
@@ -714,7 +716,7 @@ const CreditCard = ({ card }: { card?: boolean }) => {
                 </label>
               ) : null}
             </legend>
-            <input
+            <Input
               type="text"
               placeholder="John Doe"
               id={`${uid}nameOnCard`}
@@ -756,14 +758,13 @@ const TipSelector = ({ className }: { className?: string | undefined }) => {
         <h4 className="font-bold">Add a tip</h4>
         {showPercentageOptions ? (
           <div
-            role="radiogroup"
-            className="radio-buttons"
+            className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-5"
             style={{ gridTemplateColumns: "repeat(auto-fit, minmax(min(5rem, 100%), 1fr))" }}
           >
             {state.tipOptions.map((tip) => (
               <Button
                 key={tip}
-                role="radio"
+                className="flex-col gap-3! aria-checked:-translate-x-1 aria-checked:-translate-y-1 aria-checked:transform-none! aria-checked:bg-active-bg aria-checked:shadow"
                 aria-checked={state.tip.type === "percentage" && tip === state.tip.percentage}
                 onClick={() => {
                   dispatch({
@@ -781,7 +782,7 @@ const TipSelector = ({ className }: { className?: string | undefined }) => {
               </Button>
             ))}
             <Button
-              role="radio"
+              className="flex-col gap-3! aria-checked:-translate-x-1 aria-checked:-translate-y-1 aria-checked:transform-none! aria-checked:bg-active-bg aria-checked:shadow"
               aria-checked={state.tip.type === "fixed"}
               onClick={() => {
                 dispatch({
