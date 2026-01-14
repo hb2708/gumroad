@@ -2,11 +2,13 @@ import * as React from "react";
 
 import { Button } from "$app/components/Button";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { Modal } from "$app/components/Modal";
 import { NumberInput } from "$app/components/NumberInput";
 import { PriceInput } from "$app/components/PriceInput";
 import { Duration, useProductEditContext } from "$app/components/ProductEdit/state";
 import { Drawer, ReorderingHandle, SortableList } from "$app/components/SortableList";
+import { Textarea } from "$app/components/Textarea";
 import { Pill } from "$app/components/ui/Pill";
 import { Placeholder } from "$app/components/ui/Placeholder";
 import { Row, RowActions, RowContent, RowDetails, Rows } from "$app/components/ui/Rows";
@@ -144,39 +146,36 @@ const DurationEditor = ({
       {isOpen ? (
         <RowDetails asChild>
           <Drawer className="grid gap-6">
-            <fieldset>
+            <fieldset className="space-y-2">
               <legend>
                 <label htmlFor={`${uid}-duration`}>Duration</label>
               </legend>
-              <div className="input">
-                <NumberInput
-                  value={duration.duration_in_minutes}
-                  onChange={(duration_in_minutes) =>
-                    updateDuration({
-                      duration_in_minutes,
-                      name: duration_in_minutes
-                        ? `${duration_in_minutes} ${duration_in_minutes === 1 ? "minute" : "minutes"}`
-                        : "Untitled",
-                    })
-                  }
-                >
-                  {(props) => <input id={`${uid}-duration`} {...props} />}
-                </NumberInput>
-                <Pill className="-mr-2 shrink-0">minutes</Pill>
-              </div>
+              <NumberInput
+                value={duration.duration_in_minutes}
+                onChange={(duration_in_minutes) =>
+                  updateDuration({
+                    duration_in_minutes,
+                    name: duration_in_minutes
+                      ? `${duration_in_minutes} ${duration_in_minutes === 1 ? "minute" : "minutes"}`
+                      : "Untitled",
+                  })
+                }
+              >
+                {(props) => (
+                  <Input id={`${uid}-duration`} trailing={<Pill className="-mr-2 shrink-0">minutes</Pill>} {...props} />
+                )}
+              </NumberInput>
             </fieldset>
-            <fieldset>
+            <fieldset className="flex flex-col gap-2">
               <label htmlFor={`${uid}-description`}>Description</label>
-              <textarea
+              <Textarea
                 id={`${uid}-description`}
                 value={duration.description}
                 onChange={(evt) => updateDuration({ description: evt.target.value })}
               />
             </fieldset>
-            <section
-              style={{ display: "grid", gap: "var(--spacer-5)", gridAutoFlow: "column", alignItems: "flex-end" }}
-            >
-              <fieldset>
+            <section className="grid grid-flow-col items-end gap-6">
+              <fieldset className="flex flex-col gap-2">
                 <label htmlFor={`${uid}-price`}>Additional amount</label>
                 <PriceInput
                   id={`${uid}-price`}
@@ -186,14 +185,14 @@ const DurationEditor = ({
                   placeholder="0"
                 />
               </fieldset>
-              <fieldset>
+              <fieldset className="flex flex-col gap-2">
                 <label htmlFor={`${uid}-max-purchase-count`}>Maximum number of purchases</label>
                 <NumberInput
                   onChange={(value) => updateDuration({ max_purchase_count: value })}
                   value={duration.max_purchase_count}
                 >
                   {(inputProps) => (
-                    <input id={`${uid}-max-purchase-count`} type="number" placeholder="∞" {...inputProps} />
+                    <Input id={`${uid}-max-purchase-count`} type="number" placeholder="∞" {...inputProps} />
                   )}
                 </NumberInput>
               </fieldset>

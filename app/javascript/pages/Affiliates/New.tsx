@@ -1,5 +1,4 @@
 import { useForm, usePage } from "@inertiajs/react";
-import cx from "classnames";
 import * as React from "react";
 import { cast } from "ts-safe-cast";
 
@@ -8,6 +7,7 @@ import { isUrlValid } from "$app/utils/url";
 
 import { Button } from "$app/components/Button";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { useLoggedInUser } from "$app/components/LoggedInUser";
 import { NavigationButtonInertia } from "$app/components/NavigationButton";
 import { showAlert } from "$app/components/server-components/Alert";
@@ -153,11 +153,11 @@ export default function AffiliatesNew() {
           uid={uid}
           headerText="Add a new affiliate below and we'll send them a unique link to share with their audience. Your affiliate will then earn a commission on each sale they refer."
           emailField={
-            <fieldset className={cx({ danger: errors["affiliate.email"] })}>
+            <fieldset className="space-y-2">
               <legend>
                 <label htmlFor={`${uid}email`}>Email</label>
               </legend>
-              <input
+              <Input
                 ref={emailInputRef}
                 type="email"
                 id={`${uid}email`}

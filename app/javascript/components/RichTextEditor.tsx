@@ -12,6 +12,7 @@ import { partition } from "lodash-es";
 import * as React from "react";
 
 import { assertDefined } from "$app/utils/assert";
+import { classNames } from "$app/utils/classNames";
 
 import { InputtedDiscount } from "$app/components/CheckoutDashboard/DiscountInput";
 import { Icon } from "$app/components/Icons";
@@ -247,7 +248,10 @@ export const useRichTextEditor = ({
     editable,
     editorProps: {
       attributes: {
-        ...(className ? { class: className } : {}),
+        class: classNames(
+          "min-h-[120px] w-full rounded border border-border px-4 py-3 outline-none transition-all focus:ring-2 focus:ring-accent bg-background",
+          className,
+        ),
         ...(ariaLabel ? { "aria-label": ariaLabel } : {}),
         ...(id ? { id } : {}),
       },

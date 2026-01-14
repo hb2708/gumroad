@@ -17,6 +17,9 @@ import { Tab, Tabs } from "$app/components/Developer/Tabs";
 import { useHasChanged } from "$app/components/Developer/useHasChanged";
 import { DomainSettingsProvider, useDomains } from "$app/components/DomainSettings";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
+import { Textarea } from "$app/components/Textarea";
+import { Toggle } from "$app/components/Toggle";
 
 type WidgetsPageProps = {
   default_product: Product;
@@ -53,9 +56,9 @@ export default function PublicWidgets() {
 
   return (
     <Layout currentPage="widgets">
-      <form>
-        <section className="p-4! md:p-8!">
-          <header>
+      <form className="divide-y divide-border">
+        <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:pb-16">
+          <header className="flex flex-col gap-3">
             <h3>Share your product</h3>
             <p>
               You can easily bring the Gumroad purchase page right into your site, without directing your buyers
@@ -75,8 +78,8 @@ export default function PublicWidgets() {
           </div>
         </section>
         {currentSeller ? (
-          <section className="p-4! md:p-8!">
-            <header>
+          <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:pb-16">
+            <header className="flex flex-col gap-3 lg:row-[1/4]">
               <h3>Subscribe form</h3>
               <p>
                 Share your subscribe form on any website or blog using an embed or URL.{" "}
@@ -85,7 +88,7 @@ export default function PublicWidgets() {
                 </a>
               </p>
             </header>
-            <fieldset>
+            <fieldset className="flex flex-col space-y-2">
               <legend>
                 <label htmlFor={copyButtonUID}>Share your subscribe page and grow your audience</label>
               </legend>
@@ -100,22 +103,26 @@ export default function PublicWidgets() {
                 </Button>
               </CopyToClipboard>
             </fieldset>
-            <fieldset>
+            <fieldset className="space-y-2">
               <legend>
                 <label htmlFor={FOLLOW_FORM_EMBED_INPUT_ID}>Test your subscribe form with your email</label>
               </legend>
               <FollowFormEmbed sellerId={currentSeller.id} preview />
             </fieldset>
-            <fieldset>
-              <legend>
+            <fieldset className="space-y-2">
+              <legend className="flex w-full justify-between">
                 <label htmlFor={followFormEmbedUID}>Subscribe form embed code</label>
                 <CopyToClipboard text={followFormEmbedHTML} copyTooltip="Copy to Clipboard" tooltipPosition="top">
-                  <button type="button" className="font-normal underline">
+                  <button type="button" className="underline">
                     Copy embed code
                   </button>
                 </CopyToClipboard>
               </legend>
-              <textarea id={followFormEmbedUID} value={followFormEmbedHTML} readOnly />
+              <Textarea
+                id={followFormEmbedUID}
+                value={followFormEmbedHTML}
+                readOnly
+              />
             </fieldset>
           </section>
         ) : null}
@@ -200,20 +207,19 @@ const OverlayPanel = ({ selectedProduct }: PanelProps) => {
 
   return (
     <>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--spacer-5)" }}>
-        <fieldset style={{ flexGrow: 1 }}>
+      <div className="flex flex-wrap gap-6">
+        <fieldset className="flex flex-col grow space-y-2">
           <legend>
             <label htmlFor={buttonTextUID}>Button text</label>
           </legend>
-          <input
+          <Input
             id={buttonTextUID}
-            type="text"
             placeholder="Buy on"
             value={buttonText}
             onChange={(evt) => setButtonText(evt.target.value)}
           />
         </fieldset>
-        <fieldset>
+        <fieldset className="space-y-2">
           <legend>
             <label htmlFor={overlayPreviewUID}>Button Preview</label>
           </legend>
@@ -231,11 +237,10 @@ const OverlayPanel = ({ selectedProduct }: PanelProps) => {
         </fieldset>
       </div>
       <CodeContainer codeToCopy={codeToCopy} />
-      <fieldset className="grid gap-4">
-        <label>
-          <input type="checkbox" checked={isWanted} onChange={(e) => setIsWanted(e.target.checked)} role="switch" />
+      <fieldset>
+        <Toggle value={isWanted} onChange={setIsWanted}>
           Send directly to checkout page
-        </label>
+        </Toggle>
       </fieldset>
     </>
   );

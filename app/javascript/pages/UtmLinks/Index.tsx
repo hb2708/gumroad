@@ -8,6 +8,7 @@ import { AnalyticsLayout } from "$app/components/Analytics/AnalyticsLayout";
 import { Button } from "$app/components/Button";
 import { CopyToClipboard } from "$app/components/CopyToClipboard";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { LoadingSpinner } from "$app/components/LoadingSpinner";
 import { Modal } from "$app/components/Modal";
 import { NavigationButtonInertia } from "$app/components/NavigationButton";
@@ -168,7 +169,7 @@ export default function UtmLinksIndex() {
       }
     >
       {isNavigating && utmLinks.length === 0 ? (
-        <div style={{ justifySelf: "center" }}>
+        <div className="flex justify-center">
           <LoadingSpinner className="size-20" />
         </div>
       ) : utmLinks.length > 0 ? (
@@ -379,20 +380,18 @@ const SearchBoxPopover = ({ initialQuery, onSearch }: { initialQuery: string; on
         </WithTooltip>
       }
     >
-      <div className="input">
-        <Icon name="solid-search" />
-        <input
-          ref={searchInputRef}
-          type="text"
-          placeholder="Search"
-          value={query}
-          onChange={(evt) => {
-            const newQuery = evt.target.value;
-            setQuery(newQuery);
-            onSearch(newQuery);
-          }}
-        />
-      </div>
+      <Input
+        ref={searchInputRef}
+        type="text"
+        placeholder="Search"
+        value={query}
+        onChange={(evt) => {
+          const newQuery = evt.target.value;
+          setQuery(newQuery);
+          onSearch(newQuery);
+        }}
+        leading={<Icon className="text-muted" name="solid-search" />}
+      />
     </Popover>
   );
 };
@@ -526,7 +525,7 @@ const UtmLinkDetails = ({
           </CardContent>
         </section>
       </Card>
-      <div style={{ display: "grid", gridAutoFlow: "column", gap: "var(--spacer-4)" }}>
+      <div className="grid grid-cols-3 gap-4">
         <Link href={Routes.new_dashboard_utm_link_path({ copy_from: utmLink.id })} className="button">
           Duplicate
         </Link>

@@ -32,8 +32,8 @@ const AccountDeletionSection = (props: Props) => {
   };
 
   return (
-    <section className="p-4! md:p-8!">
-      <header>
+    <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:pb-16">
+      <header className="lg:row-[1/3]">
         <h2>Danger Zone</h2>
       </header>
       <p>

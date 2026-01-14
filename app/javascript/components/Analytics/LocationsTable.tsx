@@ -3,6 +3,7 @@ import * as React from "react";
 import { AnalyticsDataByState, LocationDataValue } from "$app/data/analytics";
 import { formatPriceCentsWithCurrencySymbol } from "$app/utils/currency";
 
+import { Select } from "$app/components/TypeSafeOptionSelect";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "$app/components/ui/Table";
 import { useClientSortingTableDriver } from "$app/components/useSortingTableDriver";
 
@@ -150,33 +151,34 @@ export const AnalyticsStatesTable = ({ locationData, selectedProducts, locations
   });
 
   return (
-    <>
-      <Table>
-        <TableCaption>{caption}</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead {...thProps("name")}>State</TableHead>
-            <TableHead {...thProps("views")}>Views</TableHead>
-            <TableHead {...thProps("sales")}>Sales</TableHead>
-            <TableHead {...thProps("totals")}>Total</TableHead>
+    <Table>
+      <TableCaption>{caption}</TableCaption>
+      <TableHeader>
+        <TableRow>
+          <TableHead {...thProps("name")}>State</TableHead>
+          <TableHead {...thProps("views")}>Views</TableHead>
+          <TableHead {...thProps("sales")}>Sales</TableHead>
+          <TableHead {...thProps("totals")}>Total</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {items.map(({ name, totals, sales, views }) => (
+          <TableRow key={name}>
+            <TableCell>{name}</TableCell>
+            <TableCell>{views}</TableCell>
+            <TableCell>{sales}</TableCell>
+            <TableCell>
+              {formatPriceCentsWithCurrencySymbol("usd", totals, { symbolFormat: "short", noCentsIfWhole: true })}
+            </TableCell>
           </TableRow>
-        </TableHeader>
-        <TableBody>
-          {items.map(({ name, totals, sales, views }) => (
-            <TableRow key={name}>
-              <TableCell>{name}</TableCell>
-              <TableCell>{views}</TableCell>
-              <TableCell>{sales}</TableCell>
-              <TableCell>
-                {formatPriceCentsWithCurrencySymbol("usd", totals, { symbolFormat: "short", noCentsIfWhole: true })}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-
-      {!items.length ? <div className="input mt-4 lg:mt-0">Nothing yet </div> : null}
-    </>
+        ))}
+        {!items.length ? (
+          <TableRow>
+            <TableCell colSpan={4}>Nothing yet</TableCell>
+          </TableRow>
+        ) : null}
+      </TableBody>
+    </Table>
   );
 };
 
@@ -196,10 +198,10 @@ export const LocationsTable = ({
   const caption = (
     <div className="flex justify-between">
       Locations
-      <select aria-label="Locations" className="w-fit" value={selected} onChange={(ev) => setSelected(ev.target.value)}>
+      <Select aria-label="Locations" value={selected} onChange={(ev) => setSelected(ev.target.value)}>
         <option value="world">World</option>
         <option value="us">United States</option>
-      </select>
+      </Select>
     </div>
   );
 

@@ -1,10 +1,12 @@
-import cx from "classnames";
 import * as React from "react";
 
+import { classNames } from "$app/utils/classNames";
 import { CurrencyCode } from "$app/utils/currency";
 
+import { Input } from "$app/components/Input";
 import { NumberInput } from "$app/components/NumberInput";
 import { PriceInput } from "$app/components/PriceInput";
+import { Radio } from "$app/components/Radio";
 import { Pill } from "$app/components/ui/Pill";
 import { WithTooltip } from "$app/components/WithTooltip";
 
@@ -26,12 +28,11 @@ export const DiscountInput = ({
   ref?: React.RefObject<HTMLInputElement>;
 }) => {
   const fixedAmountFieldset = (
-    <fieldset className={cx({ danger: discount.type === "cents" && discount.error })}>
-      <div className="grid items-center gap-4 md:grid-cols-[auto_1fr]!">
-        <label>
-          <input
+    <fieldset className={classNames({ danger: discount.type === "cents" && discount.error })}>
+      <div className="grid items-center gap-4 md:grid-cols-[auto_1fr]">
+        <label className="inline-flex cursor-pointer gap-2">
+          <Radio
             ref={ref}
-            type="radio"
             checked={discount.type === "cents"}
             onChange={(evt) => {
               if (evt.target.checked) setDiscount({ type: "cents", value: 0 });
@@ -49,6 +50,7 @@ export const DiscountInput = ({
           disabled={disableFixedAmount || discount.type !== "cents"}
           hasError={discount.error ?? false}
           ariaLabel="Fixed amount"
+          className="bg-background"
         />
       </div>
     </fieldset>
@@ -61,11 +63,10 @@ export const DiscountInput = ({
         gridTemplateColumns: "repeat(auto-fit, minmax(var(--dynamic-grid), 1fr))",
       }}
     >
-      <fieldset className={cx({ danger: discount.type === "percent" && discount.error })}>
-        <div className="grid items-center gap-4 md:grid-cols-[auto_1fr]!">
-          <label>
-            <input
-              type="radio"
+      <fieldset className={classNames({ danger: discount.type === "percent" && discount.error })}>
+        <div className="grid items-center gap-4 md:grid-cols-[auto_1fr]">
+          <label className="inline-flex cursor-pointer gap-2">
+            <Radio
               checked={discount.type === "percent"}
               onChange={(evt) => {
                 if (evt.target.checked) setDiscount({ type: "percent", value: 0 });
@@ -73,26 +74,25 @@ export const DiscountInput = ({
             />
             Percentage
           </label>
-          <div className={cx("input", { disabled: discount.type !== "percent" })}>
-            <NumberInput
-              value={discount.type === "percent" ? discount.value : null}
-              onChange={(value) => {
-                if (value === null || (value >= 0 && value <= 100)) setDiscount({ type: "percent", value });
-              }}
-            >
-              {(props) => (
-                <input
-                  type="text"
-                  placeholder="0"
-                  disabled={discount.type !== "percent"}
-                  aria-label="Percentage"
-                  aria-invalid={discount.error}
-                  {...props}
-                />
-              )}
-            </NumberInput>
-            <Pill className="-mr-2 shrink-0">%</Pill>
-          </div>
+          <NumberInput
+            value={discount.type === "percent" ? discount.value : null}
+            onChange={(value) => {
+              if (value === null || (value >= 0 && value <= 100)) setDiscount({ type: "percent", value });
+            }}
+          >
+            {(props) => (
+              <Input
+                type="text"
+                placeholder="0"
+                disabled={discount.type !== "percent"}
+                aria-label="Percentage"
+                aria-invalid={discount.error}
+                trailing={<Pill className="-mr-2 shrink-0">%</Pill>}
+                className="bg-background"
+                {...props}
+              />
+            )}
+          </NumberInput>
         </div>
       </fieldset>
       {disableFixedAmount ? (

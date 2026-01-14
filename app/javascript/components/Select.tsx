@@ -1,4 +1,3 @@
-import cx from "classnames";
 import * as React from "react";
 import ReactSelect, {
   components,
@@ -15,6 +14,7 @@ import ReactSelect, {
 } from "react-select";
 
 import { escapeRegExp } from "$app/utils";
+import { classNames } from "$app/utils/classNames";
 
 import { Icon } from "$app/components/Icons";
 import { Pill } from "$app/components/ui/Pill";
@@ -28,6 +28,7 @@ type CustomProps = {
   focusedOptionId: null | string;
   setFocusedOptionId?: (id: null | string) => void;
   maxLength: number | null;
+  isInvalid?: boolean | undefined;
 };
 const CustomPropsContext = React.createContext<CustomProps>({
   customOption: null,
@@ -51,6 +52,7 @@ export type Props<IsMulti extends boolean = boolean> = Omit<
   customOption?: CustomOption;
   allowMenuOpen?: () => boolean;
   maxLength?: number;
+  isInvalid?: boolean | undefined;
 };
 
 // Forward a ref to react-select so parents can call .focus(), .blur(), etc.
@@ -78,8 +80,9 @@ const SelectInner = <IsMulti extends boolean>(
       focusedOptionId,
       setFocusedOptionId,
       maxLength: props.maxLength ?? null,
+      isInvalid: props.isInvalid,
     }),
-    [props.customOption, focusedOptionId],
+    [props.customOption, focusedOptionId, props.isInvalid],
   );
 
   return (
@@ -89,7 +92,7 @@ const SelectInner = <IsMulti extends boolean>(
         ref={ref}
         isOptionDisabled={(option) => option.disabled ?? false}
         instanceId={props.inputId ?? menuListId}
-        className={cx("combobox", props.className)}
+        className={classNames("relative", props.className)}
         components={{
           ClearIndicator,
           Control,
@@ -123,7 +126,7 @@ const SelectInner = <IsMulti extends boolean>(
             padding: 0,
             ...(props.selectProps.menuIsOpen ? { borderBottomLeftRadius: 0, borderBottomRightRadius: 0 } : {}),
             ...(Array.isArray(props.selectProps.value) && props.selectProps.value.length > 0
-              ? { margin: "var(--spacer-1) calc(var(--spacer-2) * -1)", gap: "var(--spacer-1) var(--spacer-2)" }
+              ? { margin: "0 calc(var(--spacer-2) * -1)", rowGap: "var(--spacer-1)", columnGap: "var(--spacer-2)" }
               : { margin: 0 }),
           }),
         }}
@@ -190,24 +193,37 @@ const DropdownIndicator = <IsMulti extends boolean>(props: DropdownIndicatorProp
     </components.DropdownIndicator>
   );
 
-const Control = <IsMulti extends boolean>(props: ControlProps<Option, IsMulti>) => (
-  <components.Control className={cx("input", props.isDisabled ? "disabled" : null)} {...props}>
-    {props.children}
-  </components.Control>
-);
+const Control = <IsMulti extends boolean>(props: ControlProps<Option, IsMulti>) => {
+  const { isInvalid } = React.useContext(CustomPropsContext);
+
+  return (
+    <components.Control
+      className={classNames(
+        "flex min-h-12 items-center gap-2 rounded border border-border bg-background px-4 py-1",
+        "focus-within:ring-2 focus-within:ring-accent focus-within:outline-none",
+        props.isDisabled && "opacity-30",
+        props.selectProps.menuIsOpen && "rounded-b-none",
+        isInvalid && "border-danger",
+      )}
+      {...props}
+    >
+      {props.children}
+    </components.Control>
+  );
+};
 
 const MenuList = <IsMulti extends boolean>(props: MenuListProps<Option, IsMulti>) => {
   const menuListId = React.useContext(CustomPropsContext).menuListId;
 
   return (
-    <datalist
-      // eslint-disable-next-line @typescript-eslint/consistent-type-assertions -- react-select incorrectly types this as div
-      ref={props.innerRef as React.Ref<HTMLDataListElement>}
+    <div
+      ref={props.innerRef}
       style={{ maxHeight: props.maxHeight }}
       id={menuListId ?? undefined}
+      className="absolute z-50 w-full rounded-b border border-border bg-background py-2 shadow"
     >
       {props.children}
-    </datalist>
+    </div>
   );
 };
 
@@ -248,7 +264,10 @@ const Option = <IsMulti extends boolean>(props: OptionProps<Option, IsMulti>) =>
 
   return (
     <div
-      className={cx({ focused: props.isFocused })}
+      className={classNames(
+        "flex cursor-pointer items-center px-4 py-2",
+        props.isFocused ? "bg-primary text-primary-foreground" : "bg-transparent",
+      )}
       ref={props.innerRef}
       id={innerProps.id}
       key={innerProps.key}

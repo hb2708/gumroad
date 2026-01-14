@@ -5,10 +5,12 @@ import { asyncVoid } from "$app/utils/promise";
 import { assertResponseError } from "$app/utils/request";
 
 import { Button } from "$app/components/Button";
+import { Checkbox } from "$app/components/Checkbox";
 import { Icon } from "$app/components/Icons";
 import { LoadingSpinner } from "$app/components/LoadingSpinner";
 import { Popover } from "$app/components/Popover";
 import { showAlert } from "$app/components/server-components/Alert";
+import { Select } from "$app/components/TypeSafeOptionSelect";
 import { useRunOnce } from "$app/components/useRunOnce";
 
 const ExportPayoutsPopoverContent = ({ closePopover }: { closePopover: () => void }) => {
@@ -85,7 +87,7 @@ const ExportPayoutsPopoverContent = ({ closePopover }: { closePopover: () => voi
       </header>
 
       <section>
-        <select
+        <Select
           aria-label="Filter by year"
           value={selectedYear}
           onChange={handleYearChange}
@@ -97,7 +99,7 @@ const ExportPayoutsPopoverContent = ({ closePopover }: { closePopover: () => voi
               {year}
             </option>
           ))}
-        </select>
+        </Select>
       </section>
 
       <section className="relative -mx-4 max-h-[300px] max-w-none overflow-y-auto border-y p-4">
@@ -106,14 +108,13 @@ const ExportPayoutsPopoverContent = ({ closePopover }: { closePopover: () => voi
             <LoadingSpinner className="size-8" />
           </div>
         ) : null}
-        <div className="space-y-2">
+        <div className="flex flex-col gap-4">
           {payouts.length === 0 ? (
             <p>No payouts found for this year.</p>
           ) : (
             payouts.map((payout) => (
               <label key={payout.id} className="flex items-center gap-2">
-                <input
-                  type="checkbox"
+                <Checkbox
                   checked={selectedPayouts.has(payout.id)}
                   onChange={() => toggleSelectOne(payout.id)}
                   disabled={isLoading || isDownloading}

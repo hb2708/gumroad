@@ -28,6 +28,7 @@ import {
 import { GiftForm } from "$app/components/Checkout/GiftForm";
 import { PaymentForm } from "$app/components/Checkout/PaymentForm";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { Popover } from "$app/components/Popover";
 import { Card } from "$app/components/Product/Card";
 import {
@@ -329,7 +330,7 @@ export const Checkout = ({
                         void applyDiscount(newDiscountCode);
                       }}
                     >
-                      <input
+                      <Input
                         placeholder="Discount code"
                         value={newDiscountCode}
                         className="flex-1"

@@ -224,6 +224,7 @@ const ContentTabContent = ({ selectedVariantId }: { selectedVariantId: string | 
     placeholder: "Enter the content you want to sell. Upload your files or start typing.",
     initialValue,
     editable: true,
+    className: "min-h-0 border-none bg-transparent p-0 focus:ring-0",
     extensions: contentEditorExtensions,
     onInputNonImageFiles: (files) => uploadFilesRef.current(files),
   });
@@ -502,7 +503,13 @@ const ContentTabContent = ({ selectedVariantId }: { selectedVariantId: string | 
                         <span>Embed media</span>
                       </div>
                       <label role="menuitem">
-                        <input type="file" name="file" multiple onChange={(e) => uploadFileInput(e.target)} />
+                        <input
+                          className="hidden"
+                          type="file"
+                          name="file"
+                          multiple
+                          onChange={(e) => uploadFileInput(e.target)}
+                        />
                         <Icon name="paperclip" />
                         <span>Computer files</span>
                       </label>

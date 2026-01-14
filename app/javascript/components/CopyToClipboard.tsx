@@ -11,6 +11,7 @@ type CopyToClipboardProps = {
   copiedTooltip?: string;
   children: React.ReactElement;
   tooltipPosition?: TooltipPosition;
+  className?: string;
 };
 export const CopyToClipboard = ({
   text,
@@ -18,6 +19,7 @@ export const CopyToClipboard = ({
   copiedTooltip = "Copied!",
   children,
   tooltipPosition,
+  className,
 }: CopyToClipboardProps) => {
   const [status, setStatus] = React.useState<"initial" | "copied">("initial");
   const ref = React.useRef<HTMLElement | null>(null);
@@ -40,7 +42,11 @@ export const CopyToClipboard = ({
   });
 
   return (
-    <WithTooltip tip={status === "initial" ? copyTooltip : copiedTooltip} position={tooltipPosition}>
+    <WithTooltip
+      tip={status === "initial" ? copyTooltip : copiedTooltip}
+      position={tooltipPosition}
+      className={className}
+    >
       <span ref={ref} className="contents">
         {children}
       </span>

@@ -132,6 +132,7 @@ export const PublicFileEmbed = TiptapNode.create({
         <input
           ref={inputRef}
           type="file"
+          className="hidden"
           accept={FILE_TYPE_EXTENSIONS_MAP.audio.map((ext) => `.${ext.toLowerCase()}`).join(",")}
           onChange={(e) => {
             const files = [...(e.target.files || [])];

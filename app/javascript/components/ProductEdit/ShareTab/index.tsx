@@ -33,8 +33,8 @@ export const ShareTab = () => {
   return (
     <Layout preview={<ProductPreview />}>
       <div className="squished">
-        <form>
-          <section className="p-4! md:p-8!">
+        <form className="divide-y divide-border">
+          <section className="flex flex-col gap-8 p-4 md:p-8">
             <DiscoverEligibilityPromo />
             <header>
               <h2>Share</h2>
@@ -64,7 +64,7 @@ export const ShareTab = () => {
             onChange={(sectionIds) => updateProduct({ section_ids: sectionIds })}
             profileSections={profileSections}
           />
-          <section className="p-8!">
+          <section className="flex flex-col gap-8 p-4 md:p-8">
             <header style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <h2>Gumroad Discover</h2>
               <a href="/help/article/79-gumroad-discover" target="_blank" rel="noreferrer">
@@ -92,7 +92,7 @@ export const ShareTab = () => {
               taxonomies={taxonomies}
             />
             <TagSelector tags={product.tags} onChange={(tags) => updateProduct({ tags })} />
-            <fieldset>
+            <fieldset className="flex flex-col gap-2">
               <Toggle
                 value={product.display_product_reviews}
                 onChange={(newValue) => updateProduct({ display_product_reviews: newValue })}

@@ -5,6 +5,7 @@ import { AuthAlert } from "$app/components/AuthAlert";
 import { Layout } from "$app/components/Authentication/Layout";
 import { SocialAuth } from "$app/components/Authentication/SocialAuth";
 import { Button } from "$app/components/Button";
+import { Input } from "$app/components/Input";
 import { PasswordInput } from "$app/components/PasswordInput";
 import { Separator } from "$app/components/Separator";
 import { useOriginalLocation } from "$app/components/useOriginalLocation";
@@ -60,18 +61,20 @@ function LoginPage() {
       header={<h1>{application_name ? `Connect ${application_name} to Gumroad` : "Log in"}</h1>}
       headerActions={<Link href={Routes.signup_path({ next })}>Sign up</Link>}
     >
-      <form onSubmit={(e) => void handleSubmit(e)}>
+      <form className="flex flex-col gap-12" onSubmit={(e) => void handleSubmit(e)}>
         <SocialAuth />
         <Separator>
           <span>or</span>
         </Separator>
-        <section>
+        <section className="flex flex-col gap-8">
           <AuthAlert />
-          <fieldset>
+          <fieldset className="space-y-2">
             <legend>
-              <label htmlFor={`${uid}-email`}>Email</label>
+              <label className="cursor-pointer" htmlFor={`${uid}-email`}>
+                Email
+              </label>
             </legend>
-            <input
+            <Input
               id={`${uid}-email`}
               type="email"
               value={form.data.user.login_identifier}
@@ -81,10 +84,10 @@ function LoginPage() {
               autoComplete="email"
             />
           </fieldset>
-          <fieldset>
-            <legend>
+          <fieldset className="space-y-2">
+            <legend className="flex w-full justify-between">
               <label htmlFor={`${uid}-password`}>Password</label>
-              <Link href={Routes.new_user_password_path({ next })} className="font-normal underline">
+              <Link href={Routes.new_user_password_path({ next })} className="underline">
                 Forgot your password?
               </Link>
             </legend>

@@ -10,6 +10,7 @@ import { Button } from "$app/components/Button";
 import { CopyToClipboard } from "$app/components/CopyToClipboard";
 import { GlobalAffiliates } from "$app/components/GlobalAffiliates";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { Pagination, PaginationProps } from "$app/components/Pagination";
 import { Popover } from "$app/components/Popover";
 import { ProductsLayout } from "$app/components/ProductsLayout";
@@ -199,17 +200,15 @@ const Search = ({ onSearch, value }: SearchProps) => {
         </WithTooltip>
       }
     >
-      <div className="input input-wrapper">
-        <Icon name="solid-search" />
-        <input
-          ref={searchInputRef}
-          value={value}
-          autoFocus
-          type="text"
-          placeholder="Search"
-          onChange={(e) => onSearch(e.target.value)}
-        />
-      </div>
+      <Input
+        ref={searchInputRef}
+        leading={<Icon name="solid-search" className="text-muted" />}
+        value={value}
+        autoFocus
+        type="text"
+        placeholder="Search"
+        onChange={(e) => onSearch(e.target.value)}
+      />
     </Popover>
   );
 };
@@ -329,7 +328,7 @@ const AffiliatedPage = ({
               </p>
             </Placeholder>
           ) : (
-            <div style={{ display: "grid", gap: "var(--spacer-7)" }}>
+            <div className="grid gap-7">
               <StatsSection {...stats} />
               {state.affiliatedProducts.length === 0 ? (
                 <Placeholder>

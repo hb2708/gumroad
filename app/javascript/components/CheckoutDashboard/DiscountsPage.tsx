@@ -1,4 +1,3 @@
-import cx from "classnames";
 import * as React from "react";
 import { GroupBase, SelectInstance } from "react-select";
 import { is } from "ts-safe-cast";
@@ -11,19 +10,21 @@ import {
   getStatistics,
   updateDiscount,
 } from "$app/data/offer_code";
+import { classNames } from "$app/utils/classNames";
 import { CurrencyCode, formatPriceCentsWithCurrencySymbol } from "$app/utils/currency";
 import { asyncVoid } from "$app/utils/promise";
 import { AbortError, assertResponseError } from "$app/utils/request";
 import { writeQueryParams } from "$app/utils/url";
 
 import { Button } from "$app/components/Button";
+import { Checkbox } from "$app/components/Checkbox";
 import { DiscountInput, InputtedDiscount } from "$app/components/CheckoutDashboard/DiscountInput";
 import { Layout, Page } from "$app/components/CheckoutDashboard/Layout";
 import { CopyToClipboard } from "$app/components/CopyToClipboard";
 import { useCurrentSeller } from "$app/components/CurrentSeller";
 import { DateInput } from "$app/components/DateInput";
-import { Details } from "$app/components/Details";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { useLoggedInUser } from "$app/components/LoggedInUser";
 import { NumberInput } from "$app/components/NumberInput";
 import { Pagination, PaginationProps } from "$app/components/Pagination";
@@ -31,6 +32,7 @@ import { Popover } from "$app/components/Popover";
 import { PriceInput } from "$app/components/PriceInput";
 import { Select, Option } from "$app/components/Select";
 import { showAlert } from "$app/components/server-components/Alert";
+import { ToggleSettingRow } from "$app/components/SettingRow";
 import { Skeleton } from "$app/components/Skeleton";
 import { TypeSafeOptionSelect } from "$app/components/TypeSafeOptionSelect";
 import { Alert } from "$app/components/ui/Alert";
@@ -311,19 +313,17 @@ const DiscountsPage = ({
                 </div>
               }
             >
-              <div className="input">
-                <Icon name="solid-search" />
-                <input
-                  ref={searchInputRef}
-                  type="text"
-                  placeholder="Search"
-                  value={searchQuery ?? ""}
-                  onChange={(evt) => {
-                    setSearchQuery(evt.target.value);
-                    debouncedLoadDiscounts();
-                  }}
-                />
-              </div>
+              <Input
+                ref={searchInputRef}
+                type="text"
+                placeholder="Search"
+                value={searchQuery ?? ""}
+                onChange={(evt) => {
+                  setSearchQuery(evt.target.value);
+                  debouncedLoadDiscounts();
+                }}
+                leading={<Icon className="text-muted" name="solid-search" />}
+              />
             </Popover>
           ) : null}
 
@@ -366,7 +366,7 @@ const DiscountsPage = ({
         ) : null}
         {offerCodes.length > 0 ? (
           <section className="flex flex-col gap-4">
-            <Table aria-live="polite" className={cx(isLoading && "pointer-events-none opacity-50")}>
+            <Table aria-live="polite" className={classNames(isLoading && "pointer-events-none opacity-50")}>
               <TableHeader>
                 <TableRow>
                   <TableHead {...thProps("name")}>Discount</TableHead>
@@ -890,26 +890,24 @@ const Form = ({
         }
       />
       <form>
-        <section className="p-8!">
-          <header>
-            <div className="flex flex-col gap-4">
-              <div>Create a discount code so your audience can buy your products at a reduced price.</div>
-              <div>
-                Once the code is created, you can share it or copy a unique link per product that automatically applies
-                the discount.
-              </div>
-              <div>
-                <a href="/help/article/128-discount-codes" target="_blank" rel="noreferrer">
-                  Learn more
-                </a>
-              </div>
+        <section className="grid gap-8 p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16">
+          <header className="space-y-4 lg:row-[1/7]">
+            <div>Create a discount code so your audience can buy your products at a reduced price.</div>
+            <div>
+              Once the code is created, you can share it or copy a unique link per product that automatically applies
+              the discount.
+            </div>
+            <div>
+              <a href="/help/article/128-discount-codes" target="_blank" rel="noreferrer">
+                Learn more
+              </a>
             </div>
           </header>
-          <fieldset className={cx({ danger: name.error })}>
+          <fieldset className={classNames("space-y-2", { danger: name.error })}>
             <legend>
               <label htmlFor={`${uid}name`}>Name</label>
             </legend>
-            <input
+            <Input
               type="text"
               id={`${uid}name`}
               placeholder="Black Friday"
@@ -919,12 +917,12 @@ const Form = ({
               aria-invalid={name.error}
             />
           </fieldset>
-          <fieldset className={cx({ danger: code.error })}>
+          <fieldset className={classNames("space-y-2", { danger: code.error })}>
             <legend>
               <label htmlFor={`${uid}code`}>Discount code</label>
             </legend>
             <div className="grid grid-cols-[1fr_auto] gap-2">
-              <input
+              <Input
                 type="text"
                 id={`${uid}code`}
                 value={code.value}
@@ -951,7 +949,7 @@ const Form = ({
               </Alert>
             ) : null}
           </fieldset>
-          <fieldset className={cx({ danger: selectedProductIds.error })}>
+          <fieldset className={classNames("space-y-2", { danger: selectedProductIds.error })}>
             <legend>
               <label htmlFor={`${uid}products`}>Products</label>
             </legend>
@@ -985,9 +983,8 @@ const Form = ({
               isDisabled={universal}
               aria-invalid={selectedProductIds.error}
             />
-            <label>
-              <input
-                type="checkbox"
+            <label className="inline-flex cursor-pointer gap-2">
+              <Checkbox
                 checked={universal}
                 onChange={(evt) => {
                   setUniversal(evt.target.checked);
@@ -999,7 +996,7 @@ const Form = ({
             </label>
           </fieldset>
           {canSetDuration ? (
-            <fieldset>
+            <fieldset className="space-y-2">
               <legend>
                 <label htmlFor={`${uid}duration`}>Discount duration for memberships</label>
               </legend>
@@ -1014,8 +1011,8 @@ const Form = ({
               />
             </fieldset>
           ) : null}
-          <fieldset>
-            <legend>Type</legend>
+          <fieldset className="space-y-2">
+            <legend className="font-bold">Type</legend>
             <DiscountInput
               discount={discount}
               setDiscount={setDiscount}
@@ -1035,25 +1032,14 @@ const Form = ({
               }
             />
           </fieldset>
-          <fieldset className="gap-4">
-            <legend>Settings</legend>
-            <Details
-              className="toggle"
-              open={limitQuantity}
-              summary={
-                <label>
-                  <input
-                    type="checkbox"
-                    role="switch"
-                    checked={limitQuantity}
-                    onChange={(evt) => setLimitQuantity(evt.target.checked)}
-                  />
-                  Limit quantity
-                </label>
-              }
-            >
-              <div className="dropdown">
-                <fieldset className={cx({ danger: maxQuantity.error })}>
+          <fieldset className="flex flex-col gap-4">
+            <legend className="mb-2 font-bold">Settings</legend>
+            <ToggleSettingRow
+              label="Limit quantity"
+              value={limitQuantity}
+              onChange={setLimitQuantity}
+              dropdown={
+                <fieldset className={classNames("space-y-2", { danger: maxQuantity.error })}>
                   <legend>
                     <label htmlFor={`${uid}quantity`}>Quantity</label>
                   </legend>
@@ -1064,90 +1050,65 @@ const Form = ({
                     }}
                   >
                     {(props) => (
-                      <input id={`${uid}quantity`} placeholder="0" aria-invalid={maxQuantity.error} {...props} />
+                      <Input id={`${uid}quantity`} placeholder="0" aria-invalid={maxQuantity.error} {...props} />
                     )}
                   </NumberInput>
                 </fieldset>
-              </div>
-            </Details>
-            <Details
-              className="toggle"
-              open={limitValidity}
-              summary={
-                <label>
-                  <input
-                    type="checkbox"
-                    role="switch"
-                    checked={limitValidity}
-                    onChange={(evt) => setLimitValidity(evt.target.checked)}
-                  />
-                  Limit validity period
-                </label>
               }
-            >
-              <div
-                className="dropdown"
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fit, minmax(var(--dynamic-grid), 1fr))",
-                  gap: "var(--spacer-4)",
-                }}
-              >
-                <fieldset>
-                  <legend>
-                    <label htmlFor={`${uid}validAt`}>Valid from</label>
-                  </legend>
-                  <DateInput
-                    withTime
-                    id={`${uid}validAt`}
-                    value={validAt}
-                    onChange={(date) => {
-                      if (date) setValidAt(date);
-                    }}
-                  />
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={hasNoEndDate}
-                      onChange={(evt) => setHasNoEndDate(evt.target.checked)}
+            />
+            <ToggleSettingRow
+              label="Limit validity period"
+              value={limitValidity}
+              onChange={setLimitValidity}
+              dropdown={
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(var(--dynamic-grid), 1fr))",
+                    gap: "var(--spacer-4)",
+                  }}
+                >
+                  <fieldset className="space-y-2">
+                    <legend>
+                      <label htmlFor={`${uid}validAt`}>Valid from</label>
+                    </legend>
+                    <DateInput
+                      withTime
+                      id={`${uid}validAt`}
+                      value={validAt}
+                      onChange={(date) => {
+                        if (date) setValidAt(date);
+                      }}
                     />
-                    No end date
-                  </label>
-                </fieldset>
-                <fieldset className={cx({ danger: expiresAt.error })}>
-                  <legend>
-                    <label htmlFor={`${uid}expiresAt`}>Valid until</label>
-                  </legend>
-                  <DateInput
-                    withTime
-                    id={`${uid}expiresAt`}
-                    value={expiresAt.value}
-                    onChange={(value) => {
-                      if (value) setExpiresAt({ value });
-                    }}
-                    disabled={hasNoEndDate}
-                    aria-invalid={expiresAt.error ?? false}
-                  />
-                </fieldset>
-              </div>
-            </Details>
-            <Details
-              className="toggle"
-              open={hasMinimumAmount}
-              summary={
-                <label>
-                  <input
-                    type="checkbox"
-                    role="switch"
-                    checked={hasMinimumAmount}
-                    onChange={(evt) => setHasMinimumAmount(evt.target.checked)}
-                  />
-                  Set a minimum qualifying amount
-                </label>
+                    <label className="flex cursor-pointer items-center gap-2">
+                      <Checkbox checked={hasNoEndDate} onChange={(evt) => setHasNoEndDate(evt.target.checked)} />
+                      No end date
+                    </label>
+                  </fieldset>
+                  <fieldset className={classNames("space-y-2", { danger: expiresAt.error })}>
+                    <legend>
+                      <label htmlFor={`${uid}expiresAt`}>Valid until</label>
+                    </legend>
+                    <DateInput
+                      withTime
+                      id={`${uid}expiresAt`}
+                      value={expiresAt.value}
+                      onChange={(value) => {
+                        if (value) setExpiresAt({ value });
+                      }}
+                      disabled={hasNoEndDate}
+                      aria-invalid={expiresAt.error ?? false}
+                    />
+                  </fieldset>
+                </div>
               }
-            >
-              <div className="dropdown">
-                <fieldset className={cx({ danger: minimumAmount.error })}>
+            />
+            <ToggleSettingRow
+              label="Set a minimum qualifying amount"
+              value={hasMinimumAmount}
+              onChange={setHasMinimumAmount}
+              dropdown={
+                <fieldset className={classNames("space-y-2", { danger: minimumAmount.error })}>
                   <legend>
                     <label htmlFor={`${uid}minimumAmount`}>Minimum amount</label>
                   </legend>
@@ -1160,25 +1121,14 @@ const Form = ({
                     hasError={minimumAmount.error ?? false}
                   />
                 </fieldset>
-              </div>
-            </Details>
-            <Details
-              className="toggle"
-              open={hasMinimumQuantity}
-              summary={
-                <label>
-                  <input
-                    type="checkbox"
-                    role="switch"
-                    checked={hasMinimumQuantity}
-                    onChange={(evt) => setHasMinimumQuantity(evt.target.checked)}
-                  />
-                  Set a minimum quantity
-                </label>
               }
-            >
-              <div className="dropdown">
-                <fieldset className={cx({ danger: minimumQuantity.error })}>
+            />
+            <ToggleSettingRow
+              label="Set a minimum quantity"
+              value={hasMinimumQuantity}
+              onChange={setHasMinimumQuantity}
+              dropdown={
+                <fieldset className={classNames("space-y-2", { danger: minimumQuantity.error })}>
                   <legend>
                     <label htmlFor={`${uid}minimumQuantity`}>Minimum quantity per product</label>
                   </legend>
@@ -1189,7 +1139,7 @@ const Form = ({
                     }}
                   >
                     {(props) => (
-                      <input
+                      <Input
                         id={`${uid}minimumQuantity`}
                         placeholder="0"
                         aria-invalid={minimumQuantity.error}
@@ -1198,8 +1148,8 @@ const Form = ({
                     )}
                   </NumberInput>
                 </fieldset>
-              </div>
-            </Details>
+              }
+            />
           </fieldset>
         </section>
       </form>

@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { Button } from "$app/components/Button";
+import { Checkbox } from "$app/components/Checkbox";
 import { Icon } from "$app/components/Icons";
 import { Popover } from "$app/components/Popover";
 import { showAlert } from "$app/components/server-components/Alert";
@@ -63,13 +64,12 @@ export const DownloadTaxFormsPopover = ({ taxForms }: Props) => {
               </header>
 
               <section className="relative -mx-4 max-h-[300px] max-w-none overflow-y-auto border-b p-4">
-                <fieldset>
+                <fieldset className="flex flex-col gap-2">
                   {Object.keys(taxForms)
                     .sort((a, b) => Number(b) - Number(a))
                     .map((year) => (
-                      <label key={year}>
-                        <input
-                          type="checkbox"
+                      <label key={year} className="inline-flex cursor-pointer items-center gap-2">
+                        <Checkbox
                           checked={selectedYears.has(year)}
                           onChange={(event) => {
                             const newSelectedYears = new Set(selectedYears);

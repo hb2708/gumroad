@@ -7,6 +7,7 @@ import { AuthAlert } from "$app/components/AuthAlert";
 import { Layout } from "$app/components/Authentication/Layout";
 import { SocialAuth } from "$app/components/Authentication/SocialAuth";
 import { Button } from "$app/components/Button";
+import { Input } from "$app/components/Input";
 import { PasswordInput } from "$app/components/PasswordInput";
 import { Separator } from "$app/components/Separator";
 import { useOriginalLocation } from "$app/components/useOriginalLocation";
@@ -78,18 +79,18 @@ function SignupPage() {
 
   return (
     <Layout header={<h1>{headerText}</h1>} headerActions={<Link href={Routes.login_path({ next })}>Log in</Link>}>
-      <form onSubmit={(e) => void handleSubmit(e)}>
+      <form className="flex flex-col gap-12" onSubmit={(e) => void handleSubmit(e)}>
         <SocialAuth />
         <Separator>
           <span>or</span>
         </Separator>
-        <section>
+        <section className="flex flex-col gap-8">
           <AuthAlert />
-          <fieldset>
+          <fieldset className="space-y-2">
             <legend>
               <label htmlFor={`${uid}-email`}>Email</label>
             </legend>
-            <input
+            <Input
               id={`${uid}-email`}
               type="email"
               value={form.data.user.email}
@@ -97,7 +98,7 @@ function SignupPage() {
               required
             />
           </fieldset>
-          <fieldset>
+          <fieldset className="space-y-2">
             <legend>
               <label htmlFor={`${uid}-password`}>Password</label>
             </legend>
@@ -112,8 +113,15 @@ function SignupPage() {
             {form.processing ? "Creating..." : "Create account"}
           </Button>
           <p>
-            You agree to our <a href="https://gumroad.com/terms">Terms of Use</a> and{" "}
-            <a href="https://gumroad.com/privacy">Privacy Policy</a>.
+            You agree to our{" "}
+            <a href="https://gumroad.com/terms" className="underline">
+              Terms of Use
+            </a>{" "}
+            and{" "}
+            <a href="https://gumroad.com/privacy" className="underline">
+              Privacy Policy
+            </a>
+            .
           </p>
         </section>
       </form>

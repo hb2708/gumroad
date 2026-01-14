@@ -3,6 +3,7 @@ import React from "react";
 import { Membership, Product, SortKey } from "$app/data/products";
 
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { NavigationButtonInertia } from "$app/components/NavigationButton";
 import { PaginationProps } from "$app/components/Pagination";
 import { Popover } from "$app/components/Popover";
@@ -65,16 +66,14 @@ export const ProductsDashboardPage = ({
                 </WithTooltip>
               }
             >
-              <div className="input">
-                <Icon name="solid-search" />
-                <input
-                  ref={searchInputRef}
-                  type="text"
-                  placeholder="Search products"
-                  value={query ?? ""}
-                  onChange={(evt) => setQuery(evt.target.value)}
-                />
-              </div>
+              <Input
+                ref={searchInputRef}
+                type="text"
+                placeholder="Search products"
+                value={query ?? ""}
+                onChange={(evt) => setQuery(evt.target.value)}
+                leading={<Icon className="text-muted" name="solid-search" />}
+              />
             </Popover>
           ) : null}
 

@@ -339,7 +339,7 @@ export const DescriptionEditor = ({
   if (!isMounted) return null;
 
   return (
-    <fieldset>
+    <fieldset className="flex flex-col gap-2">
       <label htmlFor={uid}>Description</label>
       <PublicFilesSettingsContext.Provider value={publicFilesSettings}>
         <ImageUploadSettingsContext.Provider value={imageSettings}>

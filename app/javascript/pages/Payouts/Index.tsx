@@ -88,16 +88,10 @@ const Period = ({ payoutPeriodData }: { payoutPeriodData: PayoutPeriodData }) =>
 
   return (
     <section aria-label="Payout period">
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "var(--spacer-4)",
-        }}
-      >
+      <div className="flex items-center gap-4">
         {payoutPeriodData.status === "completed" ? <span>{heading}</span> : <h2>{heading}</h2>}
         {"type" in payoutPeriodData && payoutPeriodData.type === "instant" ? <Pill size="small">Instant</Pill> : null}
-        <span style={{ marginLeft: "auto" }}>{payoutPeriodData.displayable_payout_period_range}</span>
+        <span className="ml-auto">{payoutPeriodData.displayable_payout_period_range}</span>
         {payoutPeriodData.status === "completed" && payoutPeriodData.payment_external_id ? (
           <WithTooltip position="top" tip="Export">
             <Button
@@ -131,7 +125,7 @@ const Period = ({ payoutPeriodData }: { payoutPeriodData: PayoutPeriodData }) =>
         {payoutPeriodData.discover_fees_cents !== 0 || payoutPeriodData.direct_fees_cents !== 0 ? (
           <>
             {payoutPeriodData.discover_fees_cents !== 0 ? (
-              <CardContent>
+              <CardContent className="flex flex-wrap items-center justify-between gap-4 p-4">
                 <div className="grow">
                   <h4 className="font-bold">
                     Discover sales{" "}
@@ -150,7 +144,7 @@ const Period = ({ payoutPeriodData }: { payoutPeriodData: PayoutPeriodData }) =>
               </CardContent>
             ) : null}
             {payoutPeriodData.direct_fees_cents !== 0 ? (
-              <CardContent>
+              <CardContent className="flex flex-wrap items-center justify-between gap-4 p-4">
                 <div className="grow">
                   <h4 className="font-bold">
                     Direct sales{" "}
@@ -170,7 +164,7 @@ const Period = ({ payoutPeriodData }: { payoutPeriodData: PayoutPeriodData }) =>
             ) : null}
           </>
         ) : (
-          <CardContent>
+          <CardContent className="flex flex-wrap items-center justify-between gap-4 p-4">
             <h4 className="grow font-bold">
               <a href="/help/article/66-gumroads-fees" target="_blank" rel="noreferrer">
                 Fees
@@ -180,13 +174,13 @@ const Period = ({ payoutPeriodData }: { payoutPeriodData: PayoutPeriodData }) =>
           </CardContent>
         )}
         {payoutPeriodData.refunds_cents !== 0 ? (
-          <CardContent>
+          <CardContent className="flex flex-wrap items-center justify-between gap-4 p-4">
             <h4 className="grow font-bold">Refunds</h4>
             <div>{formatNegativeDollarAmount(payoutPeriodData.refunds_cents)}</div>
           </CardContent>
         ) : null}
         {payoutPeriodData.chargebacks_cents !== 0 ? (
-          <CardContent>
+          <CardContent className="flex flex-wrap items-center justify-between gap-4 p-4">
             <h4 className="grow font-bold">
               <a href="/help/article/134-how-does-gumroad-handle-chargebacks" target="_blank" rel="noreferrer">
                 Chargebacks
@@ -196,7 +190,7 @@ const Period = ({ payoutPeriodData }: { payoutPeriodData: PayoutPeriodData }) =>
           </CardContent>
         ) : null}
         {payoutPeriodData.credits_cents < 0 ? (
-          <CardContent>
+          <CardContent className="flex flex-wrap items-center justify-between gap-4 p-4">
             <h4 className="grow font-bold">
               <a href="/help/article/269-balance-page" target="_blank" rel="noreferrer">
                 Credits
@@ -206,19 +200,19 @@ const Period = ({ payoutPeriodData }: { payoutPeriodData: PayoutPeriodData }) =>
           </CardContent>
         ) : null}
         {payoutPeriodData.loan_repayment_cents !== 0 ? (
-          <CardContent>
+          <CardContent className="flex flex-wrap items-center justify-between gap-4 p-4">
             <h4 className="grow font-bold">Loan repayments</h4>
             <div>{formatNegativeDollarAmount(payoutPeriodData.loan_repayment_cents)}</div>
           </CardContent>
         ) : null}
         {payoutPeriodData.affiliate_fees_cents !== 0 ? (
-          <CardContent>
+          <CardContent className="flex flex-wrap items-center justify-between gap-4 p-4">
             <h4 className="grow font-bold">Affiliate or collaborator fees paid</h4>
             <div>{formatNegativeDollarAmount(payoutPeriodData.affiliate_fees_cents)}</div>
           </CardContent>
         ) : null}
         {payoutPeriodData.paypal_payout_cents !== 0 ? (
-          <CardContent>
+          <CardContent className="flex flex-wrap items-center justify-between gap-4 p-4">
             <h4 className="grow font-bold">
               <a href="/help/article/275-paypal-connect" target="_blank" rel="noreferrer">
                 PayPal payouts
@@ -228,7 +222,7 @@ const Period = ({ payoutPeriodData }: { payoutPeriodData: PayoutPeriodData }) =>
           </CardContent>
         ) : null}
         {payoutPeriodData.stripe_connect_payout_cents !== 0 ? (
-          <CardContent>
+          <CardContent className="flex flex-wrap items-center justify-between gap-4 p-4">
             <h4 className="grow font-bold">
               <a href="/help/article/330-stripe-connect" target="_blank" rel="noreferrer">
                 Stripe Connect payouts
@@ -238,7 +232,7 @@ const Period = ({ payoutPeriodData }: { payoutPeriodData: PayoutPeriodData }) =>
           </CardContent>
         ) : null}
         {payoutPeriodData.taxes_cents !== 0 ? (
-          <CardContent>
+          <CardContent className="flex flex-wrap items-center justify-between gap-4 p-4">
             <h4 className="grow font-bold">
               <a href="/help/article/121-sales-tax-on-gumroad" target="_blank" rel="noreferrer">
                 Taxes
@@ -254,7 +248,7 @@ const Period = ({ payoutPeriodData }: { payoutPeriodData: PayoutPeriodData }) =>
             </div>
           </CardContent>
         ) : null}
-        <CardContent>
+        <CardContent className="flex flex-wrap items-center justify-between gap-4 p-4">
           {(() => {
             const isCurrentPeriod = payoutPeriodData.status === "payable";
             switch (payoutPeriodData.payout_method_type) {
@@ -305,20 +299,18 @@ const Period = ({ payoutPeriodData }: { payoutPeriodData: PayoutPeriodData }) =>
 };
 
 const PeriodEmpty = ({ minimumPayoutAmountCents }: { minimumPayoutAmountCents: number }) => (
-  <div className="period period-empty full column">
-    <Placeholder>
-      <PlaceholderImage src={placeholder} />
-      <h2>Let's get you paid.</h2>
-      Reach a balance of at least{" "}
-      {formatPriceCentsWithCurrencySymbol("usd", minimumPayoutAmountCents, {
-        symbolFormat: "short",
-      })}{" "}
-      to be paid out for your sales.
-      <NavigationButton color="accent" href="/help/article/269-balance-page">
-        Learn about payouts
-      </NavigationButton>
-    </Placeholder>
-  </div>
+  <Placeholder>
+    <PlaceholderImage src={placeholder} />
+    <h2>Let's get you paid.</h2>
+    Reach a balance of at least{" "}
+    {formatPriceCentsWithCurrencySymbol("usd", minimumPayoutAmountCents, {
+      symbolFormat: "short",
+    })}{" "}
+    to be paid out for your sales.
+    <NavigationButton color="accent" href="/help/article/269-balance-page">
+      Learn about payouts
+    </NavigationButton>
+  </Placeholder>
 );
 
 const PeriodStripeConnectAccount = ({
@@ -348,8 +340,8 @@ const PeriodBankAccount = ({
   isCurrentPeriod: boolean;
   bankAccount: BankAccount & { arrival_date?: string | null; status?: string; payout_currency: string };
 }) => (
-  <div style={{ display: "flex", flexDirection: "column", gap: "var(--spacer-2)" }}>
-    <div style={{ display: "flex", alignItems: "center", gap: "var(--spacer-2)" }}>
+  <div className="flex flex-col gap-2">
+    <div className="flex items-center gap-2">
       {bankAccount.arrival_date ? (
         <Icon name={bankAccount.status === "completed" ? "solid-check-circle" : "outline-clock"} />
       ) : null}
@@ -585,11 +577,22 @@ export default function PayoutsIndex() {
                 You can request instant payouts 24/7, including weekends and holidays. Funds typically appear in your
                 bank account within 30 minutes, though some payouts may take longer to be credited.
               </p>
-              <fieldset>
-                <label htmlFor="instant-payout-date">Pay out balance up to</label>
-                <div className="input cursor-pointer">
+              <fieldset className="flex flex-col space-y-2 border-none">
+                <legend>
+                  <label className="cursor-pointer" htmlFor="instant-payout-date">
+                    Pay out balance up to
+                  </label>
+                </legend>
+
+                <div
+                  className={classNames(
+                    "relative inline-flex h-12 cursor-pointer items-center gap-2 rounded border border-border px-4",
+                    "focus-within:ring-2 focus-within:ring-accent focus-within:outline-none",
+                  )}
+                >
                   <Icon name="calendar-all" />
                   <select
+                    className="flex-1 cursor-pointer appearance-none bg-transparent outline-none"
                     id="instant-payout-date"
                     value={instantPayoutId}
                     onChange={(e) => setInstantPayoutId(e.target.value)}
@@ -607,8 +610,8 @@ export default function PayoutsIndex() {
                   <Icon name="outline-cheveron-down" />
                 </div>
               </fieldset>
-              <fieldset>
-                <legend>Payout details</legend>
+              <fieldset className="space-y-2">
+                <legend className="font-bold">Payout details</legend>
                 <div className="rounded-sm border border-border bg-background not-first:border-t">
                   <div className="grid gap-4 p-4">
                     <div className="grid grid-flow-col justify-between gap-4">

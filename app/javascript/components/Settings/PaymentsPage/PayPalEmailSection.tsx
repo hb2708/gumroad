@@ -1,8 +1,8 @@
-import cx from "classnames";
 import * as React from "react";
 
 import type { FormFieldName, PayoutMethod } from "$app/types/payments";
 
+import { Input } from "$app/components/Input";
 import { Alert } from "$app/components/ui/Alert";
 
 const PayPalEmailSection = ({
@@ -43,11 +43,11 @@ const PayPalEmailSection = ({
             Switch to direct deposit
           </button>
         ) : null}
-        <fieldset className={cx({ danger: errorFieldNames.has("paypal_email_address") })}>
+        <fieldset className="space-y-2">
           <legend>
             <label htmlFor={`${uid}-paypal-email`}>PayPal Email</label>
           </legend>
-          <input
+          <Input
             type="email"
             id={`${uid}-paypal-email`}
             placeholder="PayPal Email"

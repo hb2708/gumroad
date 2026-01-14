@@ -4,11 +4,14 @@ import { CircleCommunity, CircleSpaceGroup, fetchCommunities, fetchSpaceGroups }
 import { assertResponseError } from "$app/utils/request";
 
 import { Button } from "$app/components/Button";
+import { Checkbox } from "$app/components/Checkbox";
+import { Input } from "$app/components/Input";
 import { LoadingSpinner } from "$app/components/LoadingSpinner";
 import { useProductEditContext } from "$app/components/ProductEdit/state";
 import { showAlert } from "$app/components/server-components/Alert";
 import { ToggleSettingRow } from "$app/components/SettingRow";
 import { Toggle } from "$app/components/Toggle";
+import { Select } from "$app/components/TypeSafeOptionSelect";
 import { Alert } from "$app/components/ui/Alert";
 import { useRunOnce } from "$app/components/useRunOnce";
 
@@ -113,9 +116,9 @@ export const CircleIntegrationEditor = ({
         <div className="flex flex-col gap-4">
           People who purchase your product will be automatically invited to your Circle community. To get your API
           token, visit your-community.circle.so/settings/API.
-          <fieldset>
+          <fieldset className="flex flex-col gap-2">
             <label htmlFor={`${uid}-api-key`}>API Token</label>
-            <input
+            <Input
               id={`${uid}-api-key`}
               value={apiKey}
               onChange={(evt) => setApiKey(evt.target.value)}
@@ -142,11 +145,11 @@ export const CircleIntegrationEditor = ({
             ) : communities.status === "error" ? (
               <Alert variant="danger">Could not retrieve communities from Circle. Please check your API key.</Alert>
             ) : (
-              <fieldset>
+              <fieldset className="flex flex-col gap-2">
                 <legend>
                   <label htmlFor={`${uid}-community`}>Select a community</label>
                 </legend>
-                <select
+                <Select
                   id={`${uid}-community`}
                   value={selectedCommunityId ?? "select-community"}
                   onChange={(ev) => setSelectedCommunityId(parseInt(ev.target.value, 10))}
@@ -159,7 +162,7 @@ export const CircleIntegrationEditor = ({
                       {community.name}
                     </option>
                   ))}
-                </select>
+                </Select>
               </fieldset>
             )
           ) : null}
@@ -172,11 +175,11 @@ export const CircleIntegrationEditor = ({
               <Alert variant="danger">Could not retrieve space groups from Circle. Please try again.</Alert>
             ) : (
               <>
-                <fieldset>
+                <fieldset className="flex flex-col gap-2">
                   <legend>
                     <label htmlFor={`${uid}-space-group`}>Select a space group</label>
                   </legend>
-                  <select
+                  <Select
                     id={`${uid}-space-group`}
                     value={selectedSpaceGroupId ?? "select-space-group"}
                     onChange={(ev) => {
@@ -192,12 +195,11 @@ export const CircleIntegrationEditor = ({
                         {spaceGroup.name}
                       </option>
                     ))}
-                  </select>
+                  </Select>
                 </fieldset>
                 {product.native_type === "membership" && integration ? (
-                  <label>
-                    <input
-                      type="checkbox"
+                  <label className="flex cursor-pointer items-center gap-2">
+                    <Checkbox
                       checked={integration.keep_inactive_members}
                       onChange={() =>
                         onChange({ ...integration, keep_inactive_members: !integration.keep_inactive_members })

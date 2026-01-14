@@ -22,8 +22,8 @@ export const ProfileSectionsEditor = ({
   };
 
   return (
-    <section className="p-8!">
-      <header>
+    <section className="flex flex-col gap-8 p-4 md:p-8">
+      <header className="flex flex-col gap-3">
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <h2>Profile</h2>
           <a href="/help/article/124-your-gumroad-profile-page" target="_blank" rel="noreferrer">

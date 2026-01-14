@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { Input } from "$app/components/Input";
 import { NumberInput } from "$app/components/NumberInput";
 import { ToggleSettingRow } from "$app/components/SettingRow";
 
@@ -39,15 +40,16 @@ export const InstallmentPlanEditor = ({
       onChange={onAllowInstallmentPaymentsChange}
       label="Allow customers to pay in installments"
       dropdown={
-        <fieldset>
+        <fieldset className="flex flex-col gap-2">
           <NumberInput value={numberOfInstallments} onChange={(value) => onNumberOfInstallmentsChange(value || 0)}>
             {(props) => (
-              <div className="input">
-                <input {...props} type="number" min={2} aria-label="Number of installments" />
-                <label>
-                  <span>equal monthly payments</span>
-                </label>
-              </div>
+              <Input
+                {...props}
+                type="number"
+                min={2}
+                aria-label="Number of installments"
+                trailing={<span>equal monthly payments</span>}
+              />
             )}
           </NumberInput>
         </fieldset>

@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { Input } from "$app/components/Input";
 import { NumberInput } from "$app/components/NumberInput";
 import { useProductEditContext } from "$app/components/ProductEdit/state";
 import { ToggleSettingRow } from "$app/components/SettingRow";
@@ -19,11 +20,12 @@ export const DurationEditor = () => {
       }}
       label="Automatically end memberships after a number of months"
       dropdown={
-        <fieldset>
+        <fieldset className="space-y-2">
           <legend>
             <label htmlFor={uid}>Number of months</label>
           </legend>
           <WithTooltip
+            className="w-full"
             tip="Any change in the length of your membership will only affect new members."
             position="bottom"
           >
@@ -31,7 +33,7 @@ export const DurationEditor = () => {
               value={product.duration_in_months}
               onChange={(duration_in_months) => updateProduct({ duration_in_months })}
             >
-              {(props) => <input id={uid} placeholder="∞" {...props} />}
+              {(props) => <Input id={uid} className="w-full" placeholder="∞" {...props} />}
             </NumberInput>
           </WithTooltip>
         </fieldset>

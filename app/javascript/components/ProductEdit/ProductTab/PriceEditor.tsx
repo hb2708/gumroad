@@ -40,7 +40,7 @@ export const PriceEditor = ({
   const isFreeProduct = priceCents === 0;
 
   return (
-    <fieldset>
+    <fieldset className="flex flex-col gap-2">
       <label htmlFor={`${uid}-price-cents`}>Amount</label>
       <PriceInput
         id={`${uid}-price-cents`}
@@ -73,11 +73,11 @@ export const PriceEditor = ({
             gridTemplateColumns: "repeat(auto-fit, minmax(var(--dynamic-grid), 1fr))",
           }}
         >
-          <fieldset>
+          <fieldset className="flex flex-col gap-2">
             <label htmlFor={`${uid}-minimum-amount`}>Minimum amount</label>
             <PriceInput id={`${uid}-minimum-amount`} currencyCode={currencyType} cents={priceCents} disabled />
           </fieldset>
-          <fieldset>
+          <fieldset className="flex flex-col gap-2">
             <label htmlFor={`${uid}-suggested-price-cents`}>Suggested amount</label>
             <PriceInput
               id={`${uid}-suggested-price-cents`}

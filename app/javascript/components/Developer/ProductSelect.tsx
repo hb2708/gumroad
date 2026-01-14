@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { Select } from "$app/components/TypeSafeOptionSelect";
+
 export type Product = {
   name: string;
   script_base_url: string;
@@ -29,11 +31,11 @@ export const ProductSelect = ({
   };
 
   return (
-    <fieldset>
+    <fieldset className="space-y-2">
       <legend>
         <label htmlFor={uid}>Choose your product</label>
       </legend>
-      <select id={uid} value={selectedProductUrl} onChange={dispatchChangeEvent}>
+      <Select id={uid} value={selectedProductUrl} onChange={dispatchChangeEvent}>
         <optgroup label="Your products">
           {products.map((product) => (
             <option key={product.url} value={product.url}>
@@ -51,7 +53,7 @@ export const ProductSelect = ({
             ))}
           </optgroup>
         ) : null}
-      </select>
+      </Select>
     </fieldset>
   );
 };

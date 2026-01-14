@@ -8,6 +8,7 @@ import { CopyToClipboard } from "$app/components/CopyToClipboard";
 import { useCurrentSeller } from "$app/components/CurrentSeller";
 import CustomDomain from "$app/components/CustomDomain";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { Layout, useProductUrl } from "$app/components/ProductEdit/Layout";
 import { ProductPreview } from "$app/components/ProductEdit/ProductPreview";
 import { AttributesEditor } from "$app/components/ProductEdit/ProductTab/AttributesEditor";
@@ -36,6 +37,7 @@ import { VersionsEditor } from "$app/components/ProductEdit/ProductTab/VersionsE
 import { RefundPolicySelector } from "$app/components/ProductEdit/RefundPolicy";
 import { useProductEditContext } from "$app/components/ProductEdit/state";
 import { ToggleSettingRow } from "$app/components/SettingRow";
+import { Textarea } from "$app/components/Textarea";
 import { Toggle } from "$app/components/Toggle";
 import { TypeSafeOptionSelect } from "$app/components/TypeSafeOptionSelect";
 import { Alert } from "$app/components/ui/Alert";
@@ -84,8 +86,8 @@ export const ProductTab = () => {
   return (
     <Layout preview={<ProductPreview showRefundPolicyModal={showRefundPolicyPreview} />} isLoading={isUploading}>
       <div className="squished">
-        <form>
-          <section className="p-4! md:p-8!">
+        <form className="divide-y divide-border">
+          <section className="flex flex-col gap-8 p-4 md:p-8">
             {showAiNotification ? (
               <Alert role="status" variant="accent">
                 <div className="flex items-center gap-4">
@@ -101,9 +103,9 @@ export const ProductTab = () => {
               </Alert>
             ) : null}
             <BundleConversionNotice />
-            <fieldset>
+            <fieldset className="flex flex-col gap-2">
               <label htmlFor={`${uid}-name`}>{isCoffee ? "Header" : "Name"}</label>
-              <input
+              <Input
                 id={`${uid}-name`}
                 type="text"
                 value={product.name}
@@ -112,17 +114,17 @@ export const ProductTab = () => {
             </fieldset>
             {isCoffee ? (
               <>
-                <fieldset>
+                <fieldset className="flex flex-col gap-2">
                   <label htmlFor={`${uid}-body`}>Body</label>
-                  <textarea
+                  <Textarea
                     id={`${uid}-body`}
                     value={product.description}
                     placeholder="Add a short inspiring message"
                     onChange={(evt) => updateProduct({ description: evt.target.value })}
                   />
                 </fieldset>
-                <fieldset>
-                  <legend>
+                <fieldset className="space-y-2">
+                  <legend className="flex w-full justify-between">
                     <label htmlFor={`${uid}-url`}>URL</label>
                     <CopyToClipboard text={url}>
                       <button type="button" className="font-normal underline">
@@ -130,7 +132,7 @@ export const ProductTab = () => {
                       </button>
                     </CopyToClipboard>
                   </legend>
-                  <input id={`${uid}-url`} type="text" value={url} disabled />
+                  <Input id={`${uid}-url`} type="text" value={url} disabled />
                 </fieldset>
               </>
             ) : (
@@ -155,14 +157,14 @@ export const ProductTab = () => {
           </section>
           {isCoffee ? (
             <>
-              <section className="p-4! md:p-8!">
+              <section className="flex flex-col gap-8 p-4 md:p-8">
                 <h2>Pricing</h2>
                 <SuggestedAmountsEditor
                   versions={product.variants}
                   onChange={(variants) => updateProduct({ variants })}
                 />
               </section>
-              <section className="p-4! md:p-8!">
+              <section className="flex flex-col gap-8 p-4 md:p-8">
                 <h2>Settings</h2>
                 <CustomButtonTextOptionInput
                   value={product.custom_button_text_option}
@@ -185,7 +187,7 @@ export const ProductTab = () => {
                 permalink={uniquePermalink}
                 nativeType={product.native_type}
               />
-              <section className="p-4! md:p-8!">
+              <section className="flex flex-col gap-8 p-4 md:p-8">
                 <h2>Product info</h2>
                 {product.native_type !== "membership" ? (
                   <CustomButtonTextOptionInput
@@ -205,9 +207,9 @@ export const ProductTab = () => {
                   setFileAttributes={(file_attributes) => updateProduct({ file_attributes })}
                 />
               </section>
-              <section className="p-4! md:p-8!">
+              <section className="flex flex-col gap-8 p-4 md:p-8">
                 <h2>Integrations</h2>
-                <fieldset>
+                <fieldset className="space-y-2">
                   {product.community_chat_enabled === null ? null : (
                     <ToggleSettingRow
                       label="Invite your customers to your Gumroad community chat"
@@ -257,13 +259,13 @@ export const ProductTab = () => {
                 </fieldset>
               </section>
               {product.native_type === "membership" ? (
-                <section className="p-4! md:p-8!">
+                <section className="flex flex-col gap-8 p-4 md:p-8">
                   <h2>Tiers</h2>
                   <TiersEditor tiers={product.variants} onChange={(variants) => updateProduct({ variants })} />
                 </section>
               ) : (
                 <>
-                  <section className="p-4! md:p-8!">
+                  <section className="flex flex-col gap-8 p-4 md:p-8">
                     <h2>Pricing</h2>
                     <PriceEditor
                       priceCents={product.price_cents}
@@ -310,7 +312,7 @@ export const ProductTab = () => {
                   </section>
                   {product.native_type === "call" ? (
                     <>
-                      <section className="p-4! md:p-8!">
+                      <section className="flex flex-col gap-8 p-4 md:p-8">
                         <div style={{ display: "flex", justifyContent: "space-between" }}>
                           <h2>Durations</h2>
                           <a
@@ -326,7 +328,7 @@ export const ProductTab = () => {
                           onChange={(variants) => updateProduct({ variants })}
                         />
                       </section>
-                      <section className="p-4! md:p-8!">
+                      <section className="flex flex-col gap-8 p-4 md:p-8">
                         <h2>Available hours</h2>
                         <AvailabilityEditor
                           availabilities={product.availabilities}
@@ -334,7 +336,7 @@ export const ProductTab = () => {
                         />
                       </section>
                       {product.call_limitation_info ? (
-                        <section className="p-4! md:p-8!">
+                        <section className="flex flex-col gap-8 p-4 md:p-8">
                           <h2>Call limitations</h2>
                           <CallLimitationsEditor
                             callLimitations={product.call_limitation_info}
@@ -344,7 +346,7 @@ export const ProductTab = () => {
                       ) : null}
                     </>
                   ) : (
-                    <section aria-label="Version editor" className="p-4! md:p-8!">
+                    <section aria-label="Version editor" className="flex flex-col gap-8 p-4 md:p-8">
                       <div style={{ display: "flex", justifyContent: "space-between" }}>
                         <h2>{product.native_type === "physical" ? "Variants" : "Versions"}</h2>
                         <a
@@ -369,9 +371,9 @@ export const ProductTab = () => {
                   onChange={(shipping_destinations) => updateProduct({ shipping_destinations })}
                 />
               ) : null}
-              <section className="p-4! md:p-8!">
+              <section className="flex flex-col gap-8 p-4 md:p-8">
                 <h2>Settings</h2>
-                <fieldset>
+                <fieldset className="flex flex-col gap-2">
                   {product.native_type === "membership" ? (
                     <>
                       <FreeTrialSelector />
@@ -458,7 +460,7 @@ export const ProductTab = () => {
                   </Toggle>
                 </fieldset>
                 {product.native_type === "membership" ? (
-                  <fieldset>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-subscription-duration`}>Default payment frequency</label>
                     </legend>

@@ -1,10 +1,12 @@
-import cx from "classnames";
 import * as React from "react";
 
 import { SavedCreditCard } from "$app/parsers/card";
 import type { FormFieldName, User } from "$app/types/payments";
+import { classNames } from "$app/utils/classNames";
 
 import { Button } from "$app/components/Button";
+import { Input } from "$app/components/Input";
+import { Select } from "$app/components/TypeSafeOptionSelect";
 import { Alert } from "$app/components/ui/Alert";
 
 export type BankAccount =
@@ -930,14 +932,14 @@ const BankAccountSection = ({
   }, []);
 
   return (
-    <>
+    <div className="space-y-8">
       <div className="whitespace-pre-line">{feeInfoText}</div>
       <section className="grid gap-8">
-        <fieldset className={cx({ danger: errorFieldNames.has("account_holder_full_name") })}>
+        <fieldset className="space-y-2">
           <legend>
             <label htmlFor={`${uid}-account-holder-full-name`}>Pay to the order of</label>
           </legend>
-          <input
+          <Input
             id={`${uid}-account-holder-full-name`}
             placeholder="Full name of account holder"
             value={bankAccount?.account_holder_full_name || ""}
@@ -945,18 +947,20 @@ const BankAccountSection = ({
             aria-invalid={errorFieldNames.has("account_holder_full_name")}
             onChange={(evt) => updateBankAccount({ account_holder_full_name: evt.target.value })}
           />
-          <small>Must exactly match the name on your bank account</small>
+          <small className={classNames("text-muted", errorFieldNames.has("account_holder_full_name") && "text-danger")}>
+            Must exactly match the name on your bank account
+          </small>
         </fieldset>
         <div className="grid gap-2">
           {showNewBankAccount ? (
             <div className="grid gap-5 md:auto-cols-fr md:grid-flow-col">
               {user.country_code === "CA" ? (
                 <>
-                  <fieldset className={cx({ danger: errorFieldNames.has("transit_number") })}>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-transit-number`}>Transit #</label>
                     </legend>
-                    <input
+                    <Input
                       type="text"
                       id={`${uid}-transit-number`}
                       placeholder="12345"
@@ -967,11 +971,11 @@ const BankAccountSection = ({
                       onChange={(evt) => updateBankAccount({ transit_number: evt.target.value })}
                     />
                   </fieldset>
-                  <fieldset className={cx({ danger: errorFieldNames.has("institution_number") })}>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-institution-number`}>Institution #</label>
                     </legend>
-                    <input
+                    <Input
                       type="text"
                       id={`${uid}-institution-number`}
                       placeholder="000"
@@ -984,11 +988,11 @@ const BankAccountSection = ({
                   </fieldset>
                 </>
               ) : user.country_code === "AU" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bsb_number") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bsb-number`}>BSB</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bsb-number`}
                     placeholder="123456"
@@ -1000,11 +1004,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "GB" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("sort_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-sort-code`}>Sort code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-sort-code`}
                     placeholder="12-34-56"
@@ -1016,11 +1020,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "GI" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("sort_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-sort-code`}>Sort code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-sort-code`}
                     placeholder="12-34-56"
@@ -1032,11 +1036,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "IN" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("ifsc") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-ifsc`}>IFSC</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-ifsc`}
                     placeholder="ICIC0123456"
@@ -1049,11 +1053,11 @@ const BankAccountSection = ({
                 </fieldset>
               ) : user.country_code === "HK" ? (
                 <>
-                  <fieldset className={cx({ danger: errorFieldNames.has("clearing_code") })}>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-clearing-code`}>Clearing Code</label>
                     </legend>
-                    <input
+                    <Input
                       type="text"
                       id={`${uid}-clearing-code`}
                       placeholder="123"
@@ -1064,11 +1068,11 @@ const BankAccountSection = ({
                       onChange={(evt) => updateBankAccount({ clearing_code: evt.target.value })}
                     />
                   </fieldset>
-                  <fieldset className={cx({ danger: errorFieldNames.has("branch_code") })}>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-branch-code`}>Branch code</label>
                     </legend>
-                    <input
+                    <Input
                       type="text"
                       id={`${uid}-branch-code`}
                       placeholder="456"
@@ -1082,11 +1086,11 @@ const BankAccountSection = ({
                 </>
               ) : user.country_code === "SG" ? (
                 <>
-                  <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-bank-code`}>Bank code</label>
                     </legend>
-                    <input
+                    <Input
                       type="text"
                       id={`${uid}-bank-code`}
                       placeholder="1234"
@@ -1097,11 +1101,11 @@ const BankAccountSection = ({
                       onChange={(evt) => updateBankAccount({ bank_code: evt.target.value })}
                     />
                   </fieldset>
-                  <fieldset className={cx({ danger: errorFieldNames.has("branch_code") })}>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-branch-code`}>Branch code</label>
                     </legend>
-                    <input
+                    <Input
                       type="text"
                       id={`${uid}-branch-code`}
                       placeholder="567"
@@ -1115,11 +1119,11 @@ const BankAccountSection = ({
                 </>
               ) : user.country_code === "JP" ? (
                 <>
-                  <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-bank-code`}>Bank code</label>
                     </legend>
-                    <input
+                    <Input
                       type="text"
                       id={`${uid}-bank-code`}
                       placeholder="1234"
@@ -1130,11 +1134,11 @@ const BankAccountSection = ({
                       onChange={(evt) => updateBankAccount({ bank_code: evt.target.value })}
                     />
                   </fieldset>
-                  <fieldset className={cx({ danger: errorFieldNames.has("branch_code") })}>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-branch-code`}>Branch code</label>
                     </legend>
-                    <input
+                    <Input
                       type="text"
                       id={`${uid}-branch-code`}
                       placeholder="567"
@@ -1147,11 +1151,11 @@ const BankAccountSection = ({
                   </fieldset>
                 </>
               ) : user.country_code === "TH" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>Bank code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="123"
@@ -1163,11 +1167,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "KR" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>Bank code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="ABCDKR00123"
@@ -1179,11 +1183,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "VN" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>Bank Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="01101100"
@@ -1195,11 +1199,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "TW" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="AAAATWTXXXX"
@@ -1211,11 +1215,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "ID" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>Bank code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="000"
@@ -1227,11 +1231,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "MA" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="AAAAMAMAXXX"
@@ -1243,11 +1247,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "RS" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="BKCHRSBG"
@@ -1260,11 +1264,11 @@ const BankAccountSection = ({
                 </fieldset>
               ) : user.country_code === "TT" ? (
                 <>
-                  <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-bank-code`}>Bank code</label>
                     </legend>
-                    <input
+                    <Input
                       type="text"
                       id={`${uid}-bank-code`}
                       placeholder="123"
@@ -1275,11 +1279,11 @@ const BankAccountSection = ({
                       onChange={(evt) => updateBankAccount({ bank_code: evt.target.value })}
                     />
                   </fieldset>
-                  <fieldset className={cx({ danger: errorFieldNames.has("branch_code") })}>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-branch-code`}>Branch code</label>
                     </legend>
-                    <input
+                    <Input
                       type="text"
                       id={`${uid}-branch-code`}
                       placeholder="45678"
@@ -1293,11 +1297,11 @@ const BankAccountSection = ({
                 </>
               ) : user.country_code === "JM" ? (
                 <>
-                  <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-bank-code`}>Bank code</label>
                     </legend>
-                    <input
+                    <Input
                       type="text"
                       id={`${uid}-bank-code`}
                       placeholder="111"
@@ -1308,11 +1312,11 @@ const BankAccountSection = ({
                       onChange={(evt) => updateBankAccount({ bank_code: evt.target.value })}
                     />
                   </fieldset>
-                  <fieldset className={cx({ danger: errorFieldNames.has("branch_code") })}>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-branch-code`}>Branch code</label>
                     </legend>
-                    <input
+                    <Input
                       type="text"
                       id={`${uid}-branch-code`}
                       placeholder="00000"
@@ -1325,11 +1329,11 @@ const BankAccountSection = ({
                   </fieldset>
                 </>
               ) : user.country_code === "UY" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>Bank code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="091"
@@ -1341,11 +1345,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "AG" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="AAAAAGAGXYZ"
@@ -1357,11 +1361,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "LC" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="AAAALCLCXYZ"
@@ -1373,11 +1377,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "TZ" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="AAAATZTXXXX"
@@ -1389,11 +1393,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "NA" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="AAAANANXXYZ"
@@ -1405,11 +1409,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "PH" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>Bank Identifier Code (BIC)</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="12345678901"
@@ -1421,11 +1425,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "ZA" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="FIRNZAJJ"
@@ -1437,11 +1441,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "KE" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="BARCKENXMDR"
@@ -1453,11 +1457,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "MY" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="HBMBMYKL"
@@ -1470,11 +1474,11 @@ const BankAccountSection = ({
                 </fieldset>
               ) : user.country_code === "CL" ? (
                 <>
-                  <fieldset className={cx({ danger: errorFieldNames.has("account_type") })}>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-bank-account-type`}>Bank account type</label>
                     </legend>
-                    <select
+                    <Select
                       id={`${uid}-bank-account-type`}
                       required
                       disabled={isFormDisabled}
@@ -1489,13 +1493,13 @@ const BankAccountSection = ({
                       <option key="savings" value="savings">
                         Savings
                       </option>
-                    </select>
+                    </Select>
                   </fieldset>
-                  <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-bank-code`}>Bank code</label>
                     </legend>
-                    <input
+                    <Input
                       type="text"
                       id={`${uid}-bank-code`}
                       placeholder="123"
@@ -1509,11 +1513,11 @@ const BankAccountSection = ({
                 </>
               ) : user.country_code === "CO" ? (
                 <>
-                  <fieldset className={cx({ danger: errorFieldNames.has("account_type") })}>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-account-type`}>Account Type</label>
                     </legend>
-                    <select
+                    <Select
                       id={`${uid}-account-type`}
                       required
                       disabled={isFormDisabled}
@@ -1528,13 +1532,13 @@ const BankAccountSection = ({
                       <option key="checking" value="checking">
                         Checking
                       </option>
-                    </select>
+                    </Select>
                   </fieldset>
-                  <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-bank-code`}>Bank Code</label>
                     </legend>
-                    <input
+                    <Input
                       type="text"
                       id={`${uid}-bank-code`}
                       placeholder="060"
@@ -1547,11 +1551,11 @@ const BankAccountSection = ({
                   </fieldset>
                 </>
               ) : user.country_code === "RW" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="AAAARWRWXXX"
@@ -1563,11 +1567,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "EC" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="AAAAECE1XXX"
@@ -1579,11 +1583,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "BW" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="AAAABWBWXXX"
@@ -1595,11 +1599,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "OM" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="AAAAOMOMXXX"
@@ -1611,11 +1615,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "PY" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>Bank code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="27"
@@ -1627,11 +1631,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "MG" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="AAAAMGMGXXX"
@@ -1643,11 +1647,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "GH" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>Bank code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="022112"
@@ -1659,11 +1663,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "US" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("routing_number") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-routing-number`}>Routing number</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-routing-number`}
                     placeholder="121000497"
@@ -1675,11 +1679,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "MD" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="AAAAMDMDXXX"
@@ -1691,11 +1695,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "PA" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="AAAAPAPAXXX"
@@ -1708,11 +1712,11 @@ const BankAccountSection = ({
                 </fieldset>
               ) : user.country_code === "DO" ? (
                 <>
-                  <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-bank-code`}>Bank code</label>
                     </legend>
-                    <input
+                    <Input
                       type="text"
                       id={`${uid}-bank-code`}
                       placeholder="021"
@@ -1723,11 +1727,11 @@ const BankAccountSection = ({
                       onChange={(evt) => updateBankAccount({ bank_code: evt.target.value })}
                     />
                   </fieldset>
-                  <fieldset className={cx({ danger: errorFieldNames.has("branch_code") })}>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-branch-code`}>Branch code (optional)</label>
                     </legend>
-                    <input
+                    <Input
                       type="text"
                       id={`${uid}-branch-code`}
                       placeholder="4232"
@@ -1739,11 +1743,11 @@ const BankAccountSection = ({
                 </>
               ) : user.country_code === "UZ" ? (
                 <>
-                  <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-bank-code`}>Bank code</label>
                     </legend>
-                    <input
+                    <Input
                       type="text"
                       id={`${uid}-bank-code`}
                       placeholder="AAAAUZUZXXX"
@@ -1754,11 +1758,11 @@ const BankAccountSection = ({
                       onChange={(evt) => updateBankAccount({ bank_code: evt.target.value })}
                     />
                   </fieldset>
-                  <fieldset className={cx({ danger: errorFieldNames.has("branch_code") })}>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-branch-code`}>Branch code</label>
                     </legend>
-                    <input
+                    <Input
                       type="text"
                       id={`${uid}-branch-code`}
                       placeholder="00000"
@@ -1771,11 +1775,11 @@ const BankAccountSection = ({
                   </fieldset>
                 </>
               ) : user.country_code === "BO" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>Bank code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="060"
@@ -1787,11 +1791,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "NG" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="AAAANGLAXXX"
@@ -1803,11 +1807,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "AM" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="AAAAAMNNXXX"
@@ -1820,11 +1824,11 @@ const BankAccountSection = ({
                 </fieldset>
               ) : user.country_code === "LK" ? (
                 <>
-                  <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-bank-code`}>Bank code</label>
                     </legend>
-                    <input
+                    <Input
                       type="text"
                       id={`${uid}-bank-code`}
                       placeholder="AAAALKLXXXX"
@@ -1835,11 +1839,11 @@ const BankAccountSection = ({
                       onChange={(evt) => updateBankAccount({ bank_code: evt.target.value })}
                     />
                   </fieldset>
-                  <fieldset className={cx({ danger: errorFieldNames.has("branch_code") })}>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-branch-code`}>Branch code</label>
                     </legend>
-                    <input
+                    <Input
                       type="text"
                       id={`${uid}-branch-code`}
                       placeholder="7010999"
@@ -1852,11 +1856,11 @@ const BankAccountSection = ({
                   </fieldset>
                 </>
               ) : user.country_code === "ET" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="AAAAETETXXX"
@@ -1868,11 +1872,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "BN" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="AAAABNBBXXX"
@@ -1884,11 +1888,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "GY" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="AAAAGYGGXYZ"
@@ -1900,11 +1904,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "MK" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="AAAAMK2XXXX"
@@ -1916,11 +1920,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "BD" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>Bank Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="110000000"
@@ -1932,11 +1936,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "BT" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="AAAABTBTXXX"
@@ -1948,11 +1952,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "LA" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="AAAALALAXXX"
@@ -1964,11 +1968,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "MZ" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="AAAAMZMXXXX"
@@ -1980,11 +1984,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "QA" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="QNBAQAQAXXX"
@@ -1996,11 +2000,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "GA" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="AAAAGAGAXXX"
@@ -2012,11 +2016,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "BS" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="AAAABSNSXXX"
@@ -2028,11 +2032,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "KH" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="AAAAKHPPXXX"
@@ -2044,11 +2048,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "MN" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="AAAAMNUBXXX"
@@ -2060,11 +2064,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "DZ" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="AAAADZDZXXX"
@@ -2076,11 +2080,11 @@ const BankAccountSection = ({
                   />
                 </fieldset>
               ) : user.country_code === "MO" ? (
-                <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                   </legend>
-                  <input
+                  <Input
                     type="text"
                     id={`${uid}-bank-code`}
                     placeholder="AAAAMOMXXXX"
@@ -2095,11 +2099,11 @@ const BankAccountSection = ({
               {user.country_supports_iban ? (
                 <>
                   {user.country_code === "PK" || user.country_code === "TR" ? (
-                    <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                    <fieldset className="space-y-2">
                       <legend>
                         <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                       </legend>
-                      <input
+                      <Input
                         type="text"
                         id={`${uid}-bank-code`}
                         placeholder="AAAAPKKAXXX"
@@ -2111,11 +2115,11 @@ const BankAccountSection = ({
                       />
                     </fieldset>
                   ) : user.country_code === "GT" ? (
-                    <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                    <fieldset className="space-y-2">
                       <legend>
                         <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                       </legend>
-                      <input
+                      <Input
                         type="text"
                         id={`${uid}-bank-code`}
                         placeholder="AAAAGTGCXYZ"
@@ -2127,11 +2131,11 @@ const BankAccountSection = ({
                       />
                     </fieldset>
                   ) : user.country_code === "BA" ? (
-                    <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                    <fieldset className="space-y-2">
                       <legend>
                         <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                       </legend>
-                      <input
+                      <Input
                         type="text"
                         id={`${uid}-bank-code`}
                         placeholder="BIHBAHBOS"
@@ -2143,11 +2147,11 @@ const BankAccountSection = ({
                       />
                     </fieldset>
                   ) : user.country_code === "EG" ? (
-                    <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                    <fieldset className="space-y-2">
                       <legend>
                         <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                       </legend>
-                      <input
+                      <Input
                         type="text"
                         id={`${uid}-bank-code`}
                         placeholder="NBEGEGCX331"
@@ -2159,11 +2163,11 @@ const BankAccountSection = ({
                       />
                     </fieldset>
                   ) : user.country_code === "SA" ? (
-                    <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                    <fieldset className="space-y-2">
                       <legend>
                         <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                       </legend>
-                      <input
+                      <Input
                         type="text"
                         id={`${uid}-bank-code`}
                         placeholder="NCBKSAJE101"
@@ -2175,11 +2179,11 @@ const BankAccountSection = ({
                       />
                     </fieldset>
                   ) : user.country_code === "MU" ? (
-                    <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                    <fieldset className="space-y-2">
                       <legend>
                         <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                       </legend>
-                      <input
+                      <Input
                         type="text"
                         id={`${uid}-bank-code`}
                         placeholder="AAAAMUMUXYZ"
@@ -2191,11 +2195,11 @@ const BankAccountSection = ({
                       />
                     </fieldset>
                   ) : user.country_code === "KZ" ? (
-                    <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                    <fieldset className="space-y-2">
                       <legend>
                         <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                       </legend>
-                      <input
+                      <Input
                         type="text"
                         id={`${uid}-bank-code`}
                         placeholder="AAAAKZKZXXX"
@@ -2207,11 +2211,11 @@ const BankAccountSection = ({
                       />
                     </fieldset>
                   ) : user.country_code === "SV" ? (
-                    <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                    <fieldset className="space-y-2">
                       <legend>
                         <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                       </legend>
-                      <input
+                      <Input
                         type="text"
                         id={`${uid}-bank-code`}
                         placeholder="AAAASVS1XXX"
@@ -2223,11 +2227,11 @@ const BankAccountSection = ({
                       />
                     </fieldset>
                   ) : user.country_code === "AL" ? (
-                    <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                    <fieldset className="space-y-2">
                       <legend>
                         <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                       </legend>
-                      <input
+                      <Input
                         type="text"
                         id={`${uid}-bank-code`}
                         placeholder="AAAAALTXXXX"
@@ -2239,11 +2243,11 @@ const BankAccountSection = ({
                       />
                     </fieldset>
                   ) : user.country_code === "BH" ? (
-                    <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                    <fieldset className="space-y-2">
                       <legend>
                         <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                       </legend>
-                      <input
+                      <Input
                         type="text"
                         id={`${uid}-bank-code`}
                         placeholder="AAAABHBMXYZ"
@@ -2255,11 +2259,11 @@ const BankAccountSection = ({
                       />
                     </fieldset>
                   ) : user.country_code === "JO" ? (
-                    <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                    <fieldset className="space-y-2">
                       <legend>
                         <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                       </legend>
-                      <input
+                      <Input
                         type="text"
                         id={`${uid}-bank-code`}
                         placeholder="AAAAJOJOXXX"
@@ -2272,11 +2276,11 @@ const BankAccountSection = ({
                     </fieldset>
                   ) : user.country_code === "AZ" ? (
                     <>
-                      <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                      <fieldset className="space-y-2">
                         <legend>
                           <label htmlFor={`${uid}-bank-code`}>Bank code</label>
                         </legend>
-                        <input
+                        <Input
                           type="text"
                           id={`${uid}-bank-code`}
                           placeholder="123456"
@@ -2287,11 +2291,11 @@ const BankAccountSection = ({
                           onChange={(evt) => updateBankAccount({ bank_code: evt.target.value })}
                         />
                       </fieldset>
-                      <fieldset className={cx({ danger: errorFieldNames.has("branch_code") })}>
+                      <fieldset className="space-y-2">
                         <legend>
                           <label htmlFor={`${uid}-branch-code`}>Branch code</label>
                         </legend>
-                        <input
+                        <Input
                           type="text"
                           id={`${uid}-branch-code`}
                           placeholder="123456"
@@ -2304,11 +2308,11 @@ const BankAccountSection = ({
                       </fieldset>
                     </>
                   ) : user.country_code === "AO" ? (
-                    <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                    <fieldset className="space-y-2">
                       <legend>
                         <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                       </legend>
-                      <input
+                      <Input
                         type="text"
                         id={`${uid}-bank-code`}
                         placeholder="AAAAAOAOXXX"
@@ -2320,11 +2324,11 @@ const BankAccountSection = ({
                       />
                     </fieldset>
                   ) : user.country_code === "SM" ? (
-                    <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                    <fieldset className="space-y-2">
                       <legend>
                         <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                       </legend>
-                      <input
+                      <Input
                         type="text"
                         id={`${uid}-bank-code`}
                         placeholder="AAAASMSMXXX"
@@ -2336,11 +2340,11 @@ const BankAccountSection = ({
                       />
                     </fieldset>
                   ) : user.country_code === "KW" ? (
-                    <fieldset className={cx({ danger: errorFieldNames.has("bank_code") })}>
+                    <fieldset className="space-y-2">
                       <legend>
                         <label htmlFor={`${uid}-bank-code`}>SWIFT / BIC Code</label>
                       </legend>
-                      <input
+                      <Input
                         type="text"
                         id={`${uid}-bank-code`}
                         placeholder="AAAAKWKWXYZ"
@@ -2352,11 +2356,11 @@ const BankAccountSection = ({
                       />
                     </fieldset>
                   ) : null}
-                  <fieldset className={cx({ danger: errorFieldNames.has("account_number") })}>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-account-number`}>IBAN</label>
                     </legend>
-                    <input
+                    <Input
                       type="text"
                       id={`${uid}-account-number`}
                       placeholder={`${user.country_code || ""}1234567890`}
@@ -2366,11 +2370,11 @@ const BankAccountSection = ({
                       onChange={(evt) => updateBankAccount({ account_number: evt.target.value })}
                     />
                   </fieldset>
-                  <fieldset className={cx({ danger: errorFieldNames.has("account_number_confirmation") })}>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-confirm-account-number`}>Confirm IBAN</label>
                     </legend>
-                    <input
+                    <Input
                       type="text"
                       id={`${uid}-confirm-account-number`}
                       placeholder={`${user.country_code || ""}1234567890`}
@@ -2383,7 +2387,7 @@ const BankAccountSection = ({
                 </>
               ) : (
                 <>
-                  <fieldset className={cx({ danger: errorFieldNames.has("account_number") })}>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-account-number`}>
                         {user.country_code && ["US", "MX", "AR", "PE"].includes(user.country_code)
@@ -2391,7 +2395,7 @@ const BankAccountSection = ({
                           : "Account #"}
                       </label>
                     </legend>
-                    <input
+                    <Input
                       type="text"
                       id={`${uid}-account-number`}
                       {...nonIbanAccountNumberInputProps}
@@ -2401,7 +2405,7 @@ const BankAccountSection = ({
                       onChange={(evt) => updateBankAccount({ account_number: evt.target.value })}
                     />
                   </fieldset>
-                  <fieldset className={cx({ danger: errorFieldNames.has("account_number_confirmation") })}>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-confirm-account-number`}>
                         {user.country_code && ["US", "MX", "AR", "PE"].includes(user.country_code)
@@ -2409,7 +2413,7 @@ const BankAccountSection = ({
                           : "Confirm account #"}
                       </label>
                     </legend>
-                    <input
+                    <Input
                       type="text"
                       id={`${uid}-confirm-account-number`}
                       {...nonIbanAccountNumberInputProps}
@@ -2424,31 +2428,31 @@ const BankAccountSection = ({
             </div>
           ) : (
             <>
-              <section
-                style={{ display: "grid", gap: "var(--spacer-5)", gridAutoFlow: "column", gridAutoColumns: "1fr" }}
-              >
+              <section className="grid gap-6 md:auto-cols-fr md:grid-flow-col">
                 {bankAccountDetails.routing_number !== null && (
-                  <fieldset>
+                  <fieldset className="space-y-2">
                     <legend>
                       <label htmlFor={`${uid}-saved-routing-number`}>
                         {getRoutingNumberLabel(user.country_code || "")}
                       </label>
                     </legend>
-                    <input
+                    <Input
                       id={`${uid}-saved-routing-number`}
                       disabled
                       value={bankAccountDetails.routing_number || ""}
+                      readOnly
                     />
                   </fieldset>
                 )}
-                <fieldset>
+                <fieldset className="space-y-2">
                   <legend>
                     <label htmlFor={`${uid}-saved-account-number`}>Account number</label>
                   </legend>
-                  <input
+                  <Input
                     id={`${uid}-saved-account-number`}
                     disabled
                     value={bankAccountDetails.account_number_visual || ""}
+                    readOnly
                   />
                 </fieldset>
               </section>
@@ -2472,7 +2476,7 @@ const BankAccountSection = ({
           </Alert>
         </section>
       ) : null}
-    </>
+    </div>
   );
 };
 export default BankAccountSection;

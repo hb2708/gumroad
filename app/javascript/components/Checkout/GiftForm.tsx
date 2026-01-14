@@ -1,9 +1,13 @@
-import cx from "classnames";
 import * as React from "react";
+
+import { classNames } from "$app/utils/classNames";
 
 import { Button } from "$app/components/Button";
 import { useState, getErrors } from "$app/components/Checkout/payment";
+import { Input } from "$app/components/Input";
 import { Modal } from "$app/components/Modal";
+import { Textarea } from "$app/components/Textarea";
+import { Toggle } from "$app/components/Toggle";
 import { Alert } from "$app/components/ui/Alert";
 
 export const GiftForm = ({ isMembership, className }: { isMembership: boolean; className?: string | undefined }) => {
@@ -16,23 +20,19 @@ export const GiftForm = ({ isMembership, className }: { isMembership: boolean; c
   const hasError = getErrors(state).has("gift");
 
   return (
-    <div className={`flex flex-col gap-4 ${className}`}>
-      <label className="flex w-full grow items-center gap-4">
-        <input
-          type="checkbox"
-          role="switch"
-          checked={!!gift}
-          onChange={(e) => {
-            if (gift?.type === "anonymous") {
-              e.preventDefault();
-              setCancellingPresetGift(true);
-            } else {
-              dispatch({ type: "set-value", gift: gift ? null : { type: "normal", email: "", note: "" } });
-            }
-          }}
-        />
+    <div className={classNames("flex flex-col gap-4", className)}>
+      <Toggle
+        value={!!gift}
+        onChange={(checked) => {
+          if (gift?.type === "anonymous") {
+            setCancellingPresetGift(true);
+          } else {
+            dispatch({ type: "set-value", gift: checked ? { type: "normal", email: "", note: "" } : null });
+          }
+        }}
+      >
         <h4>Give as a gift?</h4>
-      </label>
+      </Toggle>
 
       {gift ? (
         <div className="flex w-full flex-col gap-4">
@@ -43,18 +43,17 @@ export const GiftForm = ({ isMembership, className }: { isMembership: boolean; c
             </Alert>
           ) : null}
           {gift.type === "normal" ? (
-            <fieldset className={cx({ danger: hasError })}>
+            <fieldset className="flex flex-col space-y-2">
               <legend>
                 <label htmlFor={giftEmailUID}>Recipient email</label>
               </legend>
-              <input
+              <Input
                 id={giftEmailUID}
                 type="email"
                 value={gift.email}
                 onChange={(evt) => dispatch({ type: "set-value", gift: { ...gift, email: evt.target.value } })}
                 placeholder="Recipient email address"
                 aria-invalid={hasError}
-                className="w-full"
               />
             </fieldset>
           ) : (
@@ -87,16 +86,15 @@ export const GiftForm = ({ isMembership, className }: { isMembership: boolean; c
               </Modal>
             </Alert>
           )}
-          <fieldset className="w-full">
+          <fieldset className="flex flex-col space-y-2">
             <legend>
               <label htmlFor={giftNoteUID}>Message</label>
             </legend>
-            <textarea
+            <Textarea
               id={giftNoteUID}
               value={gift.note}
               onChange={(evt) => dispatch({ type: "set-value", gift: { ...gift, note: evt.target.value } })}
               placeholder="A personalized message (optional)"
-              className="w-full"
             />
           </fieldset>
         </div>

@@ -88,9 +88,8 @@ const CollaboratorsPage = () => {
                     <TableCell>
                       <div className="flex items-center gap-4">
                         <img
-                          className="user-avatar"
+                          className="size-8 shrink-0 rounded-full border border-border"
                           src={collaborator.avatar_url}
-                          style={{ width: "var(--spacer-6)" }}
                           alt={`Avatar of ${collaborator.name || "Collaborator"}`}
                         />
                         <div>
@@ -101,7 +100,7 @@ const CollaboratorsPage = () => {
                           <WithTooltip tip="Not receiving payouts" position="top">
                             <Icon
                               name="solid-shield-exclamation"
-                              style={{ color: "rgb(var(--warning))" }}
+                              className="text-warning"
                               aria-label="Not receiving payouts"
                             />
                           </WithTooltip>

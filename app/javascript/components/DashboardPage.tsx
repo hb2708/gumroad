@@ -1,7 +1,7 @@
 import { Link } from "@inertiajs/react";
-import cx from "classnames";
 import * as React from "react";
 
+import { classNames } from "$app/utils/classNames";
 import { formatPriceCentsWithCurrencySymbol } from "$app/utils/currency";
 
 import { ActivityFeed, ActivityItem } from "$app/components/ActivityFeed";
@@ -176,20 +176,20 @@ const GettingStartedItem = ({
     <div className="flex w-full items-center gap-2">
       <IconComponent isChecked={completed} width={36} height={36} className="flex-none" />
       <span className="mb-1 flex-1 leading-tight font-semibold">{name}</span>
-      <Icon name={iconName} className={cx("flex-none", iconClasses)} />
+      <Icon name={iconName} className={classNames("flex-none", iconClasses)} />
     </div>
   ) : (
     <div className="my-3 flex flex-col items-center gap-1">
       <IconComponent isChecked={completed} width={60} height={60} />
       <span className="leading-tight font-semibold">{name}</span>
-      <Icon name={iconName} className={cx("absolute top-2 right-2", iconClasses)} />
+      <Icon name={iconName} className={classNames("absolute top-2 right-2", iconClasses)} />
       <p className="text-sm opacity-80">{description}</p>
     </div>
   );
 
   if (completed) {
     return (
-      <div className={cx(commonClasses, "button filled cursor-default!")} data-status="completed">
+      <div className={classNames(commonClasses, "button filled cursor-default!")} data-status="completed">
         {content}
       </div>
     );

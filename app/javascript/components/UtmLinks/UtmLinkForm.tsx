@@ -1,5 +1,4 @@
 import { router, useForm } from "@inertiajs/react";
-import cx from "classnames";
 import * as React from "react";
 import { cast } from "ts-safe-cast";
 
@@ -10,9 +9,11 @@ import { AnalyticsLayout } from "$app/components/Analytics/AnalyticsLayout";
 import { Button } from "$app/components/Button";
 import { CopyToClipboard } from "$app/components/CopyToClipboard";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { NavigationButtonInertia } from "$app/components/NavigationButton";
 import { Select } from "$app/components/Select";
 import { showAlert } from "$app/components/server-components/Alert";
+import { Textarea } from "$app/components/Textarea";
 import { Pill } from "$app/components/ui/Pill";
 import { WithTooltip } from "$app/components/WithTooltip";
 
@@ -268,32 +269,30 @@ export const UtmLinkForm = (pageProps: UtmLinkFormProps | UtmLinkEditProps) => {
         </>
       }
     >
-      <form onSubmit={handleSubmit}>
-        <section className="p-4! md:p-8!">
-          <header>
+      <form onSubmit={handleSubmit} className="divide-y divide-border">
+        <section className="grid gap-8 p-4 md:p-8 lg:grid-cols-[25%_1fr] lg:gap-x-16 lg:pb-16">
+          <header className="space-y-3 lg:row-[1/9]">
             <p>Create UTM links to track where your traffic is coming from.</p>
             <p>Once set up, simply share the links to see which sources are driving more conversions and revenue.</p>
             <a href="/help/article/74-the-analytics-dashboard" target="_blank" rel="noreferrer">
               Learn more
             </a>
           </header>
-          <fieldset className={cx({ danger: getFieldError("title") })}>
+          <fieldset className="space-y-2">
             <legend>
               <label htmlFor={`title-${uid}`}>Title</label>
             </legend>
-            <input
+            <Input
               id={`title-${uid}`}
-              type="text"
               placeholder="Title"
               value={data.utm_link.title}
               ref={titleRef}
               onChange={(e) => setData("utm_link.title", e.target.value)}
+              aria-invalid={!!getFieldError("title")}
             />
-            {getFieldError("title") ? <small>{getFieldError("title")}</small> : null}
+            {getFieldError("title") ? <small className="text-danger">{getFieldError("title")}</small> : null}
           </fieldset>
-          <fieldset
-            className={cx({ danger: getFieldError("target_resource_id") || getFieldError("target_resource_type") })}
-          >
+          <fieldset className="space-y-2">
             <legend>
               <label htmlFor={`destination-${uid}`}>Destination</label>
             </legend>
@@ -305,6 +304,7 @@ export const UtmLinkForm = (pageProps: UtmLinkFormProps | UtmLinkEditProps) => {
               value={destination}
               isMulti={false}
               isDisabled={isEditing}
+              isInvalid={!!(getFieldError("target_resource_id") || getFieldError("target_resource_type"))}
               onChange={(option) => {
                 const newDest = option ? (context.destination_options.find((o) => o.id === option.id) ?? null) : null;
                 setDestination(newDest);
@@ -313,24 +313,25 @@ export const UtmLinkForm = (pageProps: UtmLinkFormProps | UtmLinkEditProps) => {
               }}
             />
             {getFieldError("target_resource_id") || getFieldError("target_resource_type") ? (
-              <small>{getFieldError("target_resource_id") || getFieldError("target_resource_type")}</small>
+              <small className="text-danger">
+                {getFieldError("target_resource_id") || getFieldError("target_resource_type")}
+              </small>
             ) : null}
           </fieldset>
-          <fieldset className={cx({ danger: getFieldError("permalink") })}>
+          <fieldset className="space-y-2">
             <legend>
               <label htmlFor={`${uid}-link-text`}>Link</label>
             </legend>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr auto", gap: "var(--spacer-2)" }}>
-              <div className={cx("input", { disabled: isEditing })}>
-                <Pill className="-ml-2 shrink-0">{shortUrlPrefix}</Pill>
-                <input
-                  type="text"
-                  id={`${uid}-link-text`}
-                  value={isEditing ? permalink : data.utm_link.permalink}
-                  readOnly
-                  disabled={isEditing}
-                />
-              </div>
+            <div className="grid grid-cols-[1fr_auto] gap-2">
+              <Input
+                id={`${uid}-link-text`}
+                value={isEditing ? permalink : data.utm_link.permalink}
+                readOnly
+                disabled={isEditing}
+                className="bg-background"
+                leading={<Pill className="-ml-2">{shortUrlPrefix}</Pill>}
+                aria-invalid={!!getFieldError("permalink")}
+              />
               <div className="flex gap-2">
                 <CopyToClipboard
                   copyTooltip="Copy short link"
@@ -354,19 +355,13 @@ export const UtmLinkForm = (pageProps: UtmLinkFormProps | UtmLinkEditProps) => {
               </div>
             </div>
             {getFieldError("permalink") ? (
-              <small>{getFieldError("permalink")}</small>
+              <small className="text-danger">{getFieldError("permalink")}</small>
             ) : (
-              <small>This is your short UTM link to share</small>
+              <small className="text-muted">This is your short UTM link to share</small>
             )}
           </fieldset>
-          <div
-            style={{
-              display: "grid",
-              gap: "var(--spacer-3)",
-              gridTemplateColumns: "repeat(auto-fit, max(var(--dynamic-grid), 50% - var(--spacer-3) / 2))",
-            }}
-          >
-            <fieldset className={cx({ danger: getFieldError("utm_source") })}>
+          <div className="grid grid-cols-[repeat(auto-fit,max(var(--dynamic-grid),calc(50%-var(--spacer-3)/2)))] gap-3">
+            <fieldset className="space-y-2">
               <legend>
                 <label htmlFor={`${uid}-source`}>Source</label>
               </legend>
@@ -376,14 +371,15 @@ export const UtmLinkForm = (pageProps: UtmLinkFormProps | UtmLinkEditProps) => {
                 baseOptionValues={context.utm_fields_values.sources}
                 value={data.utm_link.utm_source}
                 onChange={(value) => setData("utm_link.utm_source", value)}
+                isInvalid={!!getFieldError("utm_source")}
               />
               {getFieldError("utm_source") ? (
-                <small>{getFieldError("utm_source")}</small>
+                <small className="text-danger">{getFieldError("utm_source")}</small>
               ) : (
-                <small>Where the traffic comes from e.g Twitter, Instagram</small>
+                <small className="text-muted">Where the traffic comes from e.g Twitter, Instagram</small>
               )}
             </fieldset>
-            <fieldset className={cx({ danger: getFieldError("utm_medium") })}>
+            <fieldset className="space-y-2">
               <legend>
                 <label htmlFor={`${uid}-medium`}>Medium</label>
               </legend>
@@ -393,15 +389,16 @@ export const UtmLinkForm = (pageProps: UtmLinkFormProps | UtmLinkEditProps) => {
                 baseOptionValues={context.utm_fields_values.mediums}
                 value={data.utm_link.utm_medium}
                 onChange={(value) => setData("utm_link.utm_medium", value)}
+                isInvalid={!!getFieldError("utm_medium")}
               />
               {getFieldError("utm_medium") ? (
-                <small>{getFieldError("utm_medium")}</small>
+                <small className="text-danger">{getFieldError("utm_medium")}</small>
               ) : (
-                <small>Medium by which the traffic arrived e.g. email, ads, story</small>
+                <small className="text-muted">Medium by which the traffic arrived e.g. email, ads, story</small>
               )}
             </fieldset>
           </div>
-          <fieldset className={cx({ danger: getFieldError("utm_campaign") })}>
+          <fieldset className="space-y-2">
             <legend>
               <label htmlFor={`${uid}-campaign`}>Campaign</label>
             </legend>
@@ -411,14 +408,15 @@ export const UtmLinkForm = (pageProps: UtmLinkFormProps | UtmLinkEditProps) => {
               baseOptionValues={context.utm_fields_values.campaigns}
               value={data.utm_link.utm_campaign}
               onChange={(value) => setData("utm_link.utm_campaign", value)}
+              isInvalid={!!getFieldError("utm_campaign")}
             />
             {getFieldError("utm_campaign") ? (
-              <small>{getFieldError("utm_campaign")}</small>
+              <small className="text-danger">{getFieldError("utm_campaign")}</small>
             ) : (
-              <small>Name of the campaign</small>
+              <small className="text-muted">Name of the campaign</small>
             )}
           </fieldset>
-          <fieldset className={cx({ danger: getFieldError("utm_term") })}>
+          <fieldset className="space-y-2">
             <legend>
               <label htmlFor={`${uid}-term`}>Term</label>
             </legend>
@@ -428,14 +426,15 @@ export const UtmLinkForm = (pageProps: UtmLinkFormProps | UtmLinkEditProps) => {
               baseOptionValues={context.utm_fields_values.terms}
               value={data.utm_link.utm_term}
               onChange={(value) => setData("utm_link.utm_term", value)}
+              isInvalid={!!getFieldError("utm_term")}
             />
             {getFieldError("utm_term") ? (
-              <small>{getFieldError("utm_term")}</small>
+              <small className="text-danger">{getFieldError("utm_term")}</small>
             ) : (
-              <small>Keywords used in ads</small>
+              <small className="text-muted">Keywords used in ads</small>
             )}
           </fieldset>
-          <fieldset className={cx({ danger: getFieldError("utm_content") })}>
+          <fieldset className="space-y-2">
             <legend>
               <label htmlFor={`${uid}-content`}>Content</label>
             </legend>
@@ -445,22 +444,23 @@ export const UtmLinkForm = (pageProps: UtmLinkFormProps | UtmLinkEditProps) => {
               baseOptionValues={context.utm_fields_values.contents}
               value={data.utm_link.utm_content}
               onChange={(value) => setData("utm_link.utm_content", value)}
+              isInvalid={!!getFieldError("utm_content")}
             />
             {getFieldError("utm_content") ? (
-              <small>{getFieldError("utm_content")}</small>
+              <small className="text-danger">{getFieldError("utm_content")}</small>
             ) : (
-              <small>Use to differentiate ads</small>
+              <small className="text-muted">Use to differentiate ads</small>
             )}
           </fieldset>
           {finalUrl ? (
-            <fieldset>
+            <fieldset className="space-y-2">
               <legend>
                 <label htmlFor={`${uid}-utm-url`}>Generated URL with UTM tags</label>
               </legend>
-              <div className="input">
+              <div className="flex gap-2">
                 <ResizableTextarea
                   id={`${uid}-utm-url`}
-                  className="resize-none"
+                  className="resize-none bg-background"
                   readOnly
                   value={finalUrl}
                   onChange={() => {}}
@@ -485,12 +485,14 @@ const UtmFieldSelect = ({
   baseOptionValues,
   value,
   onChange,
+  isInvalid,
 }: {
   id: string;
   placeholder: string;
   baseOptionValues: string[];
   value: string | null;
   onChange: (value: string | null) => void;
+  isInvalid?: boolean;
 }) => {
   const [inputValue, setInputValue] = React.useState<string | null>(null);
   const options = [...new Set([value, inputValue, ...baseOptionValues])]
@@ -509,6 +511,7 @@ const UtmFieldSelect = ({
       value={value ? (options.find((o) => o.id === value) ?? null) : null}
       onChange={(option) => onChange(option ? option.id : null)}
       inputValue={inputValue ?? ""}
+      isInvalid={isInvalid}
       // Lowercase the value, replace non-alphanumeric characters with dashes, and restrict to 64 characters
       onInputChange={(value) =>
         setInputValue(
@@ -531,5 +534,5 @@ const ResizableTextarea = (props: React.ComponentProps<"textarea">) => {
     ref.current.style.height = `${ref.current.scrollHeight}px`;
   }, [props.value]);
 
-  return <textarea ref={ref} {...props} />;
+  return <Textarea ref={ref} {...props} />;
 };

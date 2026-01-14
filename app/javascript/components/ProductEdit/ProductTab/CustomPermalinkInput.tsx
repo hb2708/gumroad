@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { CopyToClipboard } from "$app/components/CopyToClipboard";
 import { useCurrentSeller } from "$app/components/CurrentSeller";
+import { Input } from "$app/components/Input";
 import { Pill } from "$app/components/ui/Pill";
 
 export const CustomPermalinkInput = ({
@@ -21,8 +22,8 @@ export const CustomPermalinkInput = ({
   if (!currentSeller) return null;
 
   return (
-    <fieldset>
-      <legend>
+    <fieldset className="space-y-2">
+      <legend className="flex w-full justify-between">
         <label htmlFor={uid}>URL</label>
         <CopyToClipboard text={url}>
           <button type="button" className="font-normal underline">
@@ -30,16 +31,14 @@ export const CustomPermalinkInput = ({
           </button>
         </CopyToClipboard>
       </legend>
-      <div className="input">
-        <Pill className="-ml-2 shrink-0">{`${currentSeller.subdomain}/l/`}</Pill>
-        <input
-          id={uid}
-          type="text"
-          placeholder={uniquePermalink}
-          value={value ?? ""}
-          onChange={(evt) => onChange(evt.target.value.replace(/\s/gu, "") || null)}
-        />
-      </div>
+      <Input
+        leading={<Pill className="-ml-2 shrink-0">{`${currentSeller.subdomain}/l/`}</Pill>}
+        id={uid}
+        type="text"
+        placeholder={uniquePermalink}
+        value={value ?? ""}
+        onChange={(evt) => onChange(evt.target.value.replace(/\s/gu, "") || null)}
+      />
     </fieldset>
   );
 };

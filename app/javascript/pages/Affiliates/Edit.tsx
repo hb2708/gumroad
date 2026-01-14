@@ -6,6 +6,7 @@ import { isUrlValid } from "$app/utils/url";
 
 import { Button } from "$app/components/Button";
 import { Icon } from "$app/components/Icons";
+import { Input } from "$app/components/Input";
 import { useLoggedInUser } from "$app/components/LoggedInUser";
 import { NavigationButtonInertia } from "$app/components/NavigationButton";
 import { showAlert } from "$app/components/server-components/Alert";
@@ -158,11 +159,11 @@ export default function AffiliatesEdit() {
           uid={uid}
           headerText="The process of editing is almost identical to adding them. You can change their affiliate fee, the products they are assigned. Their affiliate link will not change."
           emailField={
-            <fieldset>
+            <fieldset className="space-y-2">
               <legend>
                 <label htmlFor={`${uid}email`}>Email</label>
               </legend>
-              <input type="email" id={`${uid}email`} value={props.affiliate.email} disabled />
+              <Input type="email" id={`${uid}email`} value={props.affiliate.email} disabled />
             </fieldset>
           }
           onToggleAllProducts={toggleAllProducts}

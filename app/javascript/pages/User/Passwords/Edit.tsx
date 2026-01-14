@@ -29,11 +29,11 @@ function PasswordReset() {
 
   return (
     <Layout header={<h1>Reset your password</h1>} headerActions={<Link href={Routes.login_path()}>Log in</Link>}>
-      <form onSubmit={handleSubmit}>
-        <section>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-12">
+        <section className="flex flex-col gap-8 pb-12">
           <AuthAlert />
-          <fieldset>
-            <legend>
+          <fieldset className="flex flex-col space-y-2">
+            <legend className="cursor-pointer">
               <label htmlFor={`${uid}-password`}>Enter a new password</label>
             </legend>
             <PasswordInput
@@ -46,9 +46,11 @@ function PasswordReset() {
               autoComplete="new-password"
             />
           </fieldset>
-          <fieldset>
+          <fieldset className="flex flex-col space-y-2">
             <legend>
-              <label htmlFor={`${uid}-password-confirmation`}>Enter same password to confirm</label>
+              <label className="cursor-pointer" htmlFor={`${uid}-password-confirmation`}>
+                Enter same password to confirm
+              </label>
             </legend>
             <PasswordInput
               id={`${uid}-password-confirmation`}
